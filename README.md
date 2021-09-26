@@ -33,7 +33,7 @@ From Android Studio:
 
 ## Maintainers
 This project is mantained by:
-* [Maru Marino](http://github.com/marumarino)
+* [Mariana Marino](http://github.com/marumarino)
 * [Daniel](http://github.com/asp2021)
 * [Scyter](http://github.com/ingscyther)
 * [Blacutt Matias](http://github.com/blacuttmatias)
