@@ -15,14 +15,14 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.Toast
-import com.example.missingpets.databinding.FragmentLoginBinding
+import com.example.missingpets.databinding.FragmentLogin2Binding
 
 import com.example.missingpets.R
 
 class LoginFragment2 : Fragment() {
 
     private lateinit var loginViewModel: LoginViewModel
-    private var _binding: FragmentLoginBinding? = null
+    private var _binding: FragmentLogin2Binding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -34,7 +34,7 @@ class LoginFragment2 : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        _binding = FragmentLoginBinding.inflate(inflater, container, false)
+        _binding = FragmentLogin2Binding.inflate(inflater, container, false)
         return binding.root
 
     }
