@@ -13,4 +13,8 @@
     <string name="login_failed">"Login failed"</string>
     <string name="new_user">Usuario nuevo? </string>
     <string name="register_new_user">Registrate</string>
+    <string name="user_have_account">Ya tienes una cuenta? </string>
+    <string name="log_in">Iniciá Sesión</string>
+    <string name="username">Nombre de usuario</string>
+    <string name="register">Registrarse</string>
 </resources>
