@@ -27,4 +27,10 @@
         <item>Otros</item>
     </string-array>
     <string name="search_in">Buscar en:</string>
+    <string name="name_detail">Nombre:</string>
+    <string name="animal_detail">Animal:</string>
+    <string name="date_lost_detail">Fecha perdido:</string>
+    <string name="sex_detail">Sexo:</string>
+    <string name="lost_in_detail">Perdido en:</string>
+    <string name="contact_detail">Contactar</string>
 </resources>
