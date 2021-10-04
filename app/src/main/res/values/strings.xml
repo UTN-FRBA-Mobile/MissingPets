@@ -17,4 +17,14 @@
     <string name="log_in">Iniciá Sesión</string>
     <string name="username">Nombre de usuario</string>
     <string name="register">Registrarse</string>
+    <string name="radius">Radio</string>
+    <string name="animal">Animal</string>
+    <string name="date_from">Fecha desde</string>
+    <string name="km">Km</string>
+    <string-array name="animals">
+        <item>Perro</item>
+        <item>Gato</item>
+        <item>Otros</item>
+    </string-array>
+    <string name="search_in">Buscar en:</string>
 </resources>
