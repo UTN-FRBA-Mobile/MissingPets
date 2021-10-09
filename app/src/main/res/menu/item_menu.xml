@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/id_missing"
+        android:icon="@drawable/ic_missing"
+        android:title="Buscados"/>
+    <item
+        android:id="@+id/id_found"
+        android:icon="@drawable/ic_found"
+        android:title="Encontrados"/>
+    <item
+        android:id="@+id/id_add_notification"
+        android:icon="@drawable/ic_add_notification"
+        android:title="Notificar"/>
+</menu>
