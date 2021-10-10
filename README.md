@@ -35,7 +35,7 @@ From Android Studio:
 This project is mantained by:
 * [Mariana Marino](http://github.com/marumarino)
 * [Daniel](http://github.com/asp2021)
-* [Scyter](http://github.com/ingscyther)
+* [Juan Manuel Jarazo](http://github.com/ingscyther)
 * [Blacutt Matias](http://github.com/blacuttmatias)
 * [Jose Fuentes](http://github.com/josecplusplus)
 
