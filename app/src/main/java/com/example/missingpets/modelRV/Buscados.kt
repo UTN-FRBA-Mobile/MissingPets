@@ -1,4 +1,7 @@
 package com.example.missingpets.modelRV
 
-class Buscados {
+data class Buscados (val message : String,
+                     val imageResourceId: Int)
+{
+      
 }
