@@ -4,11 +4,33 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
-    <string name="prompt_password">Password</string>
-    <string name="action_sign_in">Sign in or register</string>
-    <string name="action_sign_in_short">Sign in</string>
+    <string name="prompt_password">Contraseña</string>
+    <string name="action_sign_in">Iniciar sesión</string>
+    <string name="action_sign_in_short">Iniciar sesión</string>
     <string name="welcome">"Welcome!"</string>
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
+    <string name="new_user">Usuario nuevo? </string>
+    <string name="register_new_user">Registrate</string>
+    <string name="user_have_account">Ya tienes una cuenta? </string>
+    <string name="log_in">Iniciá Sesión</string>
+    <string name="username">Nombre de usuario</string>
+    <string name="register">Registrarse</string>
+    <string name="radius">Radio</string>
+    <string name="animal">Animal</string>
+    <string name="date_from">Fecha desde</string>
+    <string name="km">Km</string>
+    <string-array name="animals">
+        <item>Perro</item>
+        <item>Gato</item>
+        <item>Otros</item>
+    </string-array>
+    <string name="search_in">Buscar en:</string>
+    <string name="name_detail">Nombre:</string>
+    <string name="animal_detail">Animal:</string>
+    <string name="date_lost_detail">Fecha perdido:</string>
+    <string name="sex_detail">Sexo:</string>
+    <string name="lost_in_detail">Perdido en:</string>
+    <string name="contact_detail">Contactar</string>
 </resources>
