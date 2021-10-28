@@ -2,24 +2,31 @@ package com.example.missingpets.viewModels
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.missingpets.models.RepositorioUsuario
+import com.example.missingpets.models.ResultadoRegistroUsuario
 import com.example.missingpets.models.Usuario
 
 class RegisterViewModel : ViewModel(){
 
     //var registroFinalizadoExitosamente = MutableLiveData<Boolean>()
-    //var registroFinalizado = MutableLiveData<Boolean>()
+    var resultadoRegistro = MutableLiveData<ResultadoRegistroUsuario>()
+    val repositorioUsuario = RepositorioUsuario
 
     init{
-        //registroFinalizadoExitosamente.value = false
     }
 
     fun registrar(username: String?, email: String?, contrasenia: String?){
-        val usuario = Usuario(username, email, contrasenia)
-        //TODO
+        if(algunCampoEstaVacio(username, email, contrasenia)){
+            resultadoRegistro.value = ResultadoRegistroUsuario(null, "Debe completar todos los campos")
+        }
+        else{
+            val usuario = Usuario(username, email, contrasenia)
+            resultadoRegistro.value = repositorioUsuario.registrar(usuario)
+        }
     }
 
-    fun camposEstanVacios(username: String?, email: String?, contrasenia: String?): Boolean{
-        return username.isNullOrEmpty() || email.isNullOrEmpty() || contrasenia.isNullOrEmpty()
+    fun algunCampoEstaVacio(username: String?, email: String?, contrasenia: String?): Boolean{
+        return username.isNullOrBlank() || email.isNullOrBlank() || contrasenia.isNullOrBlank()
     }
 
 }

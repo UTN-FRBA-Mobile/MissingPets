@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.example.missingpets.viewModels.RegisterViewModel
 import com.example.missingpets.databinding.FragmentRegisterBinding
@@ -53,16 +54,22 @@ class RegisterFragment : Fragment() {
         viewModel = RegisterViewModel()
 
 
+        viewModel.resultadoRegistro.observe(viewLifecycleOwner, Observer{ resultadoRegistro ->
+            if(resultadoRegistro.exitoso != null){
+                //Registro exitoso, se dirige a otra pantalla
+            }
+            else{
+                registroFallido(view, resultadoRegistro.error.orEmpty())
+            }
+        })
+
         binding.btnRegistrarse.setOnClickListener {
             val username = getUsername()
             val email = getEmail()
             val contrasenia = getContrasenia()
-            if (viewModel.camposEstanVacios(username, email, contrasenia)){
-                notificarCamposVacios(view)
-            }else{
-                viewModel.registrar(username, email, contrasenia)
-            }
+            viewModel.registrar(username, email, contrasenia)
         }
+
         binding.tvIniciarSesion.setOnClickListener {
             val action = R.id.action_registerFragment_to_loginFragment2
             findNavController().navigate(action)
@@ -83,20 +90,12 @@ class RegisterFragment : Fragment() {
         return binding.etContraseniaUsuarioNuevo.text.toString()
     }
 
-    fun notificarCamposVacios(view: View){
+    fun registroFallido(view: View, mensajeError: String){
         //val toast = Toast.makeText(context, "Complete todos los campos", Toast.LENGTH_SHORT)
         //toast.show()
-        Snackbar.make(view, "Complete todos los campos", Snackbar.LENGTH_LONG)
-            .show();
-    }
-
-    fun registroExitoso(){
-        //TODO
-    }
-
-    fun registroFallido(view: View){
-        Snackbar.make(view, "Se perdio conexion con el servidor", Snackbar.LENGTH_LONG)
-            .show();
+        if (mensajeError.isNotBlank()) {
+            Snackbar.make(view, mensajeError, Snackbar.LENGTH_LONG).show();
+        }
     }
 
     override fun onDestroyView() {
