@@ -162,5 +162,9 @@
         android:id="@+id/mainFragment"
         android:name="com.example.missingpets.MainFragment"
         android:label="fragment_main"
-        tools:layout="@layout/fragment_main" />
+        tools:layout="@layout/fragment_main" >
+        <action
+            android:id="@+id/action_mainFragment_to_missingFragment"
+            app:destination="@id/missingFragment" />
+    </fragment>
 </navigation>
