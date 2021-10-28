@@ -15,6 +15,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.Toast
+import androidx.navigation.fragment.findNavController
 import com.example.missingpets.databinding.FragmentLogin2Binding
 
 import com.example.missingpets.R
@@ -28,11 +29,7 @@ class LoginFragment2 : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         _binding = FragmentLogin2Binding.inflate(inflater, container, false)
         return binding.root
@@ -41,6 +38,12 @@ class LoginFragment2 : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding.tvRegistrate.setOnClickListener {
+            val action = R.id.action_loginFragment2_to_registerFragment
+            findNavController().navigate(action)
+        }
+
         loginViewModel = ViewModelProvider(this, LoginViewModelFactory())
             .get(LoginViewModel::class.java)
 
