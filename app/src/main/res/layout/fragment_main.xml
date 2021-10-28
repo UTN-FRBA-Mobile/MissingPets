@@ -43,5 +43,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/main_fragment_settings"/>
+    <Button
+        android:id="@+id/btn_about_as"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/main_fragment_about_as"/>
 
 </androidx.appcompat.widget.LinearLayoutCompat>

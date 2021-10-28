@@ -10,6 +10,7 @@
     <string name="main_fragment_upload_missing_pets">Publicar mascota perdida.</string>
     <string name="main_fragment_login">Logearme.</string>
     <string name="main_fragment_settings">Configuraciones.</string>
+    <string name="main_fragment_about_as">¿Quienes somos?</string>
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Contraseña</string>

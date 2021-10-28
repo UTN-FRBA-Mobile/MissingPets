@@ -67,9 +67,6 @@
         <action
             android:id="@+id/action_newPostFragment_to_foundFragment"
             app:destination="@id/foundFragment" />
-        <action
-            android:id="@+id/action_newPostFragment_to_missingFragment"
-            app:destination="@id/missingFragment" />
     </fragment>
     <fragment
         android:id="@+id/filterFragment"
@@ -166,5 +163,14 @@
         <action
             android:id="@+id/action_mainFragment_to_missingFragment"
             app:destination="@id/missingFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_loginFragment2"
+            app:destination="@id/loginFragment2" />
+        <action
+            android:id="@+id/action_mainFragment_to_configurationFragment"
+            app:destination="@id/configurationFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_aboutUsFragment"
+            app:destination="@id/aboutUsFragment" />
     </fragment>
 </navigation>
