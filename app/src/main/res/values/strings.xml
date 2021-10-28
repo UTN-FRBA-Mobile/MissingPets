@@ -2,6 +2,14 @@
     <string name="app_name">Missing Pets</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!-- MainFragment -->
+    <string name="main_fragment_welcome">Gracias por elegir MissingPets, en que podemos ayudarte.</string>
+    <string name="main_fragment_missing_pets">Ver mascotas perdidas.</string>
+    <string name="main_fragment_pets_for_adoption">Ver mascotas en adopcion.</string>
+    <string name="main_fragment_upload_pet_for_adoption">Poner mascota en adopcion.</string>
+    <string name="main_fragment_upload_missing_pets">Publicar mascota perdida.</string>
+    <string name="main_fragment_login">Logearme.</string>
+    <string name="main_fragment_settings">Configuraciones.</string>
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Contraseña</string>
