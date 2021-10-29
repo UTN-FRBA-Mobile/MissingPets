@@ -58,6 +58,10 @@ class MainFragment : Fragment() {
         binding.btnLogin.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_mainFragment_to_loginFragment2, null))
         binding.btnSettings.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_mainFragment_to_configurationFragment, null))
         binding.btnAboutAs.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_mainFragment_to_aboutUsFragment, null))
+        binding.btnPetsForAdoption.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_mainFragment_to_adoptableFragment, null))
+        binding.btnUploadMissingPets.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_mainFragment_to_postMissingFragment, null))
+        binding.btnUploadPetForAdoption.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_mainFragment_to_postAdoptionFragment, null))
+
     }
 
     companion object {

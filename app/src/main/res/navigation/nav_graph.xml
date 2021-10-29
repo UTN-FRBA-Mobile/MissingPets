@@ -12,31 +12,10 @@
         tools:layout="@layout/fragment_register" >
         <action
             android:id="@+id/action_registerFragment_to_missingFragment2"
-            app:destination="@id/missingFragment" />
+            app:destination="@id/navigation2" />
         <action
             android:id="@+id/action_registerFragment_to_loginFragment2"
             app:destination="@id/loginFragment2" />
-    </fragment>
-    <fragment
-        android:id="@+id/missingFragment"
-        android:name="com.example.missingpets.MissingFragment"
-        android:label="fragment_missing"
-        tools:layout="@layout/fragment_missing" >
-        <action
-            android:id="@+id/action_missingFragment_to_foundFragment2"
-            app:destination="@id/foundFragment" />
-        <action
-            android:id="@+id/action_missingFragment_to_newPostFragment"
-            app:destination="@id/newPostFragment" />
-        <action
-            android:id="@+id/action_missingFragment_to_filterFragment"
-            app:destination="@id/filterFragment" />
-        <action
-            android:id="@+id/action_missingFragment_to_detailFragment"
-            app:destination="@id/detailFragment" />
-        <action
-            android:id="@+id/action_missingFragment_to_profileFragment"
-            app:destination="@id/profileFragment" />
     </fragment>
     <fragment
         android:id="@+id/foundFragment"
@@ -45,7 +24,7 @@
         tools:layout="@layout/fragment_found" >
         <action
             android:id="@+id/action_foundFragment_to_missingFragment2"
-            app:destination="@id/missingFragment" />
+            app:destination="@id/navigation2" />
         <action
             android:id="@+id/action_foundFragment_to_newPostFragment"
             app:destination="@id/newPostFragment" />
@@ -75,7 +54,7 @@
         tools:layout="@layout/fragment_filter" >
         <action
             android:id="@+id/action_filterFragment_to_missingFragment"
-            app:destination="@id/missingFragment" />
+            app:destination="@id/navigation2" />
         <action
             android:id="@+id/action_filterFragment_to_foundFragment"
             app:destination="@id/foundFragment" />
@@ -87,7 +66,7 @@
         tools:layout="@layout/fragment_detail" >
         <action
             android:id="@+id/action_detailFragment_to_missingFragment"
-            app:destination="@id/missingFragment" />
+            app:destination="@id/navigation2" />
         <action
             android:id="@+id/action_detailFragment_to_foundFragment"
             app:destination="@id/foundFragment" />
@@ -99,7 +78,7 @@
         tools:layout="@layout/fragment_profile" >
         <action
             android:id="@+id/action_profileFragment_to_missingFragment"
-            app:destination="@id/missingFragment" />
+            app:destination="@id/navigation2" />
         <action
             android:id="@+id/action_profileFragment_to_foundFragment"
             app:destination="@id/foundFragment" />
@@ -153,7 +132,7 @@
             app:destination="@id/registerFragment" />
         <action
             android:id="@+id/action_loginFragment2_to_missingFragment"
-            app:destination="@id/missingFragment" />
+            app:destination="@id/navigation2" />
     </fragment>
     <fragment
         android:id="@+id/mainFragment"
@@ -162,7 +141,7 @@
         tools:layout="@layout/fragment_main" >
         <action
             android:id="@+id/action_mainFragment_to_missingFragment"
-            app:destination="@id/missingFragment" />
+            app:destination="@id/navigation2" />
         <action
             android:id="@+id/action_mainFragment_to_loginFragment2"
             app:destination="@id/loginFragment2" />
@@ -172,5 +151,57 @@
         <action
             android:id="@+id/action_mainFragment_to_aboutUsFragment"
             app:destination="@id/aboutUsFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_adoptableFragment"
+            app:destination="@id/adoptableFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_postAdoptionFragment"
+            app:destination="@id/postAdoptionFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_postMissingFragment"
+            app:destination="@id/postMissingFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/adoptableFragment"
+        android:name="com.example.missingpets.AdoptableFragment"
+        android:label="fragment_adoptable"
+        tools:layout="@layout/fragment_adoptable" />
+    <navigation android:id="@+id/navigation2"
+        app:startDestination="@id/navigation">
+        <navigation
+            android:id="@+id/navigation"
+            app:startDestination="@id/missingFragment">
+            <fragment
+                android:id="@+id/missingFragment"
+                android:name="com.example.missingpets.MissingFragment"
+                android:label="fragment_missing"
+                tools:layout="@layout/fragment_missing">
+                <action
+                    android:id="@+id/action_missingFragment_to_foundFragment2"
+                    app:destination="@id/foundFragment" />
+                <action
+                    android:id="@+id/action_missingFragment_to_newPostFragment"
+                    app:destination="@id/newPostFragment" />
+                <action
+                    android:id="@+id/action_missingFragment_to_filterFragment"
+                    app:destination="@id/filterFragment" />
+                <action
+                    android:id="@+id/action_missingFragment_to_detailFragment"
+                    app:destination="@id/detailFragment" />
+                <action
+                    android:id="@+id/action_missingFragment_to_profileFragment"
+                    app:destination="@id/profileFragment" />
+            </fragment>
+        </navigation>
+    </navigation>
+    <fragment
+        android:id="@+id/postAdoptionFragment"
+        android:name="com.example.missingpets.PostAdoptionFragment"
+        android:label="fragment_post_adoption"
+        tools:layout="@layout/fragment_post_adoption" />
+    <fragment
+        android:id="@+id/postMissingFragment"
+        android:name="com.example.missingpets.PostMissingFragment"
+        android:label="fragment_post_missing"
+        tools:layout="@layout/fragment_post_missing" />
 </navigation>

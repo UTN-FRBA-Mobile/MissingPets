@@ -59,12 +59,17 @@ class MissingFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val myDataset = MissingDatasource().loadMissingPets() //Datos hardcodeados
+        val textView = myDataset.size.toString()
+
         recyclerView = binding.recyclerViewMissingPets
         recyclerView.adapter = MissingAdapter(requireContext(), myDataset,MissingAdapter.OnClickListener { photo ->
             Toast.makeText(requireContext(), "click", Toast.LENGTH_SHORT).show() })
         recyclerView.layoutManager= LinearLayoutManager(requireContext())
         recyclerView.setHasFixedSize(true)
         Log.d("MISSING", "onViewCreated")
+        Log.d("MISSING", textView)
+        Log.d("MISSING", "RV.adapter "+recyclerView.adapter.toString())
+
     }
 
     companion object {
