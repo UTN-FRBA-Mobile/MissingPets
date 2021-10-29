@@ -5,6 +5,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
+import com.example.missingpets.databinding.FragmentAdoptableBinding
+import com.example.missingpets.databinding.FragmentMissingBinding
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -21,6 +24,10 @@ class AdoptableFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
+    private lateinit var recyclerView: RecyclerView
+    private var _binding: FragmentAdoptableBinding? = null
+    private val binding get() = _binding!!
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -34,7 +41,18 @@ class AdoptableFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_adoptable, container, false)
+        _binding = FragmentAdoptableBinding.inflate(inflater, container, false)
+
+        return binding.root
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
     }
 
     companion object {
