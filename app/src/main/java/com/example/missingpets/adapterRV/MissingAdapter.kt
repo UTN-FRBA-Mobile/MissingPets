@@ -1,6 +1,5 @@
 package com.example.missingpets.adapterRV
 
-import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -14,7 +13,7 @@ import com.example.missingpets.modelRV.Buscado
 class MissingAdapter (private val dataset: List<Buscado>, private val onClickListener: OnClickListener)
     : RecyclerView.Adapter<MissingAdapter.MissingViewHolder>() {
 
-    class MissingViewHolder (private val view: View) : RecyclerView.ViewHolder(view) {
+    class MissingViewHolder (val view: View) : RecyclerView.ViewHolder(view) {
 
         val textView: TextView = view.findViewById(R.id.item_title)
         val imageView: ImageView = view.findViewById(R.id.item_image)
@@ -24,7 +23,7 @@ class MissingAdapter (private val dataset: List<Buscado>, private val onClickLis
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): MissingAdapter.MissingViewHolder {
+    ): MissingViewHolder {
 
         val adapterLayout = LayoutInflater.from(parent.context)
             .inflate(R.layout.vh_list_buscado, parent, false)
@@ -32,7 +31,7 @@ class MissingAdapter (private val dataset: List<Buscado>, private val onClickLis
         return MissingViewHolder(adapterLayout)
     }
 
-    override fun onBindViewHolder(holder: MissingAdapter.MissingViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: MissingViewHolder, position: Int) {
         val item = dataset[position]
 
         holder.textView.text = item.string
