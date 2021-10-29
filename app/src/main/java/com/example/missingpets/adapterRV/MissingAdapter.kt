@@ -11,10 +11,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.missingpets.R
 import com.example.missingpets.modelRV.Buscado
 
-class MissingAdapter (private val context: Context, private val dataset: List<Buscado>, private val onClickListener: OnClickListener)
+class MissingAdapter (private val dataset: List<Buscado>, private val onClickListener: OnClickListener)
     : RecyclerView.Adapter<MissingAdapter.MissingViewHolder>() {
 
     class MissingViewHolder (private val view: View) : RecyclerView.ViewHolder(view) {
+
         val textView: TextView = view.findViewById(R.id.item_title)
         val imageView: ImageView = view.findViewById(R.id.item_image)
 
@@ -24,15 +25,16 @@ class MissingAdapter (private val context: Context, private val dataset: List<Bu
         parent: ViewGroup,
         viewType: Int
     ): MissingAdapter.MissingViewHolder {
+
         val adapterLayout = LayoutInflater.from(parent.context)
             .inflate(R.layout.vh_list_buscado, parent, false)
         Log.d("RV", "onCreateViewHolder")
-
         return MissingViewHolder(adapterLayout)
     }
 
     override fun onBindViewHolder(holder: MissingAdapter.MissingViewHolder, position: Int) {
         val item = dataset[position]
+
         holder.textView.text = item.string
         holder.imageView.setImageResource(item.imageResourceId)
         Log.d("RV", "onBindViewHolder")
