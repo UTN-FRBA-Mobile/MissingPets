@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginLeft="4sp"
     tools:context=".RegisterFragment">
 
     <ScrollView
@@ -38,7 +39,8 @@
                 android:hint="@string/username"
                 android:imeActionLabel="@string/action_sign_in_short"
                 android:minHeight="48dp"
-                android:selectAllOnFocus="true" />
+                android:selectAllOnFocus="true"
+                android:singleLine="true" />
 
             <EditText
                 android:id="@+id/et_email_usuario_nuevo"
@@ -98,6 +100,7 @@
                     android:id="@+id/tv_iniciar_sesion"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="5sp"
                     android:layout_weight="1"
                     android:text="@string/log_in"
                     android:textColor="#0277BD" />

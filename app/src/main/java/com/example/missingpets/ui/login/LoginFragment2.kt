@@ -15,24 +15,19 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.Toast
+import androidx.navigation.fragment.findNavController
 import com.example.missingpets.databinding.FragmentLogin2Binding
 
 import com.example.missingpets.R
+import com.google.android.material.snackbar.Snackbar
 
 class LoginFragment2 : Fragment() {
 
     private lateinit var loginViewModel: LoginViewModel
     private var _binding: FragmentLogin2Binding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         _binding = FragmentLogin2Binding.inflate(inflater, container, false)
         return binding.root
@@ -41,87 +36,44 @@ class LoginFragment2 : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        loginViewModel = ViewModelProvider(this, LoginViewModelFactory())
-            .get(LoginViewModel::class.java)
 
-        val usernameEditText = binding.username
-        val passwordEditText = binding.password
+        loginViewModel = LoginViewModel()
         val loginButton = binding.login
-        val loadingProgressBar = binding.loading
 
-        loginViewModel.loginFormState.observe(viewLifecycleOwner,
-            Observer { loginFormState ->
-                if (loginFormState == null) {
-                    return@Observer
-                }
-                loginButton.isEnabled = loginFormState.isDataValid
-                loginFormState.usernameError?.let {
-                    usernameEditText.error = getString(it)
-                }
-                loginFormState.passwordError?.let {
-                    passwordEditText.error = getString(it)
-                }
-            })
-
-        loginViewModel.loginResult.observe(viewLifecycleOwner,
-            Observer { loginResult ->
-                loginResult ?: return@Observer
-                loadingProgressBar.visibility = View.GONE
-                loginResult.error?.let {
-                    showLoginFailed(it)
-                }
-                loginResult.success?.let {
-                    updateUiWithUser(it)
-                }
-            })
-
-        val afterTextChangedListener = object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
-                // ignore
+        loginViewModel.resultadoLogin.observe(viewLifecycleOwner, Observer{ resultadoLogin ->
+            if(resultadoLogin.exitoso != null){
+                //Registro exitoso, se dirige a otra pantalla
             }
-
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                // ignore
+            else{
+                loginFallido(view, resultadoLogin.error.orEmpty())
             }
-
-            override fun afterTextChanged(s: Editable) {
-                loginViewModel.loginDataChanged(
-                    usernameEditText.text.toString(),
-                    passwordEditText.text.toString()
-                )
-            }
-        }
-        usernameEditText.addTextChangedListener(afterTextChangedListener)
-        passwordEditText.addTextChangedListener(afterTextChangedListener)
-        passwordEditText.setOnEditorActionListener { _, actionId, _ ->
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
-                loginViewModel.login(
-                    usernameEditText.text.toString(),
-                    passwordEditText.text.toString()
-                )
-            }
-            false
-        }
+        })
 
         loginButton.setOnClickListener {
-            loadingProgressBar.visibility = View.VISIBLE
-            loginViewModel.login(
-                usernameEditText.text.toString(),
-                passwordEditText.text.toString()
-            )
+            val usernameOrEmail = getUsernameOrEmail()
+            val contrasenia = getContrasenia()
+            loginViewModel.loguear(usernameOrEmail, contrasenia)
         }
+
+        binding.tvRegistrate.setOnClickListener {
+            val action = R.id.action_loginFragment2_to_registerFragment
+            findNavController().navigate(action)
+        }
+
     }
 
-    private fun updateUiWithUser(model: LoggedInUserView) {
-        val welcome = getString(R.string.welcome) + model.displayName
-        // TODO : initiate successful logged in experience
-        val appContext = context?.applicationContext ?: return
-        Toast.makeText(appContext, welcome, Toast.LENGTH_LONG).show()
+    fun getUsernameOrEmail(): String?{
+        return binding.username.text.toString()
     }
 
-    private fun showLoginFailed(@StringRes errorString: Int) {
-        val appContext = context?.applicationContext ?: return
-        Toast.makeText(appContext, errorString, Toast.LENGTH_LONG).show()
+    fun getContrasenia(): String?{
+        return binding.password.text.toString()
+    }
+
+    fun loginFallido(view: View, mensajeError: String){
+        if (mensajeError.isNotBlank()) {
+            Snackbar.make(view, mensajeError, Snackbar.LENGTH_LONG).show();
+        }
     }
 
     override fun onDestroyView() {
