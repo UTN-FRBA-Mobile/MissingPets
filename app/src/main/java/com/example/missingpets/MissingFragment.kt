@@ -43,11 +43,11 @@ class MissingFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         _binding = FragmentMissingBinding.inflate(inflater, container, false)
-        val view = binding.root
-        return view
+
+        return binding.root
     }
 
     override fun onDestroy() {
@@ -62,7 +62,7 @@ class MissingFragment : Fragment() {
         val textView = myDataset.size.toString()
 
         recyclerView = binding.recyclerViewMissingPets
-        recyclerView.adapter = MissingAdapter(myDataset,MissingAdapter.OnClickListener { photo ->
+        recyclerView.adapter = MissingAdapter(myDataset,MissingAdapter.OnClickListener {
             Toast.makeText(requireContext(), "click", Toast.LENGTH_SHORT).show() })
         recyclerView.layoutManager= LinearLayoutManager(requireContext())
         recyclerView.setHasFixedSize(true)
