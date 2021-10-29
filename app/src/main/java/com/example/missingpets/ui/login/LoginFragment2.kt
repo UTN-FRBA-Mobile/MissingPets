@@ -19,6 +19,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.missingpets.databinding.FragmentLogin2Binding
 
 import com.example.missingpets.R
+import com.google.android.material.snackbar.Snackbar
 
 class LoginFragment2 : Fragment() {
 
@@ -37,22 +38,43 @@ class LoginFragment2 : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         loginViewModel = LoginViewModel()
+        val loginButton = binding.login
+
+        loginViewModel.resultadoLogin.observe(viewLifecycleOwner, Observer{ resultadoLogin ->
+            if(resultadoLogin.exitoso != null){
+                //Registro exitoso, se dirige a otra pantalla
+            }
+            else{
+                loginFallido(view, resultadoLogin.error.orEmpty())
+            }
+        })
+
+        loginButton.setOnClickListener {
+            val usernameOrEmail = getUsernameOrEmail()
+            val contrasenia = getContrasenia()
+            loginViewModel.loguear(usernameOrEmail, contrasenia)
+        }
 
         binding.tvRegistrate.setOnClickListener {
             val action = R.id.action_loginFragment2_to_registerFragment
             findNavController().navigate(action)
         }
 
-        val usernameEditText = binding.username
-        val passwordEditText = binding.password
-        val loginButton = binding.login
-
-
-        loginButton.setOnClickListener {
-
-        }
     }
 
+    fun getUsernameOrEmail(): String?{
+        return binding.username.text.toString()
+    }
+
+    fun getContrasenia(): String?{
+        return binding.password.text.toString()
+    }
+
+    fun loginFallido(view: View, mensajeError: String){
+        if (mensajeError.isNotBlank()) {
+            Snackbar.make(view, mensajeError, Snackbar.LENGTH_LONG).show();
+        }
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()

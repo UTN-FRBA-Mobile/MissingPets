@@ -7,17 +7,21 @@ object RepositorioUsuario {
     var usuarioLogueado: Usuario? = null
 
     fun registrar(unUsuario: Usuario): ResultadoRegistroUsuario{
-        //TODO
+        //TODO, llamar a un service que le pegue al backend con Retrofit
         val error: String? = null
+
+        val respuestaUsuario: Usuario = Usuario()
         usuarioLogueado = unUsuario.copy()
-        return ResultadoRegistroUsuario(unUsuario, error)
+        return ResultadoRegistroUsuario(respuestaUsuario, error)
     }
 
-    fun loguar(unUsuario: Usuario): ResultadoRegistroUsuario{
-        //TODO
+    fun loguar(unUsuario: Usuario): ResultadoLoginUsuario{
+        //TODO, llamar a un service que le pegue al backend con Retrofit
         val error: String? = null
-        usuarioLogueado = unUsuario.copy()
-        return ResultadoRegistroUsuario(unUsuario, error)
+
+        val respuestaUsuario: Usuario = unUsuario.copy()
+        usuarioLogueado = respuestaUsuario.copy()
+        return ResultadoLoginUsuario(respuestaUsuario, error)
     }
 
     fun estasLogueado(): Boolean {
