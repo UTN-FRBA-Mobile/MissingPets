@@ -1,7 +1,10 @@
 package com.example.missingpets
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import androidx.fragment.app.Fragment
 import com.example.missingpets.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -40,5 +43,23 @@ class MainActivity : AppCompatActivity() {
             replace(R.id.fragment, fragment)
             commit()
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_main, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val configurationFragment = ConfigurationFragment()
+        val aboutUsFragment = AboutUsFragment()
+
+        when (item.itemId) {
+
+            R.id.action_settings -> replaceFragment(configurationFragment)
+            R.id.action_about -> replaceFragment(aboutUsFragment)
+        }
+
+        return super.onOptionsItemSelected(item)
     }
 }
