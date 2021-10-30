@@ -42,15 +42,41 @@ class DetailFragment : Fragment() {
 
         detailViewModel = DetailViewModel(nombreAnimal, tipoAnimal, sexoAnimal, fechaPerdido)
 
+        completarLabels(nombreAnimal, tipoAnimal, sexoAnimal, fechaPerdido)
+
+    }
+
+    fun completarLabelNombreAnimal(nombreAnimal: String){
+        binding.tvNombre.text = nombreAnimal
+    }
+
+    fun completarLabelTipoAnimal(tipoAnimal: String){
+        binding.tvTipoAnimal.text = tipoAnimal
+    }
+
+    fun completarLabelSexoAnimal(sexoAnimal: String){
+        binding.tvSexoAnimal.text = sexoAnimal
+    }
+
+    fun completarLabelFechaPerdidoAnimal(fechaPerdido: String){
+        binding.tvFechaPerdido.text = fechaPerdido
+    }
+
+    fun completarLabels(nombreMascota: String, tipoAnimal: String, sexoAnimal: String, fechaPerdido: String){
+        completarLabelNombreAnimal(nombreMascota)
+        completarLabelTipoAnimal(tipoAnimal)
+        completarLabelSexoAnimal(sexoAnimal)
+        completarLabelFechaPerdidoAnimal(fechaPerdido)
     }
 
     fun getArgumentoNombreAnimal(): String{
         return "pelusa"
     }
+
     fun getArgumentoTipoAnimal(): String{
         return "gato"
     }
-
+    
     fun getArgumentoSexoAnimal(): String{
         return "masculino"
     }
