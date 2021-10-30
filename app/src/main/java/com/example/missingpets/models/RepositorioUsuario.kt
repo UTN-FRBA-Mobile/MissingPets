@@ -1,5 +1,9 @@
 package com.example.missingpets.models
 
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.NavHostFragment.findNavController
+import androidx.navigation.fragment.findNavController
+import com.example.missingpets.R
 import java.util.*
 
 object RepositorioUsuario {
@@ -26,5 +30,9 @@ object RepositorioUsuario {
 
     fun estasLogueado(): Boolean {
         return usuarioLogueado != null
+    }
+
+    fun noEstasLogueado(): Boolean{
+        return !this.estasLogueado()
     }
 }
