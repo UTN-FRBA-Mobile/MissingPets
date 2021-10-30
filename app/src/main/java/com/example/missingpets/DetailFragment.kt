@@ -6,9 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import com.example.missingpets.databinding.FragmentDetailBinding
 import com.example.missingpets.databinding.FragmentRegisterBinding
+import com.example.missingpets.models.RepositorioUsuario
 import com.example.missingpets.viewModels.DetailViewModel
 import com.example.missingpets.viewModels.RegisterViewModel
 import java.util.*
@@ -18,6 +20,7 @@ class DetailFragment : Fragment() {
     private lateinit var detailViewModel: DetailViewModel
     private var _binding: FragmentDetailBinding? = null
     private val binding get() = _binding!!
+    val repositorioUsuario = RepositorioUsuario
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,6 +47,16 @@ class DetailFragment : Fragment() {
 
         completarLabels(nombreAnimal, tipoAnimal, sexoAnimal, fechaPerdido)
 
+        binding.btnContactar.setOnClickListener {
+            if (repositorioUsuario.noEstasLogueado()){
+                this.irAlLoguin()
+            }
+        }
+    }
+
+    fun irAlLoguin(){
+        val action = R.id.action_detailFragment_to_loginFragment2
+        findNavController().navigate(action)
     }
 
     fun completarLabelNombreAnimal(nombreAnimal: String){
@@ -76,7 +89,7 @@ class DetailFragment : Fragment() {
     fun getArgumentoTipoAnimal(): String{
         return "gato"
     }
-    
+
     fun getArgumentoSexoAnimal(): String{
         return "masculino"
     }

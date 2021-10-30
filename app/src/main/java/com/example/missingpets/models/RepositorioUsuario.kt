@@ -28,15 +28,11 @@ object RepositorioUsuario {
         return ResultadoLoginUsuario(respuestaUsuario, error)
     }
 
-    fun siNoEstasLogueadoEnviarAlLoguin(fragment: Fragment){
-        //cuando lo llames de un fragment, el parametro a pasar va a ser "this"
-        if (!this.estasLogueado()){
-            val action = R.id.action_registerFragment_to_loginFragment2
-            findNavController(fragment).navigate(action)
-        }
-    }
-
     fun estasLogueado(): Boolean {
         return usuarioLogueado != null
+    }
+
+    fun noEstasLogueado(): Boolean{
+        return !this.estasLogueado()
     }
 }
