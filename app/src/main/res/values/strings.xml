@@ -9,7 +9,23 @@
     <string name="main_fragment_upload_pet_for_adoption">Poner mascota en adopcion.</string>
     <string name="main_fragment_upload_missing_pets">Publicar mascota perdida.</string>
     <string name="main_fragment_login">Logearme.</string>
+
     <string name="main_fragment_settings">Configuraciones.</string>
+    <string name="preferences_ui_title">Interfaz</string>
+    <string name="preferences_ui_img_size">Tamaño de la imágen</string>
+    <string name="preferences_key_ui_img_size">pref_ui_img_size</string>
+    <string name="preferences_img_size_small">Chica</string>
+    <string name="preferences_img_size_medium">Mediana</string>
+    <string name="preferences_img_size_large">Grande</string>
+    <string name="preferences_key_img_size_small">pref_small</string>
+    <string name="preferences_key_img_size_medium">pref_medium</string>
+    <string name="preferences_key_img_size_large">pref_large</string>
+
+    <string name="preferences_data_title">Datos</string>
+    <string name="preferences_delete_data">Eliminar datos del usuario</string>
+    <string name="preferences_key_delete_data">pref_delete_data</string>
+    <string name="preferences_restore_data">Restaurar datos y configuraciones</string>
+    <string name="preferences_key_restore_data">preferences_key_restore_data</string>
     <string name="main_fragment_about_as">¿Quienes somos?</string>
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>

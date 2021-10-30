@@ -1,6 +1,7 @@
 package com.example.missingpets
 
 import android.content.Intent
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
@@ -13,6 +14,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var bottomNavigationView: BottomNavigationView
+    private lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,6 +38,12 @@ class MainActivity : AppCompatActivity() {
             true
         }
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+      //  refreshSettingsPreferences()
     }
 
     private fun replaceFragment(fragment: Fragment) {
@@ -62,4 +70,25 @@ class MainActivity : AppCompatActivity() {
 
         return super.onOptionsItemSelected(item)
     }
+
+    // desactivado falta inicializar para que no cuelgue el inicio //
+    private fun refreshSettingsPreferences() {
+
+        val imgSize = sharedPreferences.getString( getString(R.string.preferences_key_ui_img_size),"")
+        val sizeValue = when(imgSize){
+            getString(R.string.preferences_key_img_size_small) -> {
+                resources.getDimensionPixelSize(R.dimen.profile_image_size_small)
+            }
+            getString(R.string.preferences_key_img_size_medium) -> {
+                resources.getDimensionPixelSize(R.dimen.profile_image_size_medium)
+            }
+            else -> resources.getDimensionPixelSize(R.dimen.profile_image_size_large)
+        }
+        /* aca asigno las medidas a la imagen . Falta ver a que imagen ?
+        binding.item_image.updateLayoutParams {
+            width = sizeValue
+            height = sizeValue
+        } */
+    }
+
 }
