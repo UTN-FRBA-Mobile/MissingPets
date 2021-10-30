@@ -47,19 +47,16 @@ class DetailFragment : Fragment() {
     fun getArgumentoNombreAnimal(): String{
         return "pelusa"
     }
-    
     fun getArgumentoTipoAnimal(): String{
         return "gato"
     }
-
 
     fun getArgumentoSexoAnimal(): String{
         return "masculino"
     }
 
-
-    fun getArgumentoFechaPerdido(): Date{
-        return Date()
+    fun getArgumentoFechaPerdido(): String{
+        return "30/10/2021"
     }
 
 }
