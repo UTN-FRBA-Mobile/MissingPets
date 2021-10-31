@@ -3,7 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
+
     app:startDestination="@id/mainFragment">
+
 
     <fragment
         android:id="@+id/registerFragment"
@@ -70,6 +72,9 @@
         <action
             android:id="@+id/action_detailFragment_to_foundFragment"
             app:destination="@id/foundFragment" />
+        <action
+            android:id="@+id/action_detailFragment_to_loginFragment2"
+            app:destination="@id/loginFragment2" />
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
@@ -126,7 +131,7 @@
         android:id="@+id/loginFragment2"
         android:name="com.example.missingpets.ui.login.LoginFragment2"
         android:label="fragment_login"
-        tools:layout="@layout/fragment_login2" >
+        tools:layout="@layout/fragment_login2">
         <action
             android:id="@+id/action_loginFragment2_to_registerFragment"
             app:destination="@id/registerFragment" />
