@@ -69,7 +69,7 @@ class PostMissingFragment : Fragment() {
     }
 
     // Abrir la cámara o subir desde la galeria
-    fun abrirCamara(view: View){
+    private fun abrirCamara(view: View){
         try{
             val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
             if (activity?.let { intent.resolveActivity(it.packageManager) } != null){
