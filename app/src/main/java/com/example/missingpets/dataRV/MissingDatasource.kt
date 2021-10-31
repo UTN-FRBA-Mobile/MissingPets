@@ -3,9 +3,9 @@ package com.example.missingpets.dataRV
 import com.example.missingpets.R
 import com.example.missingpets.modelRV.Buscado
 
-class BuscadosDatasource {
-    fun loadBuscados(): List<Buscado> {
-        return listOf<Buscado>(
+class MissingDatasource {
+    fun loadMissingPets(): List<Buscado> {
+        return listOf(
             Buscado("Hola, me perdi ayer a las 18:00 cerca de la plaza.", R.drawable.image1),
             Buscado("Se busca, recompensa $$$", R.drawable.image2),
             Buscado("Ayudaaaaa", R.drawable.image3),

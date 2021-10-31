@@ -1,7 +1,6 @@
 package com.example.missingpets.modelRV
 
-data class Buscado (val message : String,
-                    val imageResourceId: Int)
-{
+import androidx.annotation.DrawableRes
 
-}
+data class Buscado (val string : String,
+                    @DrawableRes val imageResourceId: Int)

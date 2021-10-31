@@ -5,55 +5,119 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
+import com.example.missingpets.databinding.FragmentDetailBinding
+import com.example.missingpets.databinding.FragmentRegisterBinding
+import com.example.missingpets.models.RepositorioUsuario
+import com.example.missingpets.viewModels.DetailViewModel
+import com.example.missingpets.viewModels.RegisterViewModel
+import java.util.*
+import android.content.Intent
+import android.net.Uri
+import com.google.android.material.snackbar.Snackbar
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [DetailFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class DetailFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+
+    private lateinit var detailViewModel: DetailViewModel
+    private var _binding: FragmentDetailBinding? = null
+    private val binding get() = _binding!!
+    val repositorioUsuario = RepositorioUsuario
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_detail, container, false)
+        _binding = FragmentDetailBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment DetailFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            DetailFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val nombreAnimal = getArgumentoNombreAnimal()
+        val tipoAnimal = getArgumentoTipoAnimal()
+        val sexoAnimal = getArgumentoSexoAnimal()
+        val fechaPerdido = getArgumentoFechaPerdido()
+
+        detailViewModel = DetailViewModel(nombreAnimal, tipoAnimal, sexoAnimal, fechaPerdido)
+
+        completarLabels(nombreAnimal, tipoAnimal, sexoAnimal, fechaPerdido)
+
+        binding.btnContactar.setOnClickListener {
+            if (repositorioUsuario.noEstasLogueado()){
+                this.irAlLoguin()
             }
+            else{
+                val numeroTelefono = detailViewModel.getNumeroTelefono()
+                abrirWhatsapp(view, numeroTelefono)
+            }
+        }
     }
+
+    fun irAlLoguin(){
+        val action = R.id.action_detailFragment_to_loginFragment2
+        findNavController().navigate(action)
+    }
+
+    //El numero de telefono debe ser completo en formato internacional sin parentesis, ni guiones
+    //ni nada, solo los numeros. Ejemplo: 5491169013434
+    fun abrirWhatsapp(view: View, numeroTelefono: String){
+        try{
+            val url = "https://wa.me/$numeroTelefono"
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.data = Uri.parse(url)
+            startActivity(intent)
+        }
+        catch(e: Exception){
+            Snackbar.make(view, "No tienes instalado Whatsapp", Snackbar.LENGTH_LONG).show();
+        }
+    }
+
+    fun completarLabelNombreAnimal(nombreAnimal: String){
+        binding.tvNombre.text = nombreAnimal
+    }
+
+    fun completarLabelTipoAnimal(tipoAnimal: String){
+        binding.tvTipoAnimal.text = tipoAnimal
+    }
+
+    fun completarLabelSexoAnimal(sexoAnimal: String){
+        binding.tvSexoAnimal.text = sexoAnimal
+    }
+
+    fun completarLabelFechaPerdidoAnimal(fechaPerdido: String){
+        binding.tvFechaPerdido.text = fechaPerdido
+    }
+
+    fun completarLabels(nombreMascota: String, tipoAnimal: String, sexoAnimal: String, fechaPerdido: String){
+        completarLabelNombreAnimal(nombreMascota)
+        completarLabelTipoAnimal(tipoAnimal)
+        completarLabelSexoAnimal(sexoAnimal)
+        completarLabelFechaPerdidoAnimal(fechaPerdido)
+    }
+
+    fun getArgumentoNombreAnimal(): String{
+        return "pelusa"
+    }
+
+    fun getArgumentoTipoAnimal(): String{
+        return "gato"
+    }
+
+    fun getArgumentoSexoAnimal(): String{
+        return "masculino"
+    }
+
+    fun getArgumentoFechaPerdido(): String{
+        return "30/10/2021"
+    }
+
 }

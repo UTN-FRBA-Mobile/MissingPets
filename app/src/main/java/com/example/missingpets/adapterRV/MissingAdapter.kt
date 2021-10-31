@@ -1,6 +1,6 @@
 package com.example.missingpets.adapterRV
 
-import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,27 +10,33 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.missingpets.R
 import com.example.missingpets.modelRV.Buscado
 
-class BuscadosAdapter (private val context: Context, private val dataset: List<Buscado>,private val onClickListener: OnClickListener)
-    : RecyclerView.Adapter<BuscadosAdapter.BuscadoViewHolder>() {
+class MissingAdapter (private val dataset: List<Buscado>, private val onClickListener: OnClickListener)
+    : RecyclerView.Adapter<MissingAdapter.MissingViewHolder>() {
 
-    class BuscadoViewHolder (private val view: View) : RecyclerView.ViewHolder(view) {
+    class MissingViewHolder (val view: View) : RecyclerView.ViewHolder(view) {
+
         val textView: TextView = view.findViewById(R.id.item_title)
         val imageView: ImageView = view.findViewById(R.id.item_image)
+
     }
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): BuscadosAdapter.BuscadoViewHolder {
+    ): MissingViewHolder {
+
         val adapterLayout = LayoutInflater.from(parent.context)
             .inflate(R.layout.vh_list_buscado, parent, false)
-        return BuscadoViewHolder(adapterLayout)
+        Log.d("RV", "onCreateViewHolder")
+        return MissingViewHolder(adapterLayout)
     }
 
-    override fun onBindViewHolder(holder: BuscadosAdapter.BuscadoViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: MissingViewHolder, position: Int) {
         val item = dataset[position]
-        holder.textView.text = item.message
+
+        holder.textView.text = item.string
         holder.imageView.setImageResource(item.imageResourceId)
+        Log.d("RV", "onBindViewHolder")
 
         holder.itemView.setOnClickListener {
             onClickListener.onClick(item)
@@ -38,10 +44,12 @@ class BuscadosAdapter (private val context: Context, private val dataset: List<B
     }
 
     override fun getItemCount(): Int {
+        Log.d("RV", "getItemCount")
         return dataset.size
+
     }
 
-    class OnClickListener(val clickListener: (meme: Buscado) -> Unit) {
-        fun onClick(meme: Buscado) = clickListener(meme)
+    class OnClickListener(val clickListener: (pet: Buscado) -> Unit) {
+        fun onClick(pet: Buscado) = clickListener(pet)
     }
 }

@@ -1,55 +1,41 @@
 package com.example.missingpets.ui.login
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import android.util.Patterns
-import com.example.missingpets.data.LoginRepository
-import com.example.missingpets.data.Result
+import com.example.missingpets.models.RepositorioUsuario
+import com.example.missingpets.models.ResultadoLoginUsuario
+import com.example.missingpets.models.Usuario
 
-import com.example.missingpets.R
+class LoginViewModel() : ViewModel() {
 
-class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel() {
+    var resultadoLogin = MutableLiveData<ResultadoLoginUsuario>()
+    val repositorioUsuario = RepositorioUsuario
 
-    private val _loginForm = MutableLiveData<LoginFormState>()
-    val loginFormState: LiveData<LoginFormState> = _loginForm
+    init{
+    }
 
-    private val _loginResult = MutableLiveData<LoginResult>()
-    val loginResult: LiveData<LoginResult> = _loginResult
-
-    fun login(username: String, password: String) {
-        // can be launched in a separate asynchronous job
-        val result = loginRepository.login(username, password)
-
-        if (result is Result.Success) {
-            _loginResult.value =
-                LoginResult(success = LoggedInUserView(displayName = result.data.displayName))
-        } else {
-            _loginResult.value = LoginResult(error = R.string.login_failed)
+    fun loguear(usernameOrEmail: String?, contrasenia: String?){
+        if(algunCampoEstaVacio(usernameOrEmail, contrasenia)){
+            resultadoLogin.value = ResultadoLoginUsuario(null, "Debe completar todos los campos")
+        }
+        else{
+            var usuario: Usuario = Usuario()
+            if (esUnEmail(usernameOrEmail.orEmpty())) {
+                usuario = Usuario(email = usernameOrEmail, contrasenia = contrasenia)
+            }
+            else{
+                usuario = Usuario(username = usernameOrEmail, contrasenia = contrasenia)
+            }
+            resultadoLogin.value = repositorioUsuario.loguar(usuario)
         }
     }
 
-    fun loginDataChanged(username: String, password: String) {
-        if (!isUserNameValid(username)) {
-            _loginForm.value = LoginFormState(usernameError = R.string.invalid_username)
-        } else if (!isPasswordValid(password)) {
-            _loginForm.value = LoginFormState(passwordError = R.string.invalid_password)
-        } else {
-            _loginForm.value = LoginFormState(isDataValid = true)
-        }
+    fun algunCampoEstaVacio(usernameOrEmail: String?, contrasenia: String?): Boolean{
+        return usernameOrEmail.isNullOrBlank()  || contrasenia.isNullOrBlank()
     }
 
-    // A placeholder username validation check
-    private fun isUserNameValid(username: String): Boolean {
-        return if (username.contains("@")) {
-            Patterns.EMAIL_ADDRESS.matcher(username).matches()
-        } else {
-            username.isNotBlank()
-        }
+    fun esUnEmail(unString: String): Boolean{
+        return unString.contains("@")
     }
 
-    // A placeholder password validation check
-    private fun isPasswordValid(password: String): Boolean {
-        return password.length > 5
-    }
 }
