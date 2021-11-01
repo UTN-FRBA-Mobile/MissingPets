@@ -143,8 +143,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
                 android:text="@string/contact_detail"
-                app:icon="@android:drawable/ic_dialog_email"
-                app:iconGravity="textEnd" />
+                android:textAlignment="center"
+                android:textStyle="bold"
+                app:icon="@drawable/ic_whatsapp"
+                app:iconGravity="textEnd"
+                app:iconPadding="8dp"
+                app:iconTint="@null" />
         </LinearLayout>
     </ScrollView>
 </FrameLayout>
