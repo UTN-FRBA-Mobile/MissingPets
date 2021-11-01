@@ -45,6 +45,7 @@ class MissingAdapter (private val dataset: List<MissingPet>, private val onClick
 
     override fun getItemCount(): Int {
         Log.d("RV", "getItemCount")
+        Log.d("RV", "getItemCount es: "+ dataset.size.toString())
         return dataset.size
 
     }
