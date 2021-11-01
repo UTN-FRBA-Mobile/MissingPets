@@ -8,9 +8,9 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.missingpets.R
-import com.example.missingpets.modelRV.Buscado
+import com.example.missingpets.modelRV.MissingPet
 
-class MissingAdapter (private val dataset: List<Buscado>, private val onClickListener: OnClickListener)
+class MissingAdapter (private val dataset: List<MissingPet>, private val onClickListener: OnClickListener)
     : RecyclerView.Adapter<MissingAdapter.MissingViewHolder>() {
 
     class MissingViewHolder (val view: View) : RecyclerView.ViewHolder(view) {
@@ -45,11 +45,12 @@ class MissingAdapter (private val dataset: List<Buscado>, private val onClickLis
 
     override fun getItemCount(): Int {
         Log.d("RV", "getItemCount")
+        Log.d("RV", "getItemCount es: "+ dataset.size.toString())
         return dataset.size
 
     }
 
-    class OnClickListener(val clickListener: (pet: Buscado) -> Unit) {
-        fun onClick(pet: Buscado) = clickListener(pet)
+    class OnClickListener(val clickListener: (pet: MissingPet) -> Unit) {
+        fun onClick(pet: MissingPet) = clickListener(pet)
     }
 }

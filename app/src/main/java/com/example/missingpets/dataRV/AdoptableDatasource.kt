@@ -1,4 +1,4 @@
 package com.example.missingpets.dataRV
 
-class EncontradosDatasource {
+class AdoptableDatasource {
 }

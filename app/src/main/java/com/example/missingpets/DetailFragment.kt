@@ -14,6 +14,10 @@ import com.example.missingpets.models.RepositorioUsuario
 import com.example.missingpets.viewModels.DetailViewModel
 import com.example.missingpets.viewModels.RegisterViewModel
 import java.util.*
+import android.content.Intent
+import android.net.Uri
+import com.google.android.material.snackbar.Snackbar
+
 
 class DetailFragment : Fragment() {
 
@@ -51,12 +55,30 @@ class DetailFragment : Fragment() {
             if (repositorioUsuario.noEstasLogueado()){
                 this.irAlLoguin()
             }
+            else{
+                val numeroTelefono = detailViewModel.getNumeroTelefono()
+                abrirWhatsapp(view, numeroTelefono)
+            }
         }
     }
 
     fun irAlLoguin(){
         val action = R.id.action_detailFragment_to_loginFragment2
         findNavController().navigate(action)
+    }
+
+    //El numero de telefono debe ser completo en formato internacional sin parentesis, ni guiones
+    //ni nada, solo los numeros. Ejemplo: 5491169013434
+    fun abrirWhatsapp(view: View, numeroTelefono: String){
+        try{
+            val url = "https://wa.me/$numeroTelefono"
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.data = Uri.parse(url)
+            startActivity(intent)
+        }
+        catch(e: Exception){
+            Snackbar.make(view, "No tienes instalado Whatsapp", Snackbar.LENGTH_LONG).show();
+        }
     }
 
     fun completarLabelNombreAnimal(nombreAnimal: String){

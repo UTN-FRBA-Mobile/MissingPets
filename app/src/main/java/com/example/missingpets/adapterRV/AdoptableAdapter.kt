@@ -1,4 +1,4 @@
 package com.example.missingpets.adapterRV
 
-class EncontradosAdapter {
+class AdoptableAdapter {
 }
