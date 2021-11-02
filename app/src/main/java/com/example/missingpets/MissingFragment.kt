@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.missingpets.adapterRV.MissingAdapter
@@ -63,13 +64,13 @@ class MissingFragment : Fragment() {
 
         recyclerView = binding.recyclerViewMissingPets
         recyclerView.adapter = MissingAdapter(myDataset,MissingAdapter.OnClickListener {
-            Toast.makeText(requireContext(), "click", Toast.LENGTH_SHORT).show() })
+            Toast.makeText(requireContext(), "click", Toast.LENGTH_SHORT).show()
+            findNavController().navigate(R.id.action_missingFragment_to_detailFragment)
+
+        })
         recyclerView.layoutManager= LinearLayoutManager(requireContext())
         recyclerView.setHasFixedSize(true)
-        Log.d("MISSING", "onViewCreated")
-        Log.d("MISSING", textView)
-        Log.d("MISSING", "RV.adapter "+recyclerView.adapter.toString())
-        Log.d("MISSING", "RV.context "+requireContext().toString())
+
 
     }
 

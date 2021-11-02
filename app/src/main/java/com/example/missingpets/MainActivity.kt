@@ -26,14 +26,14 @@ class MainActivity : AppCompatActivity() {
         val foundFragment = FoundFragment()
         val newPostFragment = NewPostFragment()
 
-        replaceFragment(missingFragment)
+        //Lo comento por que rompe el navigation -> replaceFragment(missingFragment)
 
         bottomNavigationView = findViewById(R.id.bottom_navigation)
         bottomNavigationView.setOnNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
-                R.id.id_missing -> replaceFragment(missingFragment)
-                R.id.id_found -> replaceFragment(foundFragment)
-                R.id.id_add_notification -> replaceFragment(newPostFragment)
+                //Lo comento por que rompe el navigation -> R.id.id_missing -> replaceFragment(missingFragment) Lo comento por que rompe el navigation
+                //Lo comento por que rompe el navigation -> R.id.id_found -> replaceFragment(foundFragment)
+                //Lo comento por que rompe el navigation -> R.id.id_add_notification -> replaceFragment(newPostFragment)
             }
             true
         }
