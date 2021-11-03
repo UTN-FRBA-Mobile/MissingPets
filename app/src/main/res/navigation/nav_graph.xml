@@ -165,9 +165,6 @@
         <action
             android:id="@+id/action_mainFragment_to_postMissingFragment"
             app:destination="@id/postMissingFragment" />
-        <action
-            android:id="@+id/action_mainFragment_to_missingFragment2"
-            app:destination="@id/missingFragment2" />
     </fragment>
     <fragment
         android:id="@+id/adoptableFragment"
@@ -222,16 +219,4 @@
         android:name="com.example.missingpets.PostMissingFragment"
         android:label="fragment_post_missing"
         tools:layout="@layout/fragment_post_missing" />
-    <fragment
-        android:id="@+id/missingFragment2"
-        android:name="com.example.missingpets.MissingFragment"
-        android:label="fragment_missing"
-        tools:layout="@layout/fragment_missing" >
-        <action
-            android:id="@+id/action_missingFragment2_to_detailFragment"
-            app:destination="@id/detailFragment" />
-        <action
-            android:id="@+id/action_missingFragment2_to_loginFragment2"
-            app:destination="@id/loginFragment2" />
-    </fragment>
 </navigation>
