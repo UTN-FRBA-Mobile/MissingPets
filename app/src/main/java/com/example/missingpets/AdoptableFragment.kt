@@ -5,7 +5,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.missingpets.adapterRV.MissingAdapter
+import com.example.missingpets.dataRV.MissingDatasource
 import com.example.missingpets.databinding.FragmentAdoptableBinding
 import com.example.missingpets.databinding.FragmentMissingBinding
 
@@ -53,6 +57,26 @@ class AdoptableFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val myDataset = MissingDatasource().loadMissingPets() //Datos hardcodeados
+
+
+        recyclerView = binding.recyclerViewAdoptablePets
+        recyclerView.adapter = MissingAdapter(myDataset, MissingAdapter.OnClickListener {
+
+            if (true){
+                findNavController().navigate(R.id.action_adoptableFragment_to_detailFragment)
+            } else {
+                findNavController().navigate(R.id.action_adoptableFragment_to_loginFragment2)
+            }
+
+
+        })
+        recyclerView.layoutManager= LinearLayoutManager(requireContext())
+        recyclerView.setHasFixedSize(true)
+
+
+
     }
 
     companion object {

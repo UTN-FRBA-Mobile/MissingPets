@@ -173,7 +173,14 @@
         android:id="@+id/adoptableFragment"
         android:name="com.example.missingpets.AdoptableFragment"
         android:label="fragment_adoptable"
-        tools:layout="@layout/fragment_adoptable" />
+        tools:layout="@layout/fragment_adoptable" >
+        <action
+            android:id="@+id/action_adoptableFragment_to_detailFragment"
+            app:destination="@id/detailFragment" />
+        <action
+            android:id="@+id/action_adoptableFragment_to_loginFragment2"
+            app:destination="@id/loginFragment2" />
+    </fragment>
     <navigation android:id="@+id/navigation2"
         app:startDestination="@id/navigation">
         <navigation
