@@ -64,8 +64,13 @@ class MissingFragment : Fragment() {
 
         recyclerView = binding.recyclerViewMissingPets
         recyclerView.adapter = MissingAdapter(myDataset,MissingAdapter.OnClickListener {
-            Toast.makeText(requireContext(), "click", Toast.LENGTH_SHORT).show()
-            findNavController().navigate(R.id.action_missingFragment_to_detailFragment)
+            //Toast.makeText(requireContext(), "click", Toast.LENGTH_SHORT).show()
+            if (true){
+                findNavController().navigate(R.id.action_missingFragment_to_detailFragment)
+            } else {
+                findNavController().navigate(R.id.action_missingFragment_to_loginFragment2)
+            }
+
 
         })
         recyclerView.layoutManager= LinearLayoutManager(requireContext())
