@@ -6,39 +6,47 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import androidx.annotation.NonNull
 import androidx.fragment.app.Fragment
+import androidx.navigation.Navigation
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment.findNavController
+import androidx.navigation.fragment.findNavController
+import androidx.preference.PreferenceManager
+// import androidx.navigation.findNavController
 import com.example.missingpets.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.navigation.NavigationView
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    private lateinit var bottomNavigationView: BottomNavigationView
+   // private lateinit var bottomNavigationView: BottomNavigationView
     private lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         val view = binding.root
-        setContentView(view)
+        setContentView(view);
 
-        val missingFragment = MissingFragment()
-        val foundFragment = FoundFragment()
-        val newPostFragment = NewPostFragment()
+      //  setUpToolbar()
 
-        //Lo comento por que rompe el navigation -> replaceFragment(missingFragment)
+        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+        val navController = findNavController(R.id.fragment)
 
-        bottomNavigationView = findViewById(R.id.bottom_navigation)
-        bottomNavigationView.setOnNavigationItemSelectedListener { menuItem ->
-            when (menuItem.itemId) {
-                //Lo comento por que rompe el navigation -> R.id.id_missing -> replaceFragment(missingFragment) Lo comento por que rompe el navigation
-                //Lo comento por que rompe el navigation -> R.id.id_found -> replaceFragment(foundFragment)
-                //Lo comento por que rompe el navigation -> R.id.id_add_notification -> replaceFragment(newPostFragment)
-            }
-            true
-        }
+        val appBarConfiguration = AppBarConfiguration(setOf(R.id.missingFragment2,
+            R.id.foundFragment,R.id.postAdoptionFragment))
+        setupActionBarWithNavController(navController, appBarConfiguration)
 
+        bottomNavigationView.setupWithNavController(navController)
     }
+
 
     override fun onResume() {
         super.onResume()
