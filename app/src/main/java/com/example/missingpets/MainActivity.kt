@@ -7,6 +7,8 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.setupWithNavController
 import com.example.missingpets.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
@@ -18,25 +20,13 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        val view = binding.root
-        setContentView(view)
 
-        val missingFragment = MissingFragment()
-        val foundFragment = FoundFragment()
-        val newPostFragment = NewPostFragment()
-
-        //Lo comento por que rompe el navigation -> replaceFragment(missingFragment)
-
-        bottomNavigationView = findViewById(R.id.bottom_navigation)
-        bottomNavigationView.setOnNavigationItemSelectedListener { menuItem ->
-            when (menuItem.itemId) {
-                //Lo comento por que rompe el navigation -> R.id.id_missing -> replaceFragment(missingFragment) Lo comento por que rompe el navigation
-                //Lo comento por que rompe el navigation -> R.id.id_found -> replaceFragment(foundFragment)
-                //Lo comento por que rompe el navigation -> R.id.id_add_notification -> replaceFragment(newPostFragment)
-            }
-            true
-        }
+        val binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        val botonNavegationView = binding.bottomNavigation
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragment)  as NavHostFragment
+        val navController = navHostFragment.navController
+        botonNavegationView.setupWithNavController(navController)
 
     }
 
