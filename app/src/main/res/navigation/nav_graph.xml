@@ -145,9 +145,6 @@
         android:label="fragment_main"
         tools:layout="@layout/fragment_main" >
         <action
-            android:id="@+id/action_mainFragment_to_missingFragment"
-            app:destination="@id/navigation2" />
-        <action
             android:id="@+id/action_mainFragment_to_loginFragment2"
             app:destination="@id/loginFragment2" />
         <action
@@ -166,7 +163,7 @@
             android:id="@+id/action_mainFragment_to_postMissingFragment"
             app:destination="@id/postMissingFragment" />
         <action
-            android:id="@+id/action_mainFragment_to_missingFragment2"
+            android:id="@+id/action_mainFragment_to_missingFragment"
             app:destination="@id/missingFragment" />
     </fragment>
     <fragment
