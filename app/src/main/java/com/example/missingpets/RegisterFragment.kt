@@ -68,7 +68,8 @@ class RegisterFragment : Fragment() {
             val username = getUsername()
             val email = getEmail()
             val contrasenia = getContrasenia()
-            viewModel.registrar(username, email, contrasenia)
+            val phoneNumber = getPhoneNumber()
+            viewModel.registrar(username, email, contrasenia, phoneNumber)
         }
 
         binding.tvIniciarSesion.setOnClickListener {
@@ -79,15 +80,19 @@ class RegisterFragment : Fragment() {
 
     }
 
-    fun getUsername(): String?{
+    private fun getPhoneNumber(): String?{
+        return binding.etPhoneNumber.text.toString()
+    }
+
+    private fun getUsername(): String?{
         return binding.etNombreUsuarioNuevo.text.toString()
     }
 
-    fun getEmail(): String?{
+    private fun getEmail(): String?{
         return binding.etEmailUsuarioNuevo.text.toString()
     }
 
-    fun getContrasenia(): String?{
+    private fun getContrasenia(): String?{
         return binding.etContraseniaUsuarioNuevo.text.toString()
     }
 

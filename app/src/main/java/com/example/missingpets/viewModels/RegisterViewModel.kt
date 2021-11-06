@@ -15,18 +15,18 @@ class RegisterViewModel : ViewModel(){
     init{
     }
 
-    fun registrar(username: String?, email: String?, contrasenia: String?){
-        if(algunCampoEstaVacio(username, email, contrasenia)){
+    fun registrar(username: String?, email: String?, contrasenia: String?, phoneNumber: String?){
+        if(algunCampoEstaVacio(username, email, contrasenia, phoneNumber)){
             resultadoRegistro.value = ResultadoRegistroUsuario(null, "Debe completar todos los campos")
         }
         else{
-            val usuario = Usuario(username, email, contrasenia)
+            val usuario = Usuario(username, phoneNumber, email, contrasenia)
             resultadoRegistro.value = repositorioUsuario.registrar(usuario)
         }
     }
 
-    fun algunCampoEstaVacio(username: String?, email: String?, contrasenia: String?): Boolean{
-        return username.isNullOrBlank() || email.isNullOrBlank() || contrasenia.isNullOrBlank()
+    fun algunCampoEstaVacio(username: String?, email: String?, contrasenia: String?, phoneNumber: String?): Boolean{
+        return username.isNullOrBlank() || email.isNullOrBlank() || contrasenia.isNullOrBlank() || phoneNumber.isNullOrBlank()
     }
 
 }
