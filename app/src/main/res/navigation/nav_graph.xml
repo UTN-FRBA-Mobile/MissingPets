@@ -13,11 +13,11 @@
         android:label="fragment_register"
         tools:layout="@layout/fragment_register" >
         <action
-            android:id="@+id/action_registerFragment_to_missingFragment2"
-            app:destination="@id/navigation2" />
-        <action
             android:id="@+id/action_registerFragment_to_loginFragment2"
             app:destination="@id/loginFragment2" />
+        <action
+            android:id="@+id/action_registerFragment_to_missingFragment"
+            app:destination="@id/missingFragment" />
     </fragment>
     <fragment
         android:id="@+id/foundFragment"
@@ -136,8 +136,8 @@
             android:id="@+id/action_loginFragment2_to_registerFragment"
             app:destination="@id/registerFragment" />
         <action
-            android:id="@+id/action_loginFragment2_to_missingFragment"
-            app:destination="@id/navigation2" />
+            android:id="@+id/action_loginFragment2_to_missingFragment2"
+            app:destination="@id/missingFragment" />
     </fragment>
     <fragment
         android:id="@+id/mainFragment"

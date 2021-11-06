@@ -46,6 +46,7 @@
     <string name="animal">Animal</string>
     <string name="date_from">Fecha desde</string>
     <string name="km">Km</string>
+    <string name="input_phone_number">Numero telefono (ej:5491169013434)</string>
     <string-array name="animals">
         <item>Perro</item>
         <item>Gato</item>

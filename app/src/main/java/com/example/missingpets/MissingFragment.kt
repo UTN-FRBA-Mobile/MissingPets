@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.missingpets.adapterRV.MissingAdapter
 import com.example.missingpets.dataRV.MissingDatasource
 import com.example.missingpets.databinding.FragmentMissingBinding
+import com.example.missingpets.models.RepositorioUsuario
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -31,6 +32,7 @@ class MissingFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private var _binding: FragmentMissingBinding? = null
     private val binding get() = _binding!!
+    private val repositorioDeUsuario: RepositorioUsuario = RepositorioUsuario
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,7 +67,7 @@ class MissingFragment : Fragment() {
         recyclerView = binding.recyclerViewMissingPets
         recyclerView.adapter = MissingAdapter(myDataset,MissingAdapter.OnClickListener {
 
-            if (true){
+            if (repositorioDeUsuario.estasLogueado()){
                 findNavController().navigate(R.id.action_missingFragment_to_detailFragment)
             } else {
                 findNavController().navigate(R.id.action_missingFragment_to_loginFragment2)
