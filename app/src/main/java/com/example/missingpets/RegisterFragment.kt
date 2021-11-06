@@ -56,7 +56,8 @@ class RegisterFragment : Fragment() {
 
         viewModel.resultadoRegistro.observe(viewLifecycleOwner, Observer{ resultadoRegistro ->
             if(resultadoRegistro.exitoso != null){
-                //Registro exitoso, se dirige a otra pantalla
+                val action = R.id.action_registerFragment_to_missingFragment
+                findNavController().navigate(action)
             }
             else{
                 registroFallido(view, resultadoRegistro.error.orEmpty())
