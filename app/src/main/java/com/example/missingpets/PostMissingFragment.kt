@@ -41,7 +41,7 @@ class PostMissingFragment : Fragment() {
             //doSomeOperations()
             val extras = data?.extras
             val imgBitmap = extras!!["data"] as Bitmap?
-            binding.imageView.setImageBitmap(imgBitmap)
+            binding.ivMascota.setImageBitmap(imgBitmap)
         }
     }
 
@@ -66,7 +66,7 @@ class PostMissingFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.btnCamara.setOnClickListener {
+        binding.ivMascota.setOnClickListener {
             abrirCamara(view)
         }
     }

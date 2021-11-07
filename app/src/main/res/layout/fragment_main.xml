@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:text="@string/main_fragment_pets_for_adoption"/>
     <Button
-        android:id="@+id/btn_upload_pet_for_adoption"
+        android:id="@+id/btn_upload_pet_found"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/main_fragment_upload_pet_for_adoption"/>

@@ -60,7 +60,7 @@ class MainFragment : Fragment() {
         binding.btnAboutAs.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_mainFragment_to_aboutUsFragment, null))
         binding.btnPetsForAdoption.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_mainFragment_to_adoptableFragment, null))
         binding.btnUploadMissingPets.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_mainFragment_to_postMissingFragment, null))
-        binding.btnUploadPetForAdoption.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_mainFragment_to_postAdoptionFragment, null))
+        binding.btnUploadPetFound.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_mainFragment_to_postAdoptionFragment, null))
 
     }
 
