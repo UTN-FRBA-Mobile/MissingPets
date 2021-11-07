@@ -42,7 +42,8 @@ class LoginFragment2 : Fragment() {
 
         loginViewModel.resultadoLogin.observe(viewLifecycleOwner, Observer{ resultadoLogin ->
             if(resultadoLogin.exitoso != null){
-                //Registro exitoso, se dirige a otra pantalla
+                val action = R.id.action_loginFragment2_to_missingFragment2
+                findNavController().navigate(action)
             }
             else{
                 loginFallido(view, resultadoLogin.error.orEmpty())
