@@ -75,6 +75,9 @@
         <action
             android:id="@+id/action_detailFragment_to_loginFragment2"
             app:destination="@id/loginFragment2" />
+        <action
+            android:id="@+id/action_detailFragment_to_mapsFragment"
+            app:destination="@id/mapsFragment" />
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
@@ -220,4 +223,9 @@
         android:name="com.example.missingpets.PostMissingFragment"
         android:label="fragment_post_missing"
         tools:layout="@layout/fragment_post_missing" />
+    <fragment
+        android:id="@+id/mapsFragment"
+        android:name="com.example.missingpets.MapsFragment"
+        android:label="fragment_maps2"
+        tools:layout="@layout/fragment_maps2" />
 </navigation>

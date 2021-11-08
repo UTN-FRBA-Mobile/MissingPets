@@ -16,6 +16,7 @@ import com.example.missingpets.viewModels.RegisterViewModel
 import java.util.*
 import android.content.Intent
 import android.net.Uri
+import android.widget.Toast
 import com.google.android.material.snackbar.Snackbar
 
 
@@ -46,10 +47,12 @@ class DetailFragment : Fragment() {
         val tipoAnimal = getArgumentoTipoAnimal()
         val sexoAnimal = getArgumentoSexoAnimal()
         val fechaPerdido = getArgumentoFechaPerdido()
+        val latitude = getArgumentoLatitude()
+        val longitude = getArgumentoLongitude()
 
         detailViewModel = DetailViewModel(nombreAnimal, tipoAnimal, sexoAnimal, fechaPerdido)
 
-        completarLabels(nombreAnimal, tipoAnimal, sexoAnimal, fechaPerdido)
+        completarLabels(nombreAnimal, tipoAnimal, sexoAnimal, fechaPerdido, latitude, longitude)
 
         binding.btnContactar.setOnClickListener {
             if (repositorioUsuario.noEstasLogueado()){
@@ -59,6 +62,13 @@ class DetailFragment : Fragment() {
                 val numeroTelefono = detailViewModel.getNumeroTelefono()
                 abrirWhatsapp(view, numeroTelefono)
             }
+        }
+        binding.imageviewMapa.setOnClickListener {
+            val action = R.id.action_detailFragment_to_mapsFragment
+            val bundle = Bundle()
+            bundle.putString("latitude", binding.tvLatitude.text.toString().trim())
+            bundle.putString("longitude", binding.tvLongitude.text.toString().trim())
+            findNavController().navigate(action,bundle)
         }
     }
 
@@ -97,11 +107,22 @@ class DetailFragment : Fragment() {
         binding.tvFechaPerdido.text = fechaPerdido
     }
 
-    fun completarLabels(nombreMascota: String, tipoAnimal: String, sexoAnimal: String, fechaPerdido: String){
+    fun completarLabelLatitude(latitude: Number){
+        binding.tvLatitude.text = latitude.toString()
+    }
+
+    fun completarLabelLongitude(longitude: Number){
+        binding.tvLongitude.text = longitude.toString()
+    }
+
+    fun completarLabels(nombreMascota: String, tipoAnimal: String, sexoAnimal: String, fechaPerdido: String,
+                latitude: Number, longitude: Number){
         completarLabelNombreAnimal(nombreMascota)
         completarLabelTipoAnimal(tipoAnimal)
         completarLabelSexoAnimal(sexoAnimal)
         completarLabelFechaPerdidoAnimal(fechaPerdido)
+        completarLabelLatitude(latitude)
+        completarLabelLongitude(longitude)
     }
 
     fun getArgumentoNombreAnimal(): String{
@@ -118,6 +139,14 @@ class DetailFragment : Fragment() {
 
     fun getArgumentoFechaPerdido(): String{
         return "30/10/2021"
+    }
+
+    fun getArgumentoLatitude(): Number{
+        return -16
+    }
+
+    fun getArgumentoLongitude(): Number{
+        return -51
     }
 
 }

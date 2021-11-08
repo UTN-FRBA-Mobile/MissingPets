@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "513570432151",
+    "firebase_url": "https://firestore-grafica-8d14c.firebaseio.com",
+    "project_id": "firestore-grafica-8d14c",
+    "storage_bucket": "firestore-grafica-8d14c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:513570432151:android:bc7bff2d67e39ee2f7f5d2",
+        "android_client_info": {
+          "package_name": "com.example.mapapets"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "513570432151-kkeire12agm7dps9trg4gljmvv750ubg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDQkkNx2mzAojKgj8Pred9mzU0EfVaAcRo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "513570432151-kkeire12agm7dps9trg4gljmvv750ubg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
