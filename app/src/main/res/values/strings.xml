@@ -49,13 +49,15 @@
     <string name="input_phone_number">Numero telefono (ej:5491169013434)</string>
 
     <string-array name="animals">
+        <item>Tipo de Animal</item>
         <item>Perro</item>
         <item>Gato</item>
         <item>Conejo</item>
         <item>Otro</item>
     </string-array>
+
     <string-array name="animals_sex">
-        <item>Ninguno/no lo se</item>
+        <item>Sexo</item>
         <item>Macho</item>
         <item>Hembra</item>
     </string-array>
@@ -68,4 +70,5 @@
     <string name="lost_in_detail">Perdido en:</string>
     <string name="contact_detail">Contactar</string>
     <string name="publicar_detail">Publicar</string>
+    <string name="mas_detalles">Más detalles</string>
 </resources>

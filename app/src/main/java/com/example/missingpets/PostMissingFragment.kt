@@ -43,7 +43,6 @@ class PostMissingFragment : Fragment() {
 
     private var resultLauncherCamara = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
-
             val data: Intent? = result.data
             val extras = data?.extras
             val imgBitmap = extras!!["data"] as Bitmap?
@@ -53,7 +52,6 @@ class PostMissingFragment : Fragment() {
     }
     private var resultLauncherGaleria = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
-
             val picture = result.data?.data
             binding.ivMascota.setImageURI(picture)
         }
@@ -76,54 +74,29 @@ class PostMissingFragment : Fragment() {
         // Inflate the layout for this fragment
         _binding = FragmentPostMissingBinding.inflate(inflater, container, false)
 
-        var items = resources.getStringArray(R.array.animals_sex)
-        var spinner = binding.tvEtiquetaSexo
+        //Spinner del tipo del animal
+        val tipoDeAnimal = resources.getStringArray(R.array.animals)
+        val spinnerAnimales = binding.tvEtiquetaTipoAnimal
         // initialize an array adapter for spinner
-        val adapter:ArrayAdapter<String> = object: ArrayAdapter<String>(
-            this.requireContext(),
-            android.R.layout.simple_spinner_dropdown_item,
-            items
-        ){
-            override fun getDropDownView(
-                position: Int,
-                convertView: View?,
-                parent: ViewGroup
-            ): View {
-                val view:TextView = super.getDropDownView(
-                    position,
-                    convertView,
-                    parent
-                ) as TextView
-                // set item text bold
-                view.setTypeface(view.typeface, Typeface.BOLD)
-
-                // set selected item style
-                if (position == spinner.selectedItemPosition && position !=0 ){
-                    view.background = ColorDrawable(Color.parseColor("#F7E7CE"))
-                    view.setTextColor(Color.parseColor("#333399"))
-                }
-
-                // make hint item color gray
-                if(position == 0){
-                    view.setTextColor(Color.LTGRAY)
-                }
-
-                return view
-            }
-
-            override fun isEnabled(position: Int): Boolean {
-                // disable first item
-                // first item is display as hint
-                return position != 0
-            }
-        }
-
+        val adapterAnimales:ArrayAdapter<String> = initializeSpinnerAdapter(tipoDeAnimal, spinnerAnimales)
         // finally, data bind spinner with adapter
-        spinner.adapter = adapter
+        spinnerAnimales.adapter = adapterAnimales
+
+        // Spinner del sexo del animal
+        val sexoDelAnimal = resources.getStringArray(R.array.animals_sex)
+        val spinnerSexo = binding.tvEtiquetaSexo
+        // initialize an array adapter for spinner
+        val adapter:ArrayAdapter<String> = initializeSpinnerAdapter(sexoDelAnimal, spinnerSexo)
+        // finally, data bind spinner with adapter
+        spinnerSexo.adapter = adapter
+
+
 
         return binding.root
         //inflater.inflate(R.layout.fragment_post_missing, container, false)
     }
+
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -164,4 +137,35 @@ class PostMissingFragment : Fragment() {
         }
     }
 
+    private fun initializeSpinnerAdapter(items: Array<String>, spinner: Spinner): ArrayAdapter<String> {
+
+        return object : ArrayAdapter<String>( this.requireContext(),
+            android.R.layout.simple_spinner_dropdown_item, items) {
+
+            override fun getDropDownView( position: Int, convertView: View?, parent: ViewGroup): View {
+                val view: TextView = super.getDropDownView(position, convertView, parent) as TextView
+                // set item text bold
+                view.setTypeface(view.typeface, Typeface.BOLD)
+
+                // set selected item style
+                if (position == spinner.selectedItemPosition && position != 0) {
+                    view.background = ColorDrawable(Color.parseColor("#F7E7CE"))
+                    view.setTextColor(Color.parseColor("#333399"))
+                }
+
+                // make hint item color gray
+                if (position == 0) {
+                    view.setTextColor(Color.LTGRAY)
+                }
+
+                return view
+            }
+
+            override fun isEnabled(position: Int): Boolean {
+                // disable first item
+                // first item is display as hint
+                return position != 0
+            }
+        }
+    }
 }

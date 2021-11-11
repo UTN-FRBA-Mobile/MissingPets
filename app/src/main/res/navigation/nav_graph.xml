@@ -215,9 +215,9 @@
     </navigation>
     <fragment
         android:id="@+id/postAdoptionFragment"
-        android:name="com.example.missingpets.PostAdoptionFragment"
+        android:name="com.example.missingpets.PostEncontradoFragment"
         android:label="fragment_post_adoption"
-        tools:layout="@layout/fragment_post_adoption" />
+        tools:layout="@layout/fragment_post_encontrado" />
     <fragment
         android:id="@+id/postMissingFragment"
         android:name="com.example.missingpets.PostMissingFragment"

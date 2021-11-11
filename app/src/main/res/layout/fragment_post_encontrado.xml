@@ -4,11 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".PostMissingFragment">
+    tools:context=".PostEncontradoFragment">
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -18,7 +18,7 @@
             android:orientation="vertical" >
 
             <ImageView
-                android:id="@+id/iv_mascota"
+                android:id="@+id/iv_mascota_encontrada"
                 android:layout_width="239dp"
                 android:layout_height="239dp"
                 android:layout_marginTop="40dp"
@@ -29,54 +29,48 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_gravity="center"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp">
+                android:layout_gravity="center_horizontal">
 
                 <Button
-                    android:id="@+id/btn_subir_foto"
+                    android:id="@+id/btn_subir_foto_encontrado"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="left"
-                    android:text="Subir Foto" />
+                    android:text="Subir Foto"/>
 
                 <Button
-                    android:id="@+id/btn_tomar_foto"
+                    android:id="@+id/btn_tomar_foto_encontrado"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
                     android:text="Tomar Foto"
                     android:layout_marginLeft="5dp"/>
-
             </LinearLayout>
 
             <EditText
-                android:id="@+id/tv_etiqueta_nombre"
+                android:id="@+id/et_nombre_animal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:layout_weight="1"
                 android:hint="@string/name_detail"
-                android:inputType="text"
                 android:minHeight="48dp" />
 
             <Spinner
-                android:id="@+id/tv_etiqueta_tipo_animal"
+                android:id="@+id/spn_tipo_animales"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:entries="@array/animals"
-                android:hint="@string/animal_detail"
                 android:minHeight="48dp" />
 
             <Spinner
-                android:id="@+id/tv_etiqueta_sexo"
+                android:id="@+id/spn_sexo_animales"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:entries="@array/animals_sex"
                 android:minHeight="48dp" />
 
             <EditText
-                android:id="@+id/etDate"
+                android:id="@+id/date_cuando"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:clickable="false"
@@ -85,7 +79,7 @@
                 android:minHeight="48dp" />
 
             <EditText
-                android:id="@+id/et_mas_detalles_perdido"
+                android:id="@+id/et_mas_detalles_encontrado"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textMultiLine"
@@ -96,20 +90,20 @@
                 android:scrollbars="vertical" />
 
             <LinearLayout
-                android:id="@+id/ll_mapa_mascota_perdida"
+                android:id="@+id/ll_mapa_mascota_encontrada"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="10dp"
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/tv_perdido_en"
+                    android:id="@+id/tv_encontrada_en"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/lost_in_detail" />
 
                 <com.google.android.gms.maps.MapView
-                    android:id="@+id/mv_mapa"
+                    android:id="@+id/mv_mapa_encontrado"
                     android:layout_width="match_parent"
                     android:layout_height="228dp"
                     android:layout_marginTop="20dp"
@@ -117,11 +111,11 @@
             </LinearLayout>
 
             <Button
-                android:id="@+id/btn_publicar"
+                android:id="@+id/btn_publicar_encontrado"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
                 android:text="@string/publicar_detail"
+                android:layout_marginTop="30dp"
                 android:textAlignment="center"
                 android:textStyle="bold"
                 app:iconGravity="textEnd"
@@ -129,5 +123,7 @@
                 app:iconTint="@null" />
 
         </LinearLayout>
+
     </ScrollView>
+
 </FrameLayout>
