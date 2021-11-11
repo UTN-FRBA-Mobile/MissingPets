@@ -19,85 +19,66 @@
 
             <ImageView
                 android:id="@+id/iv_mascota"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="239dp"
+                android:layout_height="202dp"
                 android:layout_marginTop="40dp"
-                android:clickable="true"
-                android:focusable="true"
-                android:src="@android:drawable/ic_menu_upload" />
+                android:layout_gravity="center_horizontal"
+                android:src="@android:drawable/ic_menu_camera"/>
 
             <LinearLayout
-                android:id="@+id/ll_datos_mascota_perdida"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="30dp"
-                android:orientation="vertical">
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="center"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp">
 
-                <LinearLayout
-                    android:id="@+id/ll_nombre_mascota"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal">
+                <Button
+                    android:id="@+id/btn_subir_foto"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:text="Subir Foto" />
 
-                    <EditText
-                        android:id="@+id/tv_etiqueta_nombre"
-                        android:layout_width="231dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/name_detail" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/ll_tipo_mascota"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal">
-
-                    <EditText
-                        android:id="@+id/tv_etiqueta_tipo_animal"
-                        android:layout_width="100dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/animal_detail" />
-                    <!--android:spinnerMode="dropdown"
-                    android:background="@android:drawable/btn_dropdown"
-                    android:backgroundTint="@color/design_default_color_background"
-                    android:autofillHints="@string/animal_detail"-->
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/ll_sexo_mascota"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal">
-
-                    <EditText
-                        android:id="@+id/tv_etiqueta_sexo"
-                        android:layout_width="82dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/sex_detail" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/ll_fecha_predida_mascota"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal">
-
-                    <EditText
-                        android:id="@+id/etDate"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:clickable="false"
-                        android:focusable="false"
-                        android:hint="@string/date_lost_detail"/>
-
-                </LinearLayout>
+                <Button
+                    android:id="@+id/btn_tomar_foto"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:text="Tomar Foto"
+                    android:layout_marginLeft="5dp"/>
 
             </LinearLayout>
+
+            <EditText
+                android:id="@+id/tv_etiqueta_nombre"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"
+                android:hint="@string/name_detail"
+                android:inputType="text" />
+
+            <Spinner
+                android:id="@+id/tv_etiqueta_tipo_animal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:entries="@array/animals"
+                android:hint="@string/animal_detail"/>
+
+            <Spinner
+                android:id="@+id/tv_etiqueta_sexo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:entries="@array/animals_sex"/>
+
+            <EditText
+                android:id="@+id/etDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="false"
+                android:focusable="false"
+                android:hint="@string/date_lost_detail" />
 
             <LinearLayout
                 android:id="@+id/ll_mapa_mascota_perdida"
@@ -130,6 +111,7 @@
                 app:iconGravity="textEnd"
                 app:iconPadding="8dp"
                 app:iconTint="@null" />
+
         </LinearLayout>
     </ScrollView>
 </FrameLayout>

@@ -47,11 +47,19 @@
     <string name="date_from">Fecha desde</string>
     <string name="km">Km</string>
     <string name="input_phone_number">Numero telefono (ej:5491169013434)</string>
+
     <string-array name="animals">
         <item>Perro</item>
         <item>Gato</item>
-        <item>Otros</item>
+        <item>Conejo</item>
+        <item>Otro</item>
     </string-array>
+    <string-array name="animals_sex">
+        <item>Ninguno/no lo se</item>
+        <item>Macho</item>
+        <item>Hembra</item>
+    </string-array>
+
     <string name="search_in">Buscar en:</string>
     <string name="name_detail">Nombre:</string>
     <string name="animal_detail">Animal:</string>
