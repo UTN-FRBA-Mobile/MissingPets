@@ -106,8 +106,20 @@ class PostEncontradoFragment : Fragment() {
         binding.btnSubirFotoEncontrado.setOnClickListener {
             abrirGaleria(view)
         }
+
+        binding.dateCuando.setOnClickListener {
+            showDatePickerDialog() }
     }
 
+    private fun showDatePickerDialog() {
+        val datePicker = DatePickerFragment { day, month, year -> onDateSelected(day, month, year) }
+        datePicker.show(childFragmentManager, "datePicker")
+    }
+
+    private fun onDateSelected(day: Int, month: Int, year: Int) {
+        val realMonth = month + 1
+        binding.dateCuando.setText("$day/$realMonth/$year")
+    }
     private fun abrirGaleria(view: View) {
         try {
             val intent = Intent(Intent.ACTION_GET_CONTENT)

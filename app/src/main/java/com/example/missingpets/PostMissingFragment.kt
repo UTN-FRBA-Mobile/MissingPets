@@ -16,6 +16,7 @@ import android.view.ViewGroup
 import android.widget.*
 
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.fragment.app.FragmentActivity
 import com.example.missingpets.databinding.FragmentPostMissingBinding
 import com.google.android.material.snackbar.Snackbar
 
@@ -107,6 +108,18 @@ class PostMissingFragment : Fragment() {
         binding.btnSubirFoto.setOnClickListener {
             abrirGaleria(view)
         }
+
+        binding.etDate.setOnClickListener { showDatePickerDialog() }
+    }
+
+    private fun showDatePickerDialog() {
+        val datePicker = DatePickerFragment { day, month, year -> onDateSelected(day, month, year) }
+        datePicker.show(childFragmentManager, "datePicker")
+    }
+
+    private fun onDateSelected(day: Int, month: Int, year: Int) {
+        val realMonth = month + 1
+        binding.etDate.setText("$day/$realMonth/$year")
     }
 
     private fun abrirGaleria(view: View) {
