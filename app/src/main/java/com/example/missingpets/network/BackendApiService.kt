@@ -23,8 +23,11 @@ private val retrofit = Retrofit.Builder()
 interface BackendApiService {
     @GET("photos")
     suspend fun getPhotos(): List<ApiData>
+
+/*    @GET("lost")
+    suspend fun getLost(): Response<MissingPet>*/
 }
 
-object MarsApi {
-    val retrofitService: BackendApiService by lazy { retrofit.create(BackendApiService::class.java) }
+public fun getRetrofit(): Retrofit {
+    return retrofit;
 }
