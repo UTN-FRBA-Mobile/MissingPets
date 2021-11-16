@@ -24,8 +24,8 @@ interface BackendApiService {
     @GET("photos")
     suspend fun getPhotos(): List<ApiData>
 
-/*    @GET("lost")
-    suspend fun getLost(): Response<MissingPet>*/
+    @GET("lost")
+    suspend fun getLost(): List<MissingPet>
 }
 
 public fun getRetrofit(): Retrofit {
