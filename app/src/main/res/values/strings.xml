@@ -12,7 +12,7 @@
 
     <string name="main_fragment_settings">Configuraciones.</string>
     <string name="preferences_ui_title">Interfaz</string>
-    <string name="preferences_ui_img_size">Tamaño de la imágen</string>
+    <string name="preferences_ui_img_size">Tamaño de la imagen</string>
     <string name="preferences_key_ui_img_size">pref_ui_img_size</string>
     <string name="preferences_img_size_small">Chica</string>
     <string name="preferences_img_size_medium">Mediana</string>
@@ -26,7 +26,7 @@
     <string name="preferences_key_delete_data">pref_delete_data</string>
     <string name="preferences_restore_data">Restaurar datos y configuraciones</string>
     <string name="preferences_key_restore_data">preferences_key_restore_data</string>
-    <string name="main_fragment_about_as">¿Quienes somos?</string>
+    <string name="main_fragment_about_as">¿Quiénes somos?</string>
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Contraseña</string>
@@ -71,4 +71,5 @@
     <string name="contact_detail">Contactar</string>
     <string name="publicar_detail">Publicar</string>
     <string name="mas_detalles">Más detalles</string>
+    <string name="about_us">Somos un grupo de personas con voluntad de ayudar brindando una solución de software gratuita a aquellos que extraviaron sus mascotas, buscamos que puedan reunirse con sus mascotas extraviadas en el menor tiempo posible con la colaboración de la comunidad de usuarios de esta aplicación.</string>
 </resources>

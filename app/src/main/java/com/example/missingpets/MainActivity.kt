@@ -1,6 +1,5 @@
 package com.example.missingpets
 
-import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -102,7 +101,7 @@ class MainActivity : AppCompatActivity() {
         GlobalScope.launch(Dispatchers.Main) {
             try {
                 // Execute web request through coroutine call adapter & retrofit
-                val webResponse = BackendApi.retrofitService.getLost() //.await()
+                val webResponse = BackendApi.retrofitService.getAllLost() //.await()
 
                 Log.d("NETWORK", "Ejecutando llamada a la API REST")
 
