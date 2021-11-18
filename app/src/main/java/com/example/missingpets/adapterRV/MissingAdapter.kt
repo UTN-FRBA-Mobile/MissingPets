@@ -1,5 +1,3 @@
-package com.example.missingpets.adapterRV
-
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -8,9 +6,10 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.missingpets.R
-import com.example.missingpets.modelRV.MissingPet
+import com.example.missingpets.network.recyclerPet
+import com.squareup.picasso.Picasso
 
-class MissingAdapter (private val dataset: List<MissingPet>, private val onClickListener: OnClickListener)
+class MissingAdapter (private val dataset: List<recyclerPet>, private val onClickListener: OnClickListener)
     : RecyclerView.Adapter<MissingAdapter.MissingViewHolder>() {
 
     class MissingViewHolder (val view: View) : RecyclerView.ViewHolder(view) {
@@ -34,8 +33,10 @@ class MissingAdapter (private val dataset: List<MissingPet>, private val onClick
     override fun onBindViewHolder(holder: MissingViewHolder, position: Int) {
         val item = dataset[position]
 
-        holder.textView.text = item.string
-        holder.imageView.setImageResource(item.imageResourceId)
+        holder.textView.text = item.description
+        val BASE_URL = "https://sea.net.ar/missingpets/"
+        val pathfile = BASE_URL + "img/" +item.photopath
+        Picasso.get().load(pathfile).into(holder.imageView)
         Log.d("RV", "onBindViewHolder")
 
         holder.itemView.setOnClickListener {
@@ -44,13 +45,12 @@ class MissingAdapter (private val dataset: List<MissingPet>, private val onClick
     }
 
     override fun getItemCount(): Int {
-        Log.d("RV", "getItemCount")
         Log.d("RV", "getItemCount es: "+ dataset.size.toString())
         return dataset.size
-
     }
 
-    class OnClickListener(val clickListener: (pet: MissingPet) -> Unit) {
-        fun onClick(pet: MissingPet) = clickListener(pet)
+    class OnClickListener(val clickListener: (pet: recyclerPet) -> Unit) {
+        fun onClick(pet: recyclerPet) = clickListener(pet)
     }
+
 }
