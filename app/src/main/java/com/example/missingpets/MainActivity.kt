@@ -78,7 +78,7 @@ class MainActivity : AppCompatActivity() {
             width = sizeValue
             height = sizeValue
         } */
-
+  
     }
 
 }

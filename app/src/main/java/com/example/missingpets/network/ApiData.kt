@@ -20,8 +20,16 @@ data class MissingPet (
 //    @DrawableRes val imageResourceId: Int
 )
 
+
 data class recyclerPet (
     @Json(name = "id") val id: Int,
     @Json(name = "description") val description: String,
     @Json(name = "photopath") val photopath: String,
+ }
+data class User (
+    @Json(name = "id") val id: Int,
+    @Json(name = "username") val username: String,
+    @Json(name = "email") val email: String,
+    @Json(name = "password") val password: String,
+    @Json(name = "phonenumber") val phonenumber: String,
 )
