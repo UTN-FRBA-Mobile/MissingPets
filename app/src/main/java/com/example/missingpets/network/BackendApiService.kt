@@ -56,6 +56,9 @@ interface BackendApiService {
     @GET("user")
     suspend fun getUserById(@Query("id") id: Int): User
 
+    @GET("user")
+    suspend fun getUserId(@Query("username") username: String,@Query("password") password: String, ): Int
+
     @POST("user")
     suspend fun addUser(@Body user: User):  Call<ResponseBody?>?
 

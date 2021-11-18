@@ -27,9 +27,9 @@ data class recyclerPet (
     @Json(name = "photopath") val photopath: String,
 )
 data class User (
-    @Json(name = "id") val id: Int,
-    @Json(name = "username") val username: String,
-    @Json(name = "email") val email: String,
-    @Json(name = "password") val password: String,
-    @Json(name = "phonenumber") val phonenumber: String,
+    @Json(name = "id") val id: Int? = null,
+    @Json(name = "username") val username: String? = null,
+    @Json(name = "email") val email: String? = null,
+    @Json(name = "password") val password: String? = null,
+    @Json(name = "phonenumber") val phonenumber: String? = null,
 )
