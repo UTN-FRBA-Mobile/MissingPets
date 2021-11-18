@@ -22,8 +22,16 @@ object RepositorioUsuario {
         return ResultadoRegistroUsuario(respuestaUsuario, error)
     }
 
+    /**
+     * URLs para pruebas:
+     * http://sea.net.ar/missingpets/api/user/
+     * http://sea.net.ar/missingpets/api/user/?id=10
+     * http://sea.net.ar/missingpets/api/user/?username=Toto&password=5555
+     * http://sea.net.ar/missingpets/api/user/?username=Toto&password=111
+     */
+
     fun loguar(unUsuario: Usuario): ResultadoLoginUsuario{
-        val id = UserDatasource().getUserId("username", "pass");
+        val id = UserDatasource().getUserId(unUsuario.email.toString(), unUsuario.contrasenia.toString());
         if(id == -1) {
             Log.d("SECURITY", "Usuario no registrado!")
         } else {
