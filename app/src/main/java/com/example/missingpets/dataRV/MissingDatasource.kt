@@ -1,21 +1,57 @@
 package com.example.missingpets.dataRV
 
-import com.example.missingpets.R
-import com.example.missingpets.modelRV.MissingPet
+import android.util.Log
+import com.example.missingpets.network.ApiClient
+import com.example.missingpets.network.recyclerPet
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class MissingDatasource {
-    fun loadMissingPets(): List<MissingPet> {
+    fun loadMissingPetsLocal(): List<recyclerPet> {
+        val ruta: String = "http://c.files.bbci.co.uk/48DD/production/_107435681_perro1.jpg"
         return listOf(
-            MissingPet("Hola, me perdi ayer a las 18:00 cerca de la plaza.", R.drawable.image1),
-            MissingPet("Se busca, recompensa $$$", R.drawable.image2),
-            MissingPet("Ayudaaaaa", R.drawable.image3),
-            MissingPet("Se perdioooooo", R.drawable.image4),
-            MissingPet("Si alguien lo ve llame al WP: 000000000", R.drawable.image5),
-            MissingPet("Se busca, recompensa $$$", R.drawable.image6),
-            MissingPet("Hola, me perdi ayer a las 18:00 cerca de la plaza.", R.drawable.image7),
-            MissingPet("Hola, me perdi ayer a las 18:00 cerca de la plaza.", R.drawable.image8),
-            MissingPet("Si alguien lo ve llame al WP: 000000000", R.drawable.image9),
-            MissingPet("Si alguien lo ve llame al WP: 000000000", R.drawable.image10)
+            recyclerPet(1,"Hola, me perdi ayer a las 18:15 cerca de la plaza.", ruta),
+            recyclerPet(2,"Se busca, recompensa $$$", ruta),
+            recyclerPet(3,"Ayudaaaaa", ruta),
+            recyclerPet(4,"Se perdioooooo", ruta),
+            recyclerPet(5,"Si alguien lo ve llame al WP: 000000000", ruta),
+            recyclerPet(6,"Se busca, recompensa $$$", ruta),
+            recyclerPet(7,"Hola, me perdi ayer a las 18:00 cerca de la plaza.", ruta),
+            recyclerPet(8,"Hola, me perdi ayer a las 18:00 cerca de la plaza.", ruta),
+            recyclerPet(9,"Si alguien lo ve llame al WP: 000000000", ruta),
+            recyclerPet(10,"Si alguien lo ve llame al WP: 000000000", ruta)
         )
     }
+
+
+    fun loadMissingPets(): List<recyclerPet> {
+        var lost: List<recyclerPet> = arrayListOf()
+        CoroutineScope(Dispatchers.IO).launch(Dispatchers.Main) {
+            try {
+                val response = ApiClient.backendService.getLost()
+
+                if (response.isSuccessful && response.body() != null) {
+                    val content = response.body()
+                    lost = content?.toList()!!
+                    Log.d("lost", lost.toString())
+                    //do something
+                } else {
+                    Log.d("ERROR", "Error Occurred: ${response.message()}")
+                }
+
+            } catch (e: Exception) {
+                Log.d("ERROR", "Error Occurred: ${e.message}")
+            }
+        }
+        return lost
+    }
+
+
+
+
+
+
+
+
 }

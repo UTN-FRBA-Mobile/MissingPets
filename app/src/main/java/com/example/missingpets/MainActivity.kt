@@ -1,24 +1,15 @@
 package com.example.missingpets
 
-import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.example.missingpets.databinding.ActivityMainBinding
-import com.example.missingpets.network.BackendApi
-import com.example.missingpets.network.MissingPet
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import java.io.IOException
 
 class MainActivity : AppCompatActivity() {
 
@@ -36,7 +27,6 @@ class MainActivity : AppCompatActivity() {
         val navController = navHostFragment.navController
         botonNavegationView.setupWithNavController(navController)
 
-        loadMissingPets()
     }
 
     override fun onResume() {
@@ -89,48 +79,6 @@ class MainActivity : AppCompatActivity() {
             height = sizeValue
         } */
 
-
     }
-
-
-    private fun loadMissingPets() {
-        // Launch Kotlin Coroutine on Android's main thread
-        // Note: better not to use GlobalScope, see:
-        // https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-coroutine-scope/index.html
-        // An even better solution would be to use the Android livecycle-aware viewmodel
-        // instead of attaching the scope to the activity.
-        GlobalScope.launch(Dispatchers.Main) {
-            try {
-                // Execute web request through coroutine call adapter & retrofit
-                val webResponse = BackendApi.retrofitService.getLost() //.await()
-
-                Log.d("NETWORK", "Ejecutando llamada a la API REST")
-
-                if (webResponse.isNotEmpty()) {
-                    // Get the returned & parsed JSON from the web response.
-                    // Type specified explicitly here to make it clear that we already
-                    // get parsed contents.
-                    val lost: List<MissingPet>? = webResponse.toList()
-                    Log.d("NETWORK", lost.toString())
-                    // Assign the list to the recycler view. If partsList is null,
-                    // assign an empty list to the adapter.
-                    /*adapter.partItemList = partList ?: listOf()*/
-                    // Inform recycler view that data has changed.
-                    // Makes sure the view re-renders itself
-                    /*adapter.notifyDataSetChanged()*/
-                } else {
-                    // Print error information to the console
-                    Log.e("NETWORK", "Error ${webResponse.toString()}")
-                    Toast.makeText(this@MainActivity, "Error ${webResponse.toString()}", Toast.LENGTH_LONG).show()
-                }
-            } catch (e: IOException) {
-                // Error with network request
-                Log.e("NETWORK", "Exception " + e.printStackTrace())
-                Toast.makeText(this@MainActivity, "Exception ${e.message}", Toast.LENGTH_LONG).show()
-            }
-        }
-    }
-
-
 
 }
