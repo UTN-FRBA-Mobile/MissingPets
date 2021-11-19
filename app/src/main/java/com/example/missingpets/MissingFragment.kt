@@ -2,6 +2,7 @@ package com.example.missingpets
 
 import MissingAdapter
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -44,6 +45,8 @@ class MissingFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val myDataset = MissingDatasource().loadMissingPets() //Datos de la api
+        Log.d("Missing", "Tamaño de la lista: "+ myDataset.size.toString())
+
      //   val myDataset = MissingDatasource().loadMissingPetsLocal() //Datos harckodeados
         recyclerView = binding.recyclerViewMissingPets
         recyclerView.adapter = MissingAdapter(myDataset,MissingAdapter.OnClickListener {
