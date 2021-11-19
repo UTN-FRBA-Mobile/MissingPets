@@ -12,7 +12,7 @@ import okhttp3.ResponseBody
 import okhttp3.RequestBody
 
 //Defino los endpoints
-interface BackendApiService {
+interface BackendApiService_NovaMASSSSS {
     @GET("photos")
     suspend fun getPhotos(): Call<List<ApiData>>
 
@@ -86,8 +86,8 @@ interface BackendApiService {
                 .build()
         }
 
-        val backendService: BackendApiService by lazy {
-            retrofit.create(BackendApiService::class.java)
+        val backendService: BackendApiService_NovaMASSSSS by lazy {
+            retrofit.create(BackendApiService_NovaMASSSSS::class.java)
         }
 
 }

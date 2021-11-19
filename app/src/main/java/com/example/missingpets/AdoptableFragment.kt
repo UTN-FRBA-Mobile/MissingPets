@@ -58,10 +58,6 @@ class AdoptableFragment : Fragment() {
 
                 if(response?.body() != null){
 
-                    //val myDataset = MissingDatasource().loadMissingPets() //Datos de la api
-                    //Log.d("Adoptable", "Tamaño de la lista: "+ myDataset.size.toString())
-
-                    //   val myDataset = MissingDatasource().loadMissingPetsLocal() //Datos harckodeados
                     recyclerView = binding.recyclerViewAdoptablePets
                     recyclerView.adapter = MissingAdapter(response.body()!!,MissingAdapter.OnClickListener {
 
@@ -78,32 +74,7 @@ class AdoptableFragment : Fragment() {
             }
 
             override fun onFailure(call: Call<List<MissingPet>>, t: Throwable) {
-
             }
-
-
         })
-
-       ////////////////////////////////////////////////////////////////////////////////////
-        //val myDataset = AdoptableDatasource().loadAdoptablePets() //Datos hardcodeados
-
-        //recyclerView = binding.recyclerViewAdoptablePets
-        // recyclerView.adapter = MissingAdapter(myDataset, MissingAdapter.OnClickListener {
-
-        //    if (repositorioDeUsuario.estasLogueado()){
-        //        findNavController().navigate(R.id.action_adoptableFragment_to_detailFragment)
-        //    } else {
-        //        findNavController().navigate(R.id.action_adoptableFragment_to_loginFragment2)
-        //    }
-
-
-       // })
-        //recyclerView.layoutManager= LinearLayoutManager(requireContext())
-       // recyclerView.setHasFixedSize(true)
-
-
-
     }
-
-
 }
