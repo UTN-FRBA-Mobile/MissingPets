@@ -57,8 +57,8 @@ class MissingFragment : Fragment() {
 
                 if(response?.body() != null){
 
-                    val myDataset = MissingDatasource().loadMissingPets() //Datos de la api
-                    Log.d("Missing", "Tamaño de la lista: "+ myDataset.size.toString())
+                    //val myDataset = MissingDatasource().loadMissingPets() //Datos de la api
+                    //Log.d("Missing", "Tamaño de la lista: "+ myDataset.size.toString())
 
                     //   val myDataset = MissingDatasource().loadMissingPetsLocal() //Datos harckodeados
                     recyclerView = binding.recyclerViewMissingPets
