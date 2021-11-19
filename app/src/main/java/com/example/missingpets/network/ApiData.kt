@@ -15,7 +15,7 @@ data class MissingPet (
     @Json(name = "latitude") val latitude: Float,
     @Json(name = "longitude") val longitude: Float,
     @Json(name = "photopath") val photopath: String,
-    @Json(name = "creationdate") val creationdate: String,
+    @Json(name = "creationdate") val creationdate: String
 
 //    @DrawableRes val imageResourceId: Int
 )

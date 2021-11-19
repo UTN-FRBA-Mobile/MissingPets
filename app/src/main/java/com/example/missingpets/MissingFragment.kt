@@ -13,6 +13,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.missingpets.dataRV.MissingDatasource
 import com.example.missingpets.databinding.FragmentMissingBinding
 import com.example.missingpets.models.RepositorioUsuario
+import com.example.missingpets.network.ApiServices2
+import com.example.missingpets.network.MissingPet
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class MissingFragment : Fragment() {
 
@@ -44,22 +49,40 @@ class MissingFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val myDataset = MissingDatasource().loadMissingPets() //Datos de la api
-        Log.d("Missing", "Tamaño de la lista: "+ myDataset.size.toString())
 
-     //   val myDataset = MissingDatasource().loadMissingPetsLocal() //Datos harckodeados
-        recyclerView = binding.recyclerViewMissingPets
-        recyclerView.adapter = MissingAdapter(myDataset,MissingAdapter.OnClickListener {
+        val apiInterface = ApiServices2.create().getMissingPets()
 
-            if (repositorioDeUsuario.estasLogueado()){
-                findNavController().navigate(R.id.action_missingFragment_to_detailFragment)
-            } else {
-                findNavController().navigate(R.id.action_missingFragment_to_loginFragment2)
+        apiInterface.enqueue( object : Callback<List<MissingPet>> {
+            override fun onResponse(call: Call<List<MissingPet>>?, response: Response<List<MissingPet>>?) {
+
+                if(response?.body() != null){
+
+                    val myDataset = MissingDatasource().loadMissingPets() //Datos de la api
+                    Log.d("Missing", "Tamaño de la lista: "+ myDataset.size.toString())
+
+                    //   val myDataset = MissingDatasource().loadMissingPetsLocal() //Datos harckodeados
+                    recyclerView = binding.recyclerViewMissingPets
+                    recyclerView.adapter = MissingAdapter(response.body()!!,MissingAdapter.OnClickListener {
+
+                        if (repositorioDeUsuario.estasLogueado()){
+                            findNavController().navigate(R.id.action_missingFragment_to_detailFragment)
+                        } else {
+                            findNavController().navigate(R.id.action_missingFragment_to_loginFragment2)
+                        }
+                    })
+                    recyclerView.layoutManager= LinearLayoutManager(requireContext())
+                    recyclerView.setHasFixedSize(true)
+                }
+
             }
-        })
-        recyclerView.layoutManager= LinearLayoutManager(requireContext())
-        recyclerView.setHasFixedSize(true)
-    }
 
+            override fun onFailure(call: Call<List<MissingPet>>, t: Throwable) {
+
+            }
+
+
+        })
+
+    }
 
 }
