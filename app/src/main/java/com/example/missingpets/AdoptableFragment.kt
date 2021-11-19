@@ -1,5 +1,6 @@
 package com.example.missingpets
 
+import AdoptableAdapter
 import MissingAdapter
 import android.os.Bundle
 import android.util.Log
@@ -17,6 +18,7 @@ import com.example.missingpets.databinding.FragmentAdoptableBinding
 import com.example.missingpets.models.RepositorioUsuario
 import com.example.missingpets.network.ApiServices2
 import com.example.missingpets.network.MissingPet
+import com.example.missingpets.network.recyclerPet
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -51,15 +53,15 @@ class AdoptableFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
-        val apiInterface = ApiServices2.create().getMissingPets()
+        val apiInterface = ApiServices2.create().getFound()
 
-        apiInterface.enqueue( object : Callback<List<MissingPet>> {
-            override fun onResponse(call: Call<List<MissingPet>>?, response: Response<List<MissingPet>>?) {
+        apiInterface.enqueue( object : Callback<List<recyclerPet>> {
+            override fun onResponse(call: Call<List<recyclerPet>>?, response: Response<List<recyclerPet>>?) {
 
                 if(response?.body() != null){
 
                     recyclerView = binding.recyclerViewAdoptablePets
-                    recyclerView.adapter = MissingAdapter(response.body()!!,MissingAdapter.OnClickListener {
+                    recyclerView.adapter = AdoptableAdapter(response.body()!!,AdoptableAdapter.OnClickListener {
 
                         if (repositorioDeUsuario.estasLogueado()){
                             findNavController().navigate(R.id.action_adoptableFragment_to_detailFragment)
@@ -73,7 +75,7 @@ class AdoptableFragment : Fragment() {
 
             }
 
-            override fun onFailure(call: Call<List<MissingPet>>, t: Throwable) {
+            override fun onFailure(call: Call<List<recyclerPet>>, t: Throwable) {
             }
         })
     }

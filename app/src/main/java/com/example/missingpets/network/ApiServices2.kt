@@ -14,10 +14,10 @@ import retrofit2.http.*
 interface ApiServices2 {
 
     @GET("lost")
-    fun getMissingPets(): Call<List<MissingPet>>
+    fun getMissingPets(): Call<List<recyclerPet>>
 
     @GET("found")
-    suspend fun getFound(): Response<List<recyclerPet>>
+    fun getFound(): Call<List<recyclerPet>>
 
     //Fotos
     @Multipart
@@ -32,7 +32,7 @@ interface ApiServices2 {
     suspend fun getAllLost(): List<MissingPet>
 
     @GET("lost")
-    suspend fun getLostById(@Query("id") id: Int): MissingPet
+    fun getLostById(@Query("id") id: Int): Call<Mascota>
 
     @POST("lost")
     suspend fun addLost(@Body missingpet: MissingPet):  Call<ResponseBody?>?

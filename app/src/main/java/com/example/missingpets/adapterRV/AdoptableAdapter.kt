@@ -6,10 +6,11 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.missingpets.R
+import com.example.missingpets.network.MissingPet
 import com.example.missingpets.network.recyclerPet
 import com.squareup.picasso.Picasso
 
-class AdoptableAdapter (private val dataset: List<recyclerPet>, private val onClickListener: OnClickListener)
+class AdoptableAdapter(private val dataset: List<recyclerPet>, private val onClickListener: OnClickListener)
     : RecyclerView.Adapter<AdoptableAdapter.AdoptableViewHolder>() {
 
     class AdoptableViewHolder (val view: View) : RecyclerView.ViewHolder(view) {
@@ -25,7 +26,7 @@ class AdoptableAdapter (private val dataset: List<recyclerPet>, private val onCl
     ): AdoptableViewHolder {
 
         val adapterLayout = LayoutInflater.from(parent.context)
-            .inflate(R.layout.vh_list_encontrado, parent, false)
+            .inflate(R.layout.vh_list_buscado, parent, false)
         Log.d("RV", "onCreateViewHolder")
         return AdoptableViewHolder(adapterLayout)
     }
@@ -52,4 +53,5 @@ class AdoptableAdapter (private val dataset: List<recyclerPet>, private val onCl
     class OnClickListener(val clickListener: (pet: recyclerPet) -> Unit) {
         fun onClick(pet: recyclerPet) = clickListener(pet)
     }
+
 }

@@ -10,7 +10,7 @@ import com.example.missingpets.network.MissingPet
 import com.example.missingpets.network.recyclerPet
 import com.squareup.picasso.Picasso
 
-class MissingAdapter(private val dataset: List<MissingPet>, private val onClickListener: OnClickListener)
+class MissingAdapter(private val dataset: List<recyclerPet>, private val onClickListener: OnClickListener)
     : RecyclerView.Adapter<MissingAdapter.MissingViewHolder>() {
 
     class MissingViewHolder (val view: View) : RecyclerView.ViewHolder(view) {
@@ -50,8 +50,8 @@ class MissingAdapter(private val dataset: List<MissingPet>, private val onClickL
         return dataset.size
     }
 
-    class OnClickListener(val clickListener: (pet: MissingPet) -> Unit) {
-        fun onClick(pet: MissingPet) = clickListener(pet)
+    class OnClickListener(val clickListener: (pet: recyclerPet) -> Unit) {
+        fun onClick(pet: recyclerPet) = clickListener(pet)
     }
 
 }

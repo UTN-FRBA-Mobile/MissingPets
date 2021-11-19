@@ -17,7 +17,14 @@ import java.util.*
 import android.content.Intent
 import android.net.Uri
 import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.missingpets.network.ApiServices2
+import com.example.missingpets.network.Mascota
+import com.example.missingpets.network.MissingPet
 import com.google.android.material.snackbar.Snackbar
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 
 class DetailFragment : Fragment() {
@@ -26,10 +33,14 @@ class DetailFragment : Fragment() {
     private var _binding: FragmentDetailBinding? = null
     private val binding get() = _binding!!
     val repositorioUsuario = RepositorioUsuario
+    private var idmascota: Int = 0
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        arguments?.let {
+            idmascota = it.getInt("id")
+        }
     }
 
     override fun onCreateView(
@@ -43,33 +54,51 @@ class DetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val nombreAnimal = getArgumentoNombreAnimal()
-        val tipoAnimal = getArgumentoTipoAnimal()
-        val sexoAnimal = getArgumentoSexoAnimal()
-        val fechaPerdido = getArgumentoFechaPerdido()
-        val latitude = getArgumentoLatitude()
-        val longitude = getArgumentoLongitude()
+        //
+        val apiInterface = ApiServices2.create().getLostById(idmascota)
 
-        detailViewModel = DetailViewModel(nombreAnimal, tipoAnimal, sexoAnimal, fechaPerdido)
+        apiInterface.enqueue( object : Callback<Mascota> {
+            override fun onResponse(call: Call<Mascota>?, response: Response<Mascota>?) {
 
-        completarLabels(nombreAnimal, tipoAnimal, sexoAnimal, fechaPerdido, latitude, longitude)
+                if(response?.body() != null){
+                    val nombreMascota = response.body()!!.nombreMascota
+                    val tipoAnimal = response.body()!!.tipoAnimal
+                    val sexoAnimal = response.body()!!.sexoAnimal
+                    val fechaPerdido = response.body()!!.fechaPerdido
+                    val longitude = response.body()!!.longitude
+                    val latitude = response.body()!!.latitude
 
-        binding.btnContactar.setOnClickListener {
-            if (repositorioUsuario.noEstasLogueado()){
-                this.irAlLoguin()
+                    detailViewModel = DetailViewModel(nombreMascota, tipoAnimal, sexoAnimal, fechaPerdido)
+
+                    completarLabels(nombreMascota, tipoAnimal, sexoAnimal, fechaPerdido, latitude, longitude)
+
+                    binding.btnContactar.setOnClickListener {
+                        if (repositorioUsuario.noEstasLogueado()){
+                            irAlLoguin()
+                        }
+                        else{
+                            val numeroTelefono = detailViewModel.getNumeroTelefono()
+                            abrirWhatsapp(view, numeroTelefono)
+                        }
+                    }
+                    binding.imageviewMapa.setOnClickListener {
+                        val action = R.id.action_detailFragment_to_mapsFragment
+                        val bundle = Bundle()
+                        bundle.putString("latitude", binding.tvLatitude.text.toString().trim())
+                        bundle.putString("longitude", binding.tvLongitude.text.toString().trim())
+                        findNavController().navigate(action,bundle)
+                    }
+                }
+
             }
-            else{
-                val numeroTelefono = detailViewModel.getNumeroTelefono()
-                abrirWhatsapp(view, numeroTelefono)
+
+            override fun onFailure(call: Call<Mascota>, t: Throwable) {
             }
-        }
-        binding.imageviewMapa.setOnClickListener {
-            val action = R.id.action_detailFragment_to_mapsFragment
-            val bundle = Bundle()
-            bundle.putString("latitude", binding.tvLatitude.text.toString().trim())
-            bundle.putString("longitude", binding.tvLongitude.text.toString().trim())
-            findNavController().navigate(action,bundle)
-        }
+        })
+        //
+
+
+
     }
 
     fun irAlLoguin(){
@@ -124,7 +153,7 @@ class DetailFragment : Fragment() {
         completarLabelLatitude(latitude)
         completarLabelLongitude(longitude)
     }
-
+/*
     fun getArgumentoNombreAnimal(): String{
         return "pelusa"
     }
@@ -147,6 +176,6 @@ class DetailFragment : Fragment() {
 
     fun getArgumentoLongitude(): Number{
         return -51
-    }
+    }*/
 
 }
