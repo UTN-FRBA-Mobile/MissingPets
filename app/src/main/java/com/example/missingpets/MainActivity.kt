@@ -3,13 +3,16 @@ package com.example.missingpets
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.example.missingpets.databinding.ActivityMainBinding
+import com.example.missingpets.network.ApiClient
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import kotlin.math.log
 
 class MainActivity : AppCompatActivity() {
 
@@ -26,6 +29,7 @@ class MainActivity : AppCompatActivity() {
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragment)  as NavHostFragment
         val navController = navHostFragment.navController
         botonNavegationView.setupWithNavController(navController)
+
 
     }
 
