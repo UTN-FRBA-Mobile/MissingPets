@@ -7,7 +7,7 @@
     <string name="main_fragment_missing_pets">Ver mascotas perdidas.</string>
     <string name="main_fragment_pets_for_adoption">Ver mascotas encontradas.</string>
     <string name="main_fragment_upload_pet_for_adoption">Publicar mascota encontrada.</string>
-    <string name="main_fragment_upload_missing_pets">Publicar mascota perdida.</string>
+    <string name="main_fragment_upload_pets">Publicar mascota</string>
     <string name="main_fragment_login">Logearme.</string>
     <string name="main_fragment_settings">Configuraciones.</string>
     <!-- MissingFragment -->
@@ -76,4 +76,7 @@
     <string name="publicar_detail">Publicar</string>
     <string name="mas_detalles">Más detalles</string>
     <string name="about_us">Somos un grupo de personas con voluntad de ayudar brindando una solución de software gratuita a aquellos que extraviaron sus mascotas, buscamos que puedan reunirse con sus mascotas extraviadas en el menor tiempo posible con la colaboración de la comunidad de usuarios de esta aplicación.</string>
+
+    <string name="post_encontrado">Encontré una mascota</string>
+    <string name="post_perdido">Perdí una mascota</string>
 </resources>
