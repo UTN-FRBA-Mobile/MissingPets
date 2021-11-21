@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
@@ -43,11 +44,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-
-        when (item.itemId) {
-            //R.id.action_logout -> //TODO(): Logica del Logout
-        }
         val navController = findNavController(R.id.fragment)
+        when (item.itemId) {
+
+          R.id.action_logout ->{
+              Toast.makeText(this,"Hacer logout",Toast.LENGTH_SHORT).show()
+              //TODO(): Logica del Logout
+              navController.navigate(R.id.mainFragment)
+          }
+        }
         return  item.onNavDestinationSelected(navController)|| super.onOptionsItemSelected(item)
     }
 
