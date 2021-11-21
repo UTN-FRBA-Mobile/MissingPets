@@ -9,8 +9,12 @@
     <string name="main_fragment_upload_pet_for_adoption">Publicar mascota encontrada.</string>
     <string name="main_fragment_upload_missing_pets">Publicar mascota perdida.</string>
     <string name="main_fragment_login">Logearme.</string>
-
     <string name="main_fragment_settings">Configuraciones.</string>
+    <!-- MissingFragment -->
+    <string name="missing_fragment_title">Mascotas perdidas.</string>
+    <!-- AdoptableFragment -->
+    <string name="adoptable_fragment_title">Mascotas en adopcion.</string>
+
     <string name="preferences_ui_title">Interfaz</string>
     <string name="preferences_ui_img_size">Tamaño de la imagen</string>
     <string name="preferences_key_ui_img_size">pref_ui_img_size</string>

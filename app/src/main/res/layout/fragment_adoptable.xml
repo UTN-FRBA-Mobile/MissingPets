@@ -14,7 +14,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Mascotas perdidas" />
+            android:text="@string/adoptable_fragment_title" />
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view_adoptable_pets"
             android:layout_width="match_parent"
