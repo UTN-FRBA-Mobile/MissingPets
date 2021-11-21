@@ -2,10 +2,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/configurationFragment"
         android:title="Configuraciones"
         app:showAsAction="never"/>
-    <item android:id="@+id/action_about"
+    <item android:id="@+id/aboutUsFragment"
         android:title="Quienes somos"
         app:showAsAction="never"/>
     <item android:id="@+id/action_logout"
