@@ -2,6 +2,7 @@ package com.example.missingpets.network
 
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import kotlinx.coroutines.Deferred
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.Retrofit
@@ -10,9 +11,10 @@ import retrofit2.http.*
 import okhttp3.MultipartBody
 import okhttp3.ResponseBody
 import okhttp3.RequestBody
+import org.json.JSONArray
 
 //Defino los endpoints
-interface BackendApiService_NovaMASSSSS {
+interface BackendApiService {
     @GET("photos")
     suspend fun getPhotos(): Call<List<ApiData>>
 
@@ -34,8 +36,11 @@ interface BackendApiService_NovaMASSSSS {
     @GET("lost")
     suspend fun getAllLost(): List<MissingPet>
 
-    @GET("lost")
-    suspend fun getLostById(@Query("id") id: Int): MissingPet
+    @GET("posts/{id}")
+    fun getPostsById(@Path("id") id: Int): okhttp3.Response
+
+    @GET("lost/{id}")
+    fun getLostById(@Path("id") id: Int): Mascota
 
     @POST("lost")
     suspend fun addLost(@Body missingpet: MissingPet):  Call<ResponseBody?>?
@@ -73,7 +78,7 @@ interface BackendApiService_NovaMASSSSS {
 
     object ApiClient {
 
-        private const val BASE_URL = "https://sea.net.ar/missingpets/api/"
+       private const val BASE_URL = "https://sea.net.ar/missingpets/api/"
 
         private val moshi = Moshi.Builder()
                 .add(KotlinJsonAdapterFactory())
@@ -86,8 +91,8 @@ interface BackendApiService_NovaMASSSSS {
                 .build()
         }
 
-        val backendService: BackendApiService_NovaMASSSSS by lazy {
-            retrofit.create(BackendApiService_NovaMASSSSS::class.java)
+        val backendService: BackendApiService by lazy {
+            retrofit.create(BackendApiService::class.java)
         }
 
 }

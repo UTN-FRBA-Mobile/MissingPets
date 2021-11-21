@@ -16,12 +16,19 @@ import com.example.missingpets.viewModels.RegisterViewModel
 import java.util.*
 import android.content.Intent
 import android.net.Uri
+import android.util.Log
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.missingpets.dataRV.MissingDatasource
+import com.example.missingpets.dataRV.UserDatasource
 import com.example.missingpets.network.ApiServices2
 import com.example.missingpets.network.Mascota
 import com.example.missingpets.network.MissingPet
+import com.example.missingpets.network.recyclerPet
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -54,31 +61,31 @@ class DetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //
-        val apiInterface = ApiServices2.create().getLostById(idmascota)
+        val apiInterface0 = ApiServices2.create().getLostById(idmascota)
 
-        apiInterface.enqueue( object : Callback<Mascota> {
+        apiInterface0.enqueue(object : Callback<Mascota> {
             override fun onResponse(call: Call<Mascota>?, response: Response<Mascota>?) {
+                if (response != null && response.isSuccessful && response.body() != null) {
+                    Log.d("SUCCESS MASCOTA API", response.body()!!.toString())
 
-                if(response?.body() != null){
-                    val nombreMascota = response.body()!!.nombreMascota
-                    val tipoAnimal = response.body()!!.tipoAnimal
-                    val sexoAnimal = response.body()!!.sexoAnimal
-                    val fechaPerdido = response.body()!!.fechaPerdido
+                    val nombreMascota = response.body()?.nombreMascota ?: ""
+                    val tipoAnimal = response.body()?.tipoAnimal ?: ""
+                    val sexoAnimal = response.body()?.sexoAnimal ?: ""
+                    val fechaPerdido = response.body()?.fechaPerdido ?: ""
                     val longitude = response.body()!!.longitude
                     val latitude = response.body()!!.latitude
 
-                    detailViewModel = DetailViewModel(nombreMascota, tipoAnimal, sexoAnimal, fechaPerdido)
+                    detailViewModel =
+                        DetailViewModel(nombreMascota, tipoAnimal, sexoAnimal, fechaPerdido)
 
-                    completarLabels(nombreMascota, tipoAnimal, sexoAnimal, fechaPerdido, latitude, longitude)
+                    //  completarLabels(nombreMascota, tipoAnimal, sexoAnimal, fechaPerdido, latitude, longitude)
 
                     binding.btnContactar.setOnClickListener {
-                        if (repositorioUsuario.noEstasLogueado()){
-                            irAlLoguin()
-                        }
-                        else{
+                        if (repositorioUsuario.noEstasLogueado()) {
+                              irAlLoguin()
+                        } else {
                             val numeroTelefono = detailViewModel.getNumeroTelefono()
-                            abrirWhatsapp(view, numeroTelefono)
+                              abrirWhatsapp(view, numeroTelefono)
                         }
                     }
                     binding.imageviewMapa.setOnClickListener {
@@ -86,25 +93,21 @@ class DetailFragment : Fragment() {
                         val bundle = Bundle()
                         bundle.putString("latitude", binding.tvLatitude.text.toString().trim())
                         bundle.putString("longitude", binding.tvLongitude.text.toString().trim())
-                        findNavController().navigate(action,bundle)
+                        findNavController().navigate(action, bundle)
                     }
                 }
-
             }
 
             override fun onFailure(call: Call<Mascota>, t: Throwable) {
+                Log.e("Error:::", "Error " + t!!.message)
             }
         })
-        //
-
-
-
     }
 
-    fun irAlLoguin(){
-        val action = R.id.action_detailFragment_to_loginFragment2
-        findNavController().navigate(action)
-    }
+        fun irAlLoguin() {
+            val action = R.id.action_detailFragment_to_loginFragment2
+            findNavController().navigate(action)
+        }
 
     //El numero de telefono debe ser completo en formato internacional sin parentesis, ni guiones
     //ni nada, solo los numeros. Ejemplo: 5491169013434
