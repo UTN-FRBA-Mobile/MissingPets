@@ -26,12 +26,14 @@ import com.example.missingpets.network.Mascota
 import com.example.missingpets.network.MissingPet
 import com.example.missingpets.network.recyclerPet
 import com.google.android.material.snackbar.Snackbar
+import com.squareup.picasso.Picasso
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import android.widget.ImageView
 
 
 class DetailFragment : Fragment() {
@@ -73,13 +75,16 @@ class DetailFragment : Fragment() {
                     val tipoAnimal = response.body()?.elementAt(0)?.tipoAnimal ?: ""
                     val sexoAnimal = response.body()?.elementAt(0)?.sexoAnimal ?: ""
                     val fechaPerdido = response.body()?.elementAt(0)?.fechaPerdido ?: ""
-                    val longitude = response.body()!!.elementAt(0)?.longitude
-                    val latitude = response.body()!!.elementAt(0)?.latitude
+                    val longitude = response.body()!!.elementAt(0)?.longitude.toString() ?: "0.0"
+                    val latitude = response.body()!!.elementAt(0)?.latitude.toString() ?: "0.0"
+                    val photopath = resources.getString(com.example.missingpets.R.string.images_root_path) + response.body()!!.elementAt(0)?.photopath.toString() ?: "0.0"
 
                     detailViewModel =
                         DetailViewModel(nombreMascota, tipoAnimal, sexoAnimal, fechaPerdido)
 
-                    //  completarLabels(nombreMascota, tipoAnimal, sexoAnimal, fechaPerdido, latitude, longitude)
+                      completarLabels(nombreMascota, tipoAnimal, sexoAnimal, fechaPerdido, latitude, longitude)
+
+                    loadImage(photopath)
 
                     binding.btnContactar.setOnClickListener {
                         if (repositorioUsuario.noEstasLogueado()) {
@@ -140,16 +145,16 @@ class DetailFragment : Fragment() {
         binding.tvFechaPerdido.text = fechaPerdido
     }
 
-    fun completarLabelLatitude(latitude: Number){
-        binding.tvLatitude.text = latitude.toString()
+    fun completarLabelLatitude(latitude: String){
+        binding.tvLatitude.text = latitude
     }
 
-    fun completarLabelLongitude(longitude: Number){
-        binding.tvLongitude.text = longitude.toString()
+    fun completarLabelLongitude(longitude: String){
+        binding.tvLongitude.text = longitude
     }
 
     fun completarLabels(nombreMascota: String, tipoAnimal: String, sexoAnimal: String, fechaPerdido: String,
-                latitude: Number, longitude: Number){
+                latitude: String, longitude: String){
         completarLabelNombreAnimal(nombreMascota)
         completarLabelTipoAnimal(tipoAnimal)
         completarLabelSexoAnimal(sexoAnimal)
@@ -157,6 +162,12 @@ class DetailFragment : Fragment() {
         completarLabelLatitude(latitude)
         completarLabelLongitude(longitude)
     }
+
+    fun loadImage(photopath: String) {
+        var photoview: ImageView = getView()!!.findViewById(R.id.iv_mascota)
+        Picasso.get().load(photopath).into(photoview)
+    }
+
 /*
     fun getArgumentoNombreAnimal(): String{
         return "pelusa"

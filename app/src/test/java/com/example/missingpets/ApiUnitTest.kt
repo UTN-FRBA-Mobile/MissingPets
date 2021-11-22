@@ -21,6 +21,35 @@ class ApiUnitTest {
        // assert(typeOf(id).equals(List))
     }
 
+    @Test
+    fun postPet() {
+        var pet: Mascota = Mascota()
+
+        //TODO asignar ID del usuario loggeado
+        pet.idcreator = 0
+
+        //TODO leer coordenadas del mapa
+        //pet.latitude = ???
+        //pet.longitude = ???
+
+        pet.description = ""
+
+        //TODO hacer el post de la foto y obtener el path
+        pet.photopath = "gato.jpg"
+
+        pet.nombreMascota = ""
+        pet.tipoAnimal = ""
+        pet.sexoAnimal = ""
+
+        //TODO validar formato de fecha
+        pet.fechaPerdido = "2021-01-10"
+
+        pet.estado = "perdido"
+
+        var id = ApiServices2.create().publicarMascota(pet)
+        Log.d("Unit Test", "id devuelto por el servidor"+ id)
+    }
+
     /*@T est
     fun retrieveUserId() {
         var id = ApiServices2.create().getLostById(0)

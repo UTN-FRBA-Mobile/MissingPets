@@ -8,6 +8,7 @@ import android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -18,10 +19,16 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.navigation.fragment.findNavController
+import com.example.missingpets.R.id.action_detailFragment_to_loginFragment2
 import com.example.missingpets.databinding.FragmentNewPostBinding
-import com.example.missingpets.databinding.FragmentPostEncontradoBinding
 import com.example.missingpets.models.RepositorioUsuario
+import com.example.missingpets.network.ApiServices2
+import com.example.missingpets.network.Mascota
 import com.google.android.material.snackbar.Snackbar
+import okhttp3.ResponseBody
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -111,9 +118,38 @@ class NewPostFragment : Fragment() {
 
         binding.btnPublicar.setOnClickListener {
             if (repositorioUsuario.noEstasLogueado()) {
+
+                //FIXME se cierra la app cuando llega aca
                 irAlLoguin()
             } else {
-                //TODO: post de publicación
+                Log.d("POST", "Alta de Mascota")
+                var pet: Mascota = Mascota()
+
+                //TODO asignar ID del usuario loggeado
+                pet.idcreator = 0
+
+                //TODO leer coordenadas del mapa
+                pet.latitude = 40f
+                pet.longitude = 30f
+
+                pet.description = binding.etMasDetallesEncontrado.text.toString()
+
+                //TODO hacer el post de la foto y obtener el path
+                pet.photopath = "gato.jpg"
+
+                pet.nombreMascota = binding.etNombreAnimal.text.toString()
+                pet.tipoAnimal = binding.spnTipoAnimales.selectedItem.toString()
+                pet.sexoAnimal = binding.spnSexoAnimales.selectedItem.toString()
+
+                //TODO validar formato de fecha
+                pet.fechaPerdido = "2021-01-10"
+
+                if(binding.rbPerdido.isSelected()){
+                    pet.estado = "perdido"
+                } else {
+                    pet.estado = "encontrado"
+                }
+                publicarMascota(pet)
             }
         }
 
@@ -196,7 +232,40 @@ class NewPostFragment : Fragment() {
     }
 
     private fun irAlLoguin() {
-        val action = R.id.action_detailFragment_to_loginFragment2
+        val action = action_detailFragment_to_loginFragment2
         findNavController().navigate(action)
     }
+
+
+    fun publicarMascota(pet: Mascota) {
+        val apiInterface0 = ApiServices2.create().addLost(
+            pet.idcreator,
+            pet.latitude,
+            pet.longitude,
+            pet.description,
+            pet.photopath,
+            pet.nombreMascota,
+            pet.tipoAnimal,
+            pet.sexoAnimal,
+            pet.fechaPerdido,
+            pet.estado
+        )
+
+        apiInterface0!!.enqueue(object : Callback<ResponseBody?> {
+
+            override fun onResponse(call: Call<ResponseBody?>, response: Response<ResponseBody?>) {
+                if (response != null && response.isSuccessful && response.body() != null) {
+                    Log.d("SUCCESS ALTA MASCOTA", response.body()!!.toString())
+                    Log.d("SUCCESS ALTA MASCOTA", response.message().toString())
+
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseBody?>, t: Throwable) {
+                Log.e("Error:::", "Error " + t!!.message)
+            }
+        })
+    }
+
+
 }

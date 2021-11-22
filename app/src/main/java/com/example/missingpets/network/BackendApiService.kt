@@ -42,8 +42,8 @@ interface BackendApiService {
     @GET("lost/{id}")
     fun getLostById(@Path("id") id: Int): Mascota
 
-    @POST("lost")
-    suspend fun addLost(@Body missingpet: MissingPet):  Call<ResponseBody?>?
+//    @POST("lost")
+//    suspend fun addLost(@Body missingpet: MissingPet):  Call<ResponseBody?>?
 
     //PUT hace update
     @PUT("lost")

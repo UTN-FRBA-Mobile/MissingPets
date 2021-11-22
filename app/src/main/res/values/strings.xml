@@ -79,4 +79,5 @@
 
     <string name="post_encontrado">Encontré una mascota</string>
     <string name="post_perdido">Perdí una mascota</string>
+    <string name="images_root_path">https://sea.net.ar/missingpets/img/</string>
 </resources>

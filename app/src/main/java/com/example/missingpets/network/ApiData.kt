@@ -23,18 +23,18 @@ data class MissingPet (
 )
 
 data class Mascota (
-    @Json(name = "id") val id: Int? = null,
-    @Json(name = "idcreator") val idcreator: Int? = null,
-    @Json(name = "nombremascota") val nombreMascota: String? = null,
-    @Json(name = "tipoanimal") val tipoAnimal: String? = null,
-    @Json(name = "sexoanimal") val sexoAnimal: String? = null,
-    @Json(name = "fechaperdido") val fechaPerdido: String? = null,
-    @Json(name = "photopath") val photopath: String? = null,
-    @Json(name = "estado") val estado: String? = null,  // L=Lost  F=Found  A=Adoptable  D=Adoptado
-    @Json(name = "latitude") val latitude: Float? = null,
-    @Json(name = "longitude") val longitude: Float? = null,
-    @Json(name = "description") val description: String? = null,
-    @Json(name = "creationdate") val creationdate: String? = null,
+    @Json(name = "id") var id: Int? = null,
+    @Json(name = "idcreator") var idcreator: Int? = null,
+    @Json(name = "nombremascota") var nombreMascota: String? = null,
+    @Json(name = "tipoanimal") var tipoAnimal: String? = null,
+    @Json(name = "sexoanimal") var sexoAnimal: String? = null,
+    @Json(name = "fechaperdido") var fechaPerdido: String? = null,//TODO cambiar por Date
+    @Json(name = "photopath") var photopath: String? = null,
+    @Json(name = "estado") var estado: String? = null,  // L=Lost  F=Found  A=Adoptable  D=Adoptado
+    @Json(name = "latitude") var latitude: Float? = null,
+    @Json(name = "longitude") var longitude: Float? = null,
+    @Json(name = "description") var description: String? = null,
+    @Json(name = "creationdate") var creationdate: String? = null,
 )
 
 
