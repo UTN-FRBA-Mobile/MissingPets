@@ -79,48 +79,56 @@ class RegisterFragment : Fragment() {
             val phoneNumber = getPhoneNumber()
             //viewModel.registrar(username, email, contrasenia, phoneNumber)
 
-            try {
-                val apiInterface = ApiServices2.create()
+            if(!username.isNullOrEmpty()&&!email.isNullOrEmpty()&&!password.isNullOrEmpty()&&!phoneNumber.isNullOrEmpty()){
+                try {
+                    val apiInterface = ApiServices2.create()
 
-                val params = HashMap<String?, String?>()
-                params["username"] = username
-                params["email"] = email
-                params["password"] = password
-                params["phonenumber"] = phoneNumber
+                    val params = HashMap<String?, String?>()
+                    params["username"] = username
+                    params["email"] = email
+                    params["password"] = password
+                    params["phonenumber"] = phoneNumber
 
-                CoroutineScope(Dispatchers.IO).launch {
+                    CoroutineScope(Dispatchers.IO).launch {
 
-                    // Do the POST request and get response
-                    val response = apiInterface.insertNewUser(params)
 
-                    withContext(Dispatchers.Main) {
-                        if (response.isSuccessful) {
+                        val response = apiInterface.insertNewUser(params)
 
-                            // Convert raw JSON to pretty JSON using GSON library
-                            val gson = GsonBuilder().setPrettyPrinting().create()
-                            val prettyJson = gson.toJson(
-                                JsonParser.parseString(
-                                    response.body()
-                                        ?.string() // About this thread blocking annotation : https://github.com/square/retrofit/issues/3255
+                        withContext(Dispatchers.Main) {
+                            if (response.isSuccessful) {
+
+                                // Convert raw JSON to pretty JSON using GSON library
+                                val gson = GsonBuilder().setPrettyPrinting().create()
+                                val prettyJson = gson.toJson(
+                                    JsonParser.parseString(
+                                        response.body()
+                                            ?.string()
+                                    )
                                 )
-                            )
 
-                            Toast.makeText(context,"Gracias por registrarse, porfavor ingrese.",Toast.LENGTH_SHORT).show()
+                                Toast.makeText(context,"Gracias por registrarse, porfavor ingrese.",Toast.LENGTH_SHORT).show()
 
-                            findNavController().navigate(R.id.action_registerFragment_to_loginFragment2)
+                                findNavController().navigate(R.id.action_registerFragment_to_loginFragment2)
 
-                            Log.d("Pretty Printed JSON :", prettyJson)
+                                Log.d("Pretty Printed JSON :", prettyJson)
 
-                        } else {
+                            } else {
 
-                            Log.d("RETROFIT_ERROR", response.code().toString())
+                                Log.d("RETROFIT_ERROR", response.code().toString())
 
+                            }
                         }
                     }
+                } catch (e: NumberFormatException) {
+
                 }
-            } catch (e: NumberFormatException) {
+
+            }else{
+                Toast.makeText(context,"Complete todos los campos.",Toast.LENGTH_SHORT).show()
 
             }
+
+
 
 
 
