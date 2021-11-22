@@ -31,8 +31,8 @@ interface ApiServices2 {
     @GET("lost")
     suspend fun getAllLost(): List<MissingPet>
 
-    @GET("lost/{id}")
-    fun getLostById(@Path("id") id: Int): Call<Mascota>
+    @GET("lost/")
+    fun getLostById(@Query("id") id: Int): Call<List<Mascota>>
 
     @POST("lost")
     suspend fun addLost(@Body missingpet: MissingPet):  Call<ResponseBody?>?

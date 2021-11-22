@@ -63,17 +63,18 @@ class DetailFragment : Fragment() {
 
         val apiInterface0 = ApiServices2.create().getLostById(idmascota)
 
-        apiInterface0.enqueue(object : Callback<Mascota> {
-            override fun onResponse(call: Call<Mascota>?, response: Response<Mascota>?) {
+        apiInterface0.enqueue(object : Callback<List<Mascota>> {
+            override fun onResponse(call: Call<List<Mascota>>?, response: Response<List<Mascota>>?) {
                 if (response != null && response.isSuccessful && response.body() != null) {
                     Log.d("SUCCESS MASCOTA API", response.body()!!.toString())
+                    Log.d("NOMBRE MASCOTA", response.body()?.elementAt(0)?.nombreMascota ?: "")
 
-                    val nombreMascota = response.body()?.nombreMascota ?: ""
-                    val tipoAnimal = response.body()?.tipoAnimal ?: ""
-                    val sexoAnimal = response.body()?.sexoAnimal ?: ""
-                    val fechaPerdido = response.body()?.fechaPerdido ?: ""
-                    val longitude = response.body()!!.longitude
-                    val latitude = response.body()!!.latitude
+                    val nombreMascota = response.body()?.elementAt(0)?.nombreMascota ?: ""
+                    val tipoAnimal = response.body()?.elementAt(0)?.tipoAnimal ?: ""
+                    val sexoAnimal = response.body()?.elementAt(0)?.sexoAnimal ?: ""
+                    val fechaPerdido = response.body()?.elementAt(0)?.fechaPerdido ?: ""
+                    val longitude = response.body()!!.elementAt(0)?.longitude
+                    val latitude = response.body()!!.elementAt(0)?.latitude
 
                     detailViewModel =
                         DetailViewModel(nombreMascota, tipoAnimal, sexoAnimal, fechaPerdido)
@@ -98,7 +99,7 @@ class DetailFragment : Fragment() {
                 }
             }
 
-            override fun onFailure(call: Call<Mascota>, t: Throwable) {
+            override fun onFailure(call: Call<List<Mascota>>, t: Throwable) {
                 Log.e("Error:::", "Error " + t!!.message)
             }
         })
