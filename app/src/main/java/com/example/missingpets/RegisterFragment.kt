@@ -1,6 +1,7 @@
 package com.example.missingpets
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -10,7 +11,14 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.example.missingpets.viewModels.RegisterViewModel
 import com.example.missingpets.databinding.FragmentRegisterBinding
+import com.example.missingpets.network.ApiServices2
 import com.google.android.material.snackbar.Snackbar
+import com.google.gson.GsonBuilder
+import com.google.gson.JsonParser
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -67,9 +75,59 @@ class RegisterFragment : Fragment() {
         binding.btnRegistrarse.setOnClickListener {
             val username = getUsername()
             val email = getEmail()
-            val contrasenia = getContrasenia()
+            val password = getContrasenia()
             val phoneNumber = getPhoneNumber()
-            viewModel.registrar(username, email, contrasenia, phoneNumber)
+            //viewModel.registrar(username, email, contrasenia, phoneNumber)
+
+            try {
+                val apiInterface = ApiServices2.create()
+
+                val params = HashMap<String?, String?>()
+                params["username"] = username
+                params["email"] = email
+                params["password"] = password
+                params["phonenumber"] = phoneNumber
+
+                CoroutineScope(Dispatchers.IO).launch {
+
+                    // Do the POST request and get response
+                    val response = apiInterface.insertNewUser(params)
+
+                    withContext(Dispatchers.Main) {
+                        if (response.isSuccessful) {
+
+                            // Convert raw JSON to pretty JSON using GSON library
+                            val gson = GsonBuilder().setPrettyPrinting().create()
+                            val prettyJson = gson.toJson(
+                                JsonParser.parseString(
+                                    response.body()
+                                        ?.string() // About this thread blocking annotation : https://github.com/square/retrofit/issues/3255
+                                )
+                            )
+
+                            Toast.makeText(context,"Gracias por registrarse, porfavor ingrese.",Toast.LENGTH_SHORT).show()
+
+                            findNavController().navigate(R.id.action_registerFragment_to_loginFragment2)
+
+                            Log.d("Pretty Printed JSON :", prettyJson)
+
+                        } else {
+
+                            Log.d("RETROFIT_ERROR", response.code().toString())
+
+                        }
+                    }
+                }
+            } catch (e: NumberFormatException) {
+
+            }
+
+
+
+
+
+
+
         }
 
         binding.tvIniciarSesion.setOnClickListener {

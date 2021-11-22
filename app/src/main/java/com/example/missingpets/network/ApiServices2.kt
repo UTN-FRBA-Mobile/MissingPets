@@ -67,6 +67,10 @@ interface ApiServices2 {
     @DELETE("user")
     suspend fun deleteUser(@Query("id") id: Int):  Call<ResponseBody?>?
 
+    @FormUrlEncoded
+    @POST("user/")
+    suspend fun insertNewUser(@FieldMap params: HashMap<String?,String?>): Response<ResponseBody>
+
     companion object {
 
         var BASE_URL = "https://sea.net.ar/missingpets/api/"
