@@ -18,6 +18,7 @@ import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import com.example.missingpets.R.id.action_detailFragment_to_loginFragment2
 import com.example.missingpets.databinding.FragmentNewPostBinding
@@ -49,6 +50,9 @@ class NewPostFragment : Fragment() {
     private val binding get() = _binding!!
     private val repositorioUsuario = RepositorioUsuario
 
+    private var marcadorLatitude: Float? = null
+    private var marcadorLongitude: Float? = null
+
 
     private var resultLauncherCamara = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
@@ -70,9 +74,17 @@ class NewPostFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+        // Use the Kotlin extension in the fragment-ktx artifact
+        setFragmentResultListener("requestLatitude") { requestLatitude, bundle ->
+            // We use a String here, but any type that can be put in a Bundle is supported
+            marcadorLatitude = bundle.getFloat("bundleLatitude")
+            // Do something with the result
+            // Use the Kotlin extension in the fragment-ktx artifact
+        }
+        setFragmentResultListener("requestLongitude") { requestLongitude, bundle ->
+            // We use a String here, but any type that can be put in a Bundle is supported
+            marcadorLongitude = bundle.getFloat("bundleLongitude")
+            // Do something with the result
         }
     }
 
@@ -149,7 +161,9 @@ class NewPostFragment : Fragment() {
                 } else {
                     pet.estado = "encontrado"
                 }
-                publicarMascota(pet)
+                if(validarCamposVacios(pet)) {
+                    publicarMascota(pet)
+                }
             }
         }
 
@@ -161,6 +175,26 @@ class NewPostFragment : Fragment() {
             findNavController().navigate(action, bundle)
         }
     }
+
+    private fun validarCamposVacios(pet: Mascota): Boolean {
+
+        if (pet.latitude ==0f || pet.longitude==0f) {
+            Toast.makeText(requireContext(), "Es obligatiorio completar latitud y longitud",
+                Toast.LENGTH_LONG).show();
+            return  false
+        }
+        if (pet.description.isNullOrEmpty() || pet.photopath.isNullOrEmpty() ||
+            pet.nombreMascota.isNullOrEmpty() || pet.tipoAnimal.isNullOrEmpty() ||
+            pet.sexoAnimal.isNullOrEmpty() || pet.fechaPerdido.isNullOrEmpty() ||
+            pet.estado.isNullOrEmpty()
+        ) {
+            Toast.makeText(requireContext(), "Hay campos obligatorios que debe completar",
+                Toast.LENGTH_LONG).show();
+            return false
+        }
+        return true
+    }
+
 
     private fun showDatePickerDialog() {
         val datePicker = DatePickerFragment { day, month, year -> onDateSelected(day, month, year) }

@@ -17,7 +17,9 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResult
 import com.example.missingpets.databinding.FragmentMaps2Binding
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -147,8 +149,9 @@ class MapsFragment : Fragment() , OnMapReadyCallback { //, OnInfoWindowClickList
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
         if(nuevoPost){
+
             // aquí se me cuelga cuando voy a encender el gps para luego mostrar la ubicacion
-             activarGps()
+            // activarGps()
             //
             mostrarUbicacionActual()
         }
@@ -314,6 +317,10 @@ class MapsFragment : Fragment() , OnMapReadyCallback { //, OnInfoWindowClickList
         mostrarMensaje("Save New Post Position: $latitude , $longitude")
        // dbRef.child("latitude").setValue(latitude)
        // dbRef.child("longitude").setValue(longitude)
+
+        // Use the Kotlin extension in the fragment-ktx artifact
+        setFragmentResult("requestLatitude", bundleOf("bundleLatitude" to latitude))
+        setFragmentResult("requestLongitude", bundleOf("bundleLongitude" to longitude))
     }
 
     @SuppressLint("MissingPermission")

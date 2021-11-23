@@ -75,5 +75,8 @@ dependencies {
 
     implementation 'com.google.code.gson:gson:2.8.9'
 
+    // lo uso para recibir longitud latitud del del fragment mapa al fragment newpost
+    implementation 'androidx.fragment:fragment-ktx:1.3.6'
+
     
 }
