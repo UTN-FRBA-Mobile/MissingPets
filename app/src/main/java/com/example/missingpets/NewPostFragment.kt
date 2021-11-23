@@ -8,6 +8,7 @@ import android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -18,12 +19,16 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.navigation.fragment.findNavController
-import com.example.missingpets.dataRV.MissingDatasource
+import com.example.missingpets.R.id.action_detailFragment_to_loginFragment2
 import com.example.missingpets.databinding.FragmentNewPostBinding
-import com.example.missingpets.databinding.FragmentPostEncontradoBinding
 import com.example.missingpets.models.RepositorioUsuario
+import com.example.missingpets.network.ApiServices2
 import com.example.missingpets.network.Mascota
 import com.google.android.material.snackbar.Snackbar
+import okhttp3.ResponseBody
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -81,6 +86,7 @@ class NewPostFragment : Fragment() {
         //Spinner del tipo del animal
         val tipoDeAnimal = resources.getStringArray(R.array.animals)
         val spinnerAnimales = binding.spnTipoAnimales
+
         val adapterAnimales: ArrayAdapter<String> = initializeSpinnerAdapter(tipoDeAnimal, spinnerAnimales)
         spinnerAnimales.adapter = adapterAnimales
 
@@ -108,42 +114,44 @@ class NewPostFragment : Fragment() {
         }
 
         binding.dateCuando.setOnClickListener {
-            showDatePickerDialog()
-        }
+            showDatePickerDialog() }
 
         binding.btnPublicar.setOnClickListener {
+            if (repositorioUsuario.noEstasLogueado()) {
+
+                //FIXME se cierra la app cuando llega aca
+                irAlLoguin()
+            } else {
+                Log.d("POST", "Alta de Mascota")
+                var pet: Mascota = Mascota()
+
+                //TODO asignar ID del usuario loggeado
+                pet.idcreator = 0
+
+                //TODO leer coordenadas del mapa
+                pet.latitude = 40f
+                pet.longitude = 30f
+
+                pet.description = binding.etMasDetallesEncontrado.text.toString()
+
+                //TODO hacer el post de la foto y obtener el path
+                pet.photopath = "gato.jpg"
+
+                pet.nombreMascota = binding.etNombreAnimal.text.toString()
+                pet.tipoAnimal = binding.spnTipoAnimales.selectedItem.toString()
+                pet.sexoAnimal = binding.spnSexoAnimales.selectedItem.toString()
+
+                //TODO validar formato de fecha
+                pet.fechaPerdido = "2021-01-10"
+
+                if(binding.rbPerdido.isSelected()){
+                    pet.estado = "perdido"
+                } else {
+                    pet.estado = "encontrado"
+                }
+                publicarMascota(pet)
+            }
         }
-        // TODO: Esta parte irAlLoguin() si que va pero la comente porque se cuelga
-
-        //  if (repositorioUsuario.noEstasLogueado()) {
-        //      irAlLoguin()
-        //  } else {
-
-        // ASIGNO LOS CAMPOS
-        val nombreMascota = binding.etNombreAnimal.text.toString()
-        // TODO: FALTA VER COMO TRAER EL VALOR SELECCIONADO DE LOS SPINNER
-        val tipoAnimal = "PERRO"  // spin_tipoanimal.toString()
-        val sexoAnimal = "MACHO" //  spin_sexo.toString()
-        val photo = "xxx"
-        val fechaPerdido = binding.dateCuando.toString()
-        // TODO: EL ESTADO SACARLO DE RB-ENCONTRADO O RB-PERDIDO
-        val estado = "L"
-        val description = binding.etMasDetallesEncontrado.text.toString()
-        val latitude = 12f
-        val longitude = 16f
-
-        var mascota: Mascota
-        mascota = Mascota(
-            0, 0, nombreMascota, tipoAnimal, sexoAnimal, fechaPerdido,
-            photo, estado, latitude, longitude, description
-        )
-        // TODO: cuando ande el post a la API comentar aca abajo mascota que lo harckodea ahora
-        mascota = MissingDatasource().cargarMascotaHard()
-
-        val resp = MissingDatasource().agregarMascota(mascota)
-        Snackbar.make(view, "Se agrego Mascota" + resp.toString(), Snackbar.LENGTH_LONG).show()
-        //  }
-
 
         binding.imageviewMapa.setOnClickListener {
             val action = R.id.action_newPostFragment_to_mapsFragment
@@ -154,77 +162,110 @@ class NewPostFragment : Fragment() {
         }
     }
 
-private fun showDatePickerDialog() {
- val datePicker = DatePickerFragment { day, month, year -> onDateSelected(day, month, year) }
- datePicker.show(childFragmentManager, "datePicker")
-}
+    private fun showDatePickerDialog() {
+        val datePicker = DatePickerFragment { day, month, year -> onDateSelected(day, month, year) }
+        datePicker.show(childFragmentManager, "datePicker")
+    }
 
-private fun onDateSelected(day: Int, month: Int, year: Int) {
- val realMonth = month + 1
- binding.dateCuando.setText("$day/$realMonth/$year")
-}
-private fun abrirGaleria(view: View) {
- try {
-     val intent = Intent(Intent.ACTION_GET_CONTENT)
-     //startActivity(intent)
-     intent.type = "image/*"
-     resultLauncherGaleria.launch(intent)
+    private fun onDateSelected(day: Int, month: Int, year: Int) {
+        val realMonth = month + 1
+        binding.dateCuando.setText("$day/$realMonth/$year")
+    }
+    private fun abrirGaleria(view: View) {
+        try {
+            val intent = Intent(Intent.ACTION_GET_CONTENT)
+            //startActivity(intent)
+            intent.type = "image/*"
+            resultLauncherGaleria.launch(intent)
 
- } catch (e: Exception) {
-     Snackbar.make(view, "No se pudo abrir la galeria", Snackbar.LENGTH_LONG).show()
- }
-}
+        } catch (e: Exception) {
+            Snackbar.make(view, "No se pudo abrir la galeria", Snackbar.LENGTH_LONG).show()
+        }
+    }
 
-// Abrir la cámara o subir desde la galeria
-private fun abrirCamara(view: View) {
- try {
-     val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-     if (activity?.let { intent.resolveActivity(it.packageManager) } != null) {
-         //startActivity(intent)
-         resultLauncherCamara.launch(intent)
-     } else {
-         Toast.makeText(this.context, "No se encontró cámara", Toast.LENGTH_SHORT).show()
-     }
+    // Abrir la cámara o subir desde la galeria
+    private fun abrirCamara(view: View) {
+        try {
+            val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            if (activity?.let { intent.resolveActivity(it.packageManager) } != null) {
+                //startActivity(intent)
+                resultLauncherCamara.launch(intent)
+            } else {
+                Toast.makeText(this.context, "No se encontró cámara", Toast.LENGTH_SHORT).show()
+            }
 
- } catch (e: Exception) {
-     Snackbar.make(view, "No se pudo abrir cámara", Snackbar.LENGTH_LONG).show()
- }
-}
+        } catch (e: Exception) {
+            Snackbar.make(view, "No se pudo abrir cámara", Snackbar.LENGTH_LONG).show()
+        }
+    }
 
-private fun initializeSpinnerAdapter(items: Array<String>, spinner: Spinner): ArrayAdapter<String> {
+    private fun initializeSpinnerAdapter(items: Array<String>, spinner: Spinner): ArrayAdapter<String> {
 
- return object : ArrayAdapter<String>( this.requireContext(),
-     android.R.layout.simple_spinner_dropdown_item, items) {
+        return object : ArrayAdapter<String>( this.requireContext(),
+            android.R.layout.simple_spinner_dropdown_item, items) {
 
-     override fun getDropDownView( position: Int, convertView: View?, parent: ViewGroup): View {
-         val view: TextView = super.getDropDownView(position, convertView, parent) as TextView
-         // set item text bold
-         view.setTypeface(view.typeface, Typeface.BOLD)
+            override fun getDropDownView( position: Int, convertView: View?, parent: ViewGroup): View {
+                val view: TextView = super.getDropDownView(position, convertView, parent) as TextView
+                // set item text bold
+                view.setTypeface(view.typeface, Typeface.BOLD)
 
-         // set selected item style
-         if (position == spinner.selectedItemPosition && position != 0) {
-             view.background = ColorDrawable(Color.parseColor("#F7E7CE"))
-             view.setTextColor(Color.parseColor("#333399"))
-         }
+                // set selected item style
+                if (position == spinner.selectedItemPosition && position != 0) {
+                    view.background = ColorDrawable(Color.parseColor("#F7E7CE"))
+                    view.setTextColor(Color.parseColor("#333399"))
+                }
 
-         // make hint item color gray
-         if (position == 0) {
-             view.setTextColor(Color.LTGRAY)
-         }
+                // make hint item color gray
+                if (position == 0) {
+                    view.setTextColor(Color.LTGRAY)
+                }
 
-         return view
-     }
+                return view
+            }
 
-     override fun isEnabled(position: Int): Boolean {
-         // disable first item
-         // first item is display as hint
-         return position != 0
-     }
- }
-}
+            override fun isEnabled(position: Int): Boolean {
+                // disable first item
+                // first item is display as hint
+                return position != 0
+            }
+        }
+    }
 
-private fun irAlLoguin() {
- val action = R.id.action_detailFragment_to_loginFragment2
- findNavController().navigate(action)
-}
+    private fun irAlLoguin() {
+        val action = action_detailFragment_to_loginFragment2
+        findNavController().navigate(action)
+    }
+
+
+    fun publicarMascota(pet: Mascota) {
+        val apiInterface0 = ApiServices2.create().addLost(
+            pet.idcreator,
+            pet.latitude,
+            pet.longitude,
+            pet.description,
+            pet.photopath,
+            pet.nombreMascota,
+            pet.tipoAnimal,
+            pet.sexoAnimal,
+            pet.fechaPerdido,
+            pet.estado
+        )
+
+        apiInterface0!!.enqueue(object : Callback<ResponseBody?> {
+
+            override fun onResponse(call: Call<ResponseBody?>, response: Response<ResponseBody?>) {
+                if (response != null && response.isSuccessful && response.body() != null) {
+                    Log.d("SUCCESS ALTA MASCOTA", response.body()!!.toString())
+                    Log.d("SUCCESS ALTA MASCOTA", response.message().toString())
+
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseBody?>, t: Throwable) {
+                Log.e("Error:::", "Error " + t!!.message)
+            }
+        })
+    }
+
+
 }

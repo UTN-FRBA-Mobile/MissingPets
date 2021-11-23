@@ -17,9 +17,7 @@ import android.widget.*
 
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.FragmentActivity
-import com.example.missingpets.dataRV.MissingDatasource
 import com.example.missingpets.databinding.FragmentPostMissingBinding
-import com.example.missingpets.network.Mascota
 import com.google.android.material.snackbar.Snackbar
 
 
@@ -112,9 +110,7 @@ class PostMissingFragment : Fragment() {
         }
 
         binding.etDate.setOnClickListener { showDatePickerDialog() }
-
     }
-
 
     private fun showDatePickerDialog() {
         val datePicker = DatePickerFragment { day, month, year -> onDateSelected(day, month, year) }

@@ -25,7 +25,7 @@ class MissingDatasource {
         )
     }
 
-    fun agregarMascota(mascota: Mascota): Boolean {
+    /*fun agregarMascota(mascota: Mascota): Boolean {
         var rdo: Boolean = false
         CoroutineScope(Dispatchers.IO).launch(Dispatchers.Main) {
             try {
@@ -38,7 +38,7 @@ class MissingDatasource {
             }
         }
         return rdo
-    }
+    }*/
 
     fun cargarMascotaHard(): Mascota {
         var mascota : Mascota
