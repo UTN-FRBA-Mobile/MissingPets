@@ -18,13 +18,15 @@ import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
-import com.example.missingpets.R.id.action_detailFragment_to_loginFragment2
+import com.example.missingpets.R.id.action_newPostFragment_to_loginFragment2
 import com.example.missingpets.databinding.FragmentNewPostBinding
 import com.example.missingpets.models.RepositorioUsuario
 import com.example.missingpets.network.ApiServices2
 import com.example.missingpets.network.Mascota
+import com.example.missingpets.viewModels.UserProfileViewModel
 import com.google.android.material.snackbar.Snackbar
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -49,6 +51,7 @@ class NewPostFragment : Fragment() {
     private var _binding: FragmentNewPostBinding? = null
     private val binding get() = _binding!!
     private val repositorioUsuario = RepositorioUsuario
+    private val user: UserProfileViewModel by activityViewModels()
 
     private var marcadorLatitude: Float? = null
     private var marcadorLongitude: Float? = null
@@ -129,7 +132,10 @@ class NewPostFragment : Fragment() {
             showDatePickerDialog() }
 
         binding.btnPublicar.setOnClickListener {
-            if (repositorioUsuario.noEstasLogueado()) {
+            //stop here
+            val hola = 60
+
+            if (user.id<0){//repositorioDeUsuario.estasLogueado()
 
                 //FIXME se cierra la app cuando llega aca
                 irAlLoguin()
@@ -138,7 +144,7 @@ class NewPostFragment : Fragment() {
                 var pet: Mascota = Mascota()
 
                 //TODO asignar ID del usuario loggeado
-                pet.idcreator = 0
+                pet.idcreator = user.id
 
                 //TODO leer coordenadas del mapa
                 pet.latitude = 40f
@@ -266,7 +272,7 @@ class NewPostFragment : Fragment() {
     }
 
     private fun irAlLoguin() {
-        val action = action_detailFragment_to_loginFragment2
+        val action = action_newPostFragment_to_loginFragment2
         findNavController().navigate(action)
     }
 
