@@ -6,6 +6,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -15,6 +17,7 @@ import com.example.missingpets.databinding.FragmentMyPostsBinding
 import com.example.missingpets.models.RepositorioUsuario
 import com.example.missingpets.network.ApiServices2
 import com.example.missingpets.network.recyclerPet2
+import com.example.missingpets.viewModels.UserProfileViewModel
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -38,6 +41,7 @@ class MyMissingPostFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var recyclerView: RecyclerView
     private val repositorioDeUsuario: RepositorioUsuario = RepositorioUsuario
+    private val user: UserProfileViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,7 +69,7 @@ class MyMissingPostFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val action = arguments?.getString("action").toString().toInt()
-        traerMyPost(0,action);
+        traerMyPost(user.id,action);
     }
 
     private fun traerMyPost(idcreator:Int,idMethod:Int) {
@@ -84,20 +88,29 @@ class MyMissingPostFragment : Fragment() {
             override fun onResponse(call: Call<List<recyclerPet2>>?, response: Response<List<recyclerPet2>>?) {
 
                 if(response?.body() != null){
-                    var myPost= response.body()!!.filter{it.idcreator==idcreator};
-                    recyclerView = binding.recyclerViewMissingPets
-                    recyclerView.adapter = MyPostAdapter(myPost,MyPostAdapter.OnClickListener {
+                    if(response?.body()!!.size==0){
+                        var myPost= response.body()!!.filter{it.idcreator==idcreator};
+                        recyclerView = binding.recyclerViewMissingPets
+                        recyclerView.adapter = MyPostAdapter(myPost,MyPostAdapter.OnClickListener {
 
-                        if (repositorioDeUsuario.estasLogueado()){
-                            val bundle = Bundle()
-                            bundle.putInt("id", it.id)
-                            //findNavController().navigate(R.id.action_missingFragment_to_detailFragment,bundle)
-                        } else {
-                            //findNavController().navigate(R.id.action_missingFragment_to_loginFragment2)
-                        }
-                    })
-                    recyclerView.layoutManager= LinearLayoutManager(requireContext())
-                    recyclerView.setHasFixedSize(true)
+                            if (repositorioDeUsuario.estasLogueado()){
+                                val bundle = Bundle()
+                                bundle.putInt("id", it.id)
+                                //findNavController().navigate(R.id.action_missingFragment_to_detailFragment,bundle)
+                            } else {
+                                //findNavController().navigate(R.id.action_missingFragment_to_loginFragment2)
+                            }
+                        })
+                        recyclerView.layoutManager= LinearLayoutManager(requireContext())
+                        recyclerView.setHasFixedSize(true)
+
+
+
+                    } else {
+
+                        Toast.makeText(context, "No tienen post activos", Toast.LENGTH_SHORT).show()
+                    }
+
                 }
 
             }

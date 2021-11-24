@@ -71,10 +71,6 @@ class LoginFragment2 : Fragment() {
                             findNavController().navigate(R.id.action_loginFragment2_to_missingFragment2)
                             Toast.makeText(context, "Bienvenido " , Toast.LENGTH_SHORT).show()
                         }
-
-
-
-
                     }
 
                 }
