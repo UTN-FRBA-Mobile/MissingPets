@@ -5,8 +5,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
 import com.example.missingpets.databinding.FragmentMainBinding
+import com.example.missingpets.viewModels.UserProfileViewModel
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -24,6 +26,7 @@ class MainFragment : Fragment() {
     private var param2: String? = null
     private var _binding: FragmentMainBinding? = null
     private val binding get() = _binding!!
+    private val user: UserProfileViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,7 +63,13 @@ class MainFragment : Fragment() {
         binding.btnAboutAs.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_mainFragment_to_aboutUsFragment, null))
         binding.btnPetsForAdoption.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_mainFragment_to_adoptableFragment, null))
         binding.btnUploadPets.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_mainFragment_to_newPostFragment, null))
-        binding.btnMyPost.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_mainFragment_to_myPostsFragment, null))
+        if(user.id>=0){
+            binding.btnMyPost.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_mainFragment_to_myPostsFragment, null))
+        }else {
+            binding.btnMyPost.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_mainFragment_to_loginFragment2, null))
+        }
+
+
 
     }
 

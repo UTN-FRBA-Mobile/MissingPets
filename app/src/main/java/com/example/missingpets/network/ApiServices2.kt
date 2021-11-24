@@ -1,5 +1,6 @@
 package com.example.missingpets.network
 
+import com.example.missingpets.models.Usuario
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.MultipartBody
@@ -19,6 +20,9 @@ interface ApiServices2 {
 
     @GET("lost")
     fun getMissingPets2(): Call<List<recyclerPet2>>
+
+    @GET("user")
+    fun getUser(): Call<List<UserLogin>>
 
     @GET("found")
     fun getFound(): Call<List<recyclerPet>>

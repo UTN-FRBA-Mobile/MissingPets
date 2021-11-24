@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -19,6 +20,7 @@ import com.example.missingpets.models.RepositorioUsuario
 import com.example.missingpets.network.ApiServices2
 import com.example.missingpets.network.MissingPet
 import com.example.missingpets.network.recyclerPet
+import com.example.missingpets.viewModels.UserProfileViewModel
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -29,6 +31,7 @@ class AdoptableFragment : Fragment() {
     private var _binding: FragmentAdoptableBinding? = null
     private val binding get() = _binding!!
     private val repositorioDeUsuario: RepositorioUsuario = RepositorioUsuario
+    private val user: UserProfileViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,7 +66,7 @@ class AdoptableFragment : Fragment() {
                     recyclerView = binding.recyclerViewAdoptablePets
                     recyclerView.adapter = AdoptableAdapter(response.body()!!,AdoptableAdapter.OnClickListener {
 
-                        if (repositorioDeUsuario.estasLogueado()){
+                        if (user.id>=0){//repositorioDeUsuario.estasLogueado()
                             findNavController().navigate(R.id.action_adoptableFragment_to_detailFragment)
                         } else {
                             findNavController().navigate(R.id.action_adoptableFragment_to_loginFragment2)
