@@ -17,8 +17,14 @@ interface ApiServices2 {
     @GET("lost")
     fun getMissingPets(): Call<List<recyclerPet>>
 
+    @GET("lost")
+    fun getMissingPets2(): Call<List<recyclerPet2>>
+
     @GET("found")
     fun getFound(): Call<List<recyclerPet>>
+
+    @GET("found")
+    fun getFound2(): Call<List<recyclerPet2>>
 
     //Fotos
     @Multipart
