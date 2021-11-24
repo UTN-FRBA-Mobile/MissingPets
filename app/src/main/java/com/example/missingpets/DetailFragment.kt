@@ -34,6 +34,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import android.widget.ImageView
+import com.example.missingpets.formats.DateFormat
 
 
 class DetailFragment : Fragment() {
@@ -74,7 +75,8 @@ class DetailFragment : Fragment() {
                     val nombreMascota = response.body()?.elementAt(0)?.nombreMascota ?: ""
                     val tipoAnimal = response.body()?.elementAt(0)?.tipoAnimal ?: ""
                     val sexoAnimal = response.body()?.elementAt(0)?.sexoAnimal ?: ""
-                    val fechaPerdido = response.body()?.elementAt(0)?.fechaPerdido ?: ""
+                    var fechaPerdido = response.body()?.elementAt(0)?.fechaPerdido ?: ""
+                    fechaPerdido = DateFormat.yyyymmddToddmmyyy(fechaPerdido);
                     val longitude = response.body()!!.elementAt(0)?.longitude.toString() ?: "0.0"
                     val latitude = response.body()!!.elementAt(0)?.latitude.toString() ?: "0.0"
                     val photopath = resources.getString(com.example.missingpets.R.string.images_root_path) + response.body()!!.elementAt(0)?.photopath.toString() ?: "0.0"
@@ -164,7 +166,7 @@ class DetailFragment : Fragment() {
     }
 
     fun loadImage(photopath: String) {
-        var photoview: ImageView = getView()!!.findViewById(R.id.iv_mascota)
+        var photoview: ImageView = requireView()!!.findViewById(R.id.iv_mascota)
         Picasso.get().load(photopath).into(photoview)
     }
 
