@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".MyPostsFragment">
-        
+
     <Button
         android:id="@+id/btn_my_missing_post1"
         android:layout_width="match_parent"

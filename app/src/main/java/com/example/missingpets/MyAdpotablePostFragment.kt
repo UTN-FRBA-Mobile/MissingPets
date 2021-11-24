@@ -5,6 +5,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.example.missingpets.databinding.FragmentMyAdpotablePostBinding
+import com.example.missingpets.databinding.FragmentMyMissingPostBinding
+import com.example.missingpets.network.ApiServices2
+import com.example.missingpets.network.recyclerPet2
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -21,6 +28,9 @@ class MyAdpotablePostFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
+    private var _binding: FragmentMyAdpotablePostBinding? = null
+    private val binding get() = _binding!!
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -34,7 +44,39 @@ class MyAdpotablePostFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_my_adpotable_post, container, false)
+        _binding = FragmentMyAdpotablePostBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+
+    }
+
+    fun traerAdoptable(idcreator:Int){
+
+        val apiInterface = ApiServices2.create().getFound2()
+
+        apiInterface.enqueue( object : Callback<List<recyclerPet2>> {
+            override fun onResponse(call: Call<List<recyclerPet2>>?, response: Response<List<recyclerPet2>>?) {
+
+                if(response?.body() != null){
+                    var list= response.body()!!.filter{it.idcreator==idcreator}.toString();
+                }
+
+            }
+
+            override fun onFailure(call: Call<List<recyclerPet2>>, t: Throwable) {
+            }
+        })
+
+
     }
 
     companion object {
