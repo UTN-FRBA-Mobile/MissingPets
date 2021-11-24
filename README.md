@@ -2,8 +2,8 @@
 
 Aplicaci&oacute;n para b&uacute;squeda de mascotas extraviadas
 
-## Maintainers
-This project is mantained by:
+## Autores
+
 * [Mariana Marino](http://github.com/marumarino)
 * [Daniel](http://github.com/asp2021)
 * [Juan Manuel Jarazo](http://github.com/ingscyther)
