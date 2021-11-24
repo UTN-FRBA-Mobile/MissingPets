@@ -52,7 +52,7 @@ interface ApiServices2 {
         @Field("nombremascota") nombremascota: String?,
         @Field("tipoanimal") tipoanimal: String?,
         @Field("sexoanimal") sexoanimal: String?,
-        @Field("fechaperdido") fechaperdido: String?,//TODO cambiar por Date
+        @Field("fechaperdido") fechaperdido: String?,//Enviar al servidor formato YYYY-MM-DD
         @Field("estado") estado: String?
         ):  Call<ResponseBody?>?
 

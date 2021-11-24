@@ -43,7 +43,7 @@ class ApiUnitTest {
         pet.tipoAnimal = ""
         pet.sexoAnimal = ""
 
-        //TODO validar formato de fecha
+        //El formato de fecha en el servidor es YYYY-MM-DD
         pet.fechaPerdido = "2021-01-10"
 
         pet.estado = "perdido"
