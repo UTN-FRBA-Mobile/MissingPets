@@ -1,12 +1,18 @@
 package com.example.missingpets
 
+import MissingAdapter
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.missingpets.adapterRV.MyPostAdapter
 import com.example.missingpets.databinding.FragmentMyMissingPostBinding
 import com.example.missingpets.databinding.FragmentMyPostsBinding
+import com.example.missingpets.models.RepositorioUsuario
 import com.example.missingpets.network.ApiServices2
 import com.example.missingpets.network.recyclerPet2
 import retrofit2.Call
@@ -30,6 +36,8 @@ class MyMissingPostFragment : Fragment() {
 
     private var _binding: FragmentMyMissingPostBinding? = null
     private val binding get() = _binding!!
+    private lateinit var recyclerView: RecyclerView
+    private val repositorioDeUsuario: RepositorioUsuario = RepositorioUsuario
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,18 +63,41 @@ class MyMissingPostFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val action = arguments?.getString("action").toString().toInt()
+        traerMyPost(0,action);
     }
 
-    private fun traerMising(idcreator:Int) {
+    private fun traerMyPost(idcreator:Int,idMethod:Int) {
 
-        val apiInterface = ApiServices2.create().getMissingPets2()
+        lateinit var apiInterface: Call<List<recyclerPet2>>
+        if(idMethod==0){ //Missing
+            apiInterface = ApiServices2.create().getMissingPets2()
+
+        }else{//Adoptable
+            apiInterface = ApiServices2.create().getFound2()
+        }
+
 
 
         apiInterface.enqueue( object : Callback<List<recyclerPet2>> {
             override fun onResponse(call: Call<List<recyclerPet2>>?, response: Response<List<recyclerPet2>>?) {
 
                 if(response?.body() != null){
-                    var list= response.body()!!.filter{it.idcreator==idcreator}.toString();
+                    var myPost= response.body()!!.filter{it.idcreator==idcreator};
+                    recyclerView = binding.recyclerViewMissingPets
+                    recyclerView.adapter = MyPostAdapter(myPost,MyPostAdapter.OnClickListener {
+
+                        if (repositorioDeUsuario.estasLogueado()){
+                            val bundle = Bundle()
+                            bundle.putInt("id", it.id)
+                            //findNavController().navigate(R.id.action_missingFragment_to_detailFragment,bundle)
+                        } else {
+                            //findNavController().navigate(R.id.action_missingFragment_to_loginFragment2)
+                        }
+                    })
+                    recyclerView.layoutManager= LinearLayoutManager(requireContext())
+                    recyclerView.setHasFixedSize(true)
                 }
 
             }

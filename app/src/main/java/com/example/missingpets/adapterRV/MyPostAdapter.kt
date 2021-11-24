@@ -50,8 +50,4 @@ class MyPostAdapter (private val dataset: List<recyclerPet2>, private val onClic
     class OnClickListener(val clickListener: (pet: recyclerPet2) -> Unit) {
         fun onClick(pet: recyclerPet2) = clickListener(pet)
     }
-
-
-
-
 }

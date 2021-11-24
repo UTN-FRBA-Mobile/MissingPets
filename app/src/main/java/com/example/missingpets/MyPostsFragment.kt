@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import com.example.missingpets.databinding.FragmentMyPostsBinding
 
@@ -43,11 +44,13 @@ class MyPostsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.btnMyMissingPost1.setOnClickListener{
-            findNavController().navigate(R.id.action_myPostsFragment_to_myMissingPostFragment)
+            val bundle = bundleOf("action" to "0")
+            findNavController().navigate(R.id.action_myPostsFragment_to_myMissingPostFragment,bundle)
         }
 
         binding.btnMyMissingPost2.setOnClickListener{
-            findNavController().navigate(R.id.action_myPostsFragment_to_myMissingPostFragment)
+            val bundle = bundleOf("action" to "1")
+            findNavController().navigate(R.id.action_myPostsFragment_to_myMissingPostFragment,bundle)
         }
 
     }
