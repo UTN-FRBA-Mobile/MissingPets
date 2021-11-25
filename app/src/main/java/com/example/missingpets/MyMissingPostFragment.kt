@@ -82,17 +82,14 @@ class MyMissingPostFragment : Fragment() {
 
                 if(response?.body() != null){
 
-                        Toast.makeText(context, "Id_Creator: "+idcreator.toString()+" Operacion: "
-                            +idMethod.toString(), Toast.LENGTH_SHORT).show()
+
                     Log.d("MyPostList","Id de usuario: "+idcreator.toString()+" Id de accion: "+ idMethod)
                     Log.d("MyPostList","Respuesta del servidor "+response?.body().toString())
 
 
                         lateinit var myPost : List<recyclerPet2>
 
-                        myPost= response.body()!!.filter{it.idcreator==idcreator};
-
-                    Log.d("MyPostList", "Respuesta del servidor filtrado: $myPost")
+                        
 
 
 
