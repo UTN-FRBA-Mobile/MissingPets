@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
@@ -17,6 +18,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.example.missingpets.databinding.ActivityMainBinding
 import com.example.missingpets.network.ApiClient
 import com.example.missingpets.utils.storage.preferences.Prefs
+import com.example.missingpets.viewModels.UserProfileViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlin.math.log
 
@@ -25,6 +27,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var bottomNavigationView: BottomNavigationView
     private lateinit var sharedPreferences: SharedPreferences
+    val user: UserProfileViewModel by viewModels()
 
     // estas las uso para el marcador del mapa
     companion object {
@@ -56,7 +59,7 @@ class MainActivity : AppCompatActivity() {
 
           R.id.action_logout ->{
               Toast.makeText(this,"Hacer logout",Toast.LENGTH_SHORT).show()
-              //TODO(): Logica del Logout
+              user.id = -1;
               navController.navigate(R.id.mainFragment)
           }
         }

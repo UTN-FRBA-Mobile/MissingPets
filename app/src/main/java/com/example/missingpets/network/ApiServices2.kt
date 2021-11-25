@@ -1,5 +1,6 @@
 package com.example.missingpets.network
 
+import com.example.missingpets.models.Usuario
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.MultipartBody
@@ -17,8 +18,17 @@ interface ApiServices2 {
     @GET("lost")
     fun getMissingPets(): Call<List<recyclerPet>>
 
+    @GET("lost")
+    fun getMissingPets2(): Call<List<recyclerPet2>>
+
+    @GET("user")
+    fun getUser(): Call<List<UserLogin>>
+
     @GET("found")
     fun getFound(): Call<List<recyclerPet>>
+
+    @GET("found")
+    fun getFound2(): Call<List<recyclerPet2>>
 
     //Fotos
     @Multipart
@@ -46,7 +56,7 @@ interface ApiServices2 {
         @Field("nombremascota") nombremascota: String?,
         @Field("tipoanimal") tipoanimal: String?,
         @Field("sexoanimal") sexoanimal: String?,
-        @Field("fechaperdido") fechaperdido: String?,//TODO cambiar por Date
+        @Field("fechaperdido") fechaperdido: String?,//Enviar al servidor formato YYYY-MM-DD
         @Field("estado") estado: String?
         ):  Call<ResponseBody?>?
 
@@ -54,9 +64,10 @@ interface ApiServices2 {
     @PUT("lost")
     suspend fun updateLost(@Body missingpet: MissingPet):  Call<ResponseBody?>?
 
-    @FormUrlEncoded
-    @DELETE("lost")
-    suspend fun deleteLost(@Query("id") id: Int):  Call<ResponseBody?>?
+    @GET("lost/")
+    fun deleteLost(
+        @Query("method") method: String,
+        @Query("id") id: Int):  Call<ResponseBody>
 
 
     //Usuarios

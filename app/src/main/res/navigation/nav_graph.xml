@@ -129,6 +129,12 @@
         <action
             android:id="@+id/action_myPostsFragment_to_profileFragment"
             app:destination="@id/profileFragment" />
+        <action
+            android:id="@+id/action_myPostsFragment_to_myMissingPostFragment"
+            app:destination="@id/myMissingPostFragment" />
+        <action
+            android:id="@+id/action_myPostsFragment_to_myAdpotablePostFragment"
+            app:destination="@id/myAdpotablePostFragment" />
     </fragment>
     <fragment
         android:id="@+id/aboutUsFragment"
@@ -244,4 +250,14 @@
         android:name="com.example.missingpets.MapsFragment"
         android:label="fragment_maps2"
         tools:layout="@layout/fragment_maps2" />
+    <fragment
+        android:id="@+id/myAdpotablePostFragment"
+        android:name="com.example.missingpets.MyAdpotablePostFragment"
+        android:label="fragment_my_adpotable_post"
+        tools:layout="@layout/fragment_my_adpotable_post" />
+    <fragment
+        android:id="@+id/myMissingPostFragment"
+        android:name="com.example.missingpets.MyMissingPostFragment"
+        android:label="fragment_my_missing_post"
+        tools:layout="@layout/fragment_my_missing_post" />
 </navigation>
