@@ -20,7 +20,8 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
-import com.example.missingpets.R.id.action_detailFragment_to_loginFragment2
+import com.example.missingpets.MainActivity.Companion.prefs
+import com.example.missingpets.R.id.*
 import com.example.missingpets.databinding.FragmentNewPostBinding
 import com.example.missingpets.models.RepositorioUsuario
 import com.example.missingpets.network.ApiServices2
@@ -74,6 +75,10 @@ class NewPostFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        // en el mapa las marca - al volver en onStart las asigna
+        prefs.latitude = 0f
+        prefs.longitude= 0f
+
         // Use the Kotlin extension in the fragment-ktx artifact
         setFragmentResultListener("requestLatitude") { requestLatitude, bundle ->
             // We use a String here, but any type that can be put in a Bundle is supported
@@ -118,6 +123,14 @@ class NewPostFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+       /* savedInstanceState?.let{
+            petState.nombreMascota = savedInstanceState?.getString("nombre")
+            Toast.makeText(requireContext(), "RECUPERO DE" + petState.nombreMascota,
+                Toast.LENGTH_LONG).show();
+
+            //restore the data here
+        }*/
+
         binding.btnTomarFotoEncontrado.setOnClickListener {
             abrirCamara(view)
         }
@@ -132,6 +145,8 @@ class NewPostFragment : Fragment() {
             if (repositorioUsuario.noEstasLogueado()) {
 
                 //FIXME se cierra la app cuando llega aca
+                Toast.makeText(requireContext(), "Es obligatiorio estar logueado para continuar",
+                    Toast.LENGTH_LONG).show()
                 irAlLoguin()
             } else {
                 Log.d("POST", "Alta de Mascota")
@@ -141,8 +156,8 @@ class NewPostFragment : Fragment() {
                 pet.idcreator = 0
 
                 //TODO leer coordenadas del mapa
-                pet.latitude = 40f
-                pet.longitude = 30f
+                pet.latitude = binding.tvLatitude.text.toString().toFloat()
+                pet.longitude = binding.tvLongitude.text.toString().toFloat()
 
                 pet.description = binding.etMasDetallesEncontrado.text.toString()
 
@@ -154,7 +169,7 @@ class NewPostFragment : Fragment() {
                 pet.sexoAnimal = binding.spnSexoAnimales.selectedItem.toString()
 
                 //TODO validar formato de fecha
-                pet.fechaPerdido = "2021-01-10"
+                pet.fechaPerdido = binding.dateCuando.text.toString() // "2021-01-10"
 
                 if(binding.rbPerdido.isSelected()){
                     pet.estado = "perdido"
@@ -172,7 +187,7 @@ class NewPostFragment : Fragment() {
             val bundle = Bundle()
             //bundle.putString("latitude", binding.tvLatitude.text.toString().trim())
             //bundle.putString("longitude", binding.tvLongitude.text.toString().trim())
-            findNavController().navigate(action, bundle)
+                findNavController().navigate(action, bundle)
         }
     }
 
@@ -271,6 +286,8 @@ class NewPostFragment : Fragment() {
     }
 
 
+
+
     fun publicarMascota(pet: Mascota) {
         val apiInterface0 = ApiServices2.create().addLost(
             pet.idcreator,
@@ -289,8 +306,20 @@ class NewPostFragment : Fragment() {
 
             override fun onResponse(call: Call<ResponseBody?>, response: Response<ResponseBody?>) {
                 if (response != null && response.isSuccessful && response.body() != null) {
+
                     Log.d("SUCCESS ALTA MASCOTA", response.body()!!.toString())
                     Log.d("SUCCESS ALTA MASCOTA", response.message().toString())
+
+                    Toast.makeText(requireContext(), "Has publicado con exito!!!",Toast.LENGTH_LONG).show()
+
+                    if(pet.estado=="perdido"){
+                       val action = R.id.action_newPostFragment_to_missingFragment
+                      findNavController().navigate(action)
+                    }
+                    else{
+                        val action = R.id.action_newPostFragment_to_foundFragment
+                        findNavController().navigate(action)
+                    }
 
                 }
             }
@@ -299,6 +328,19 @@ class NewPostFragment : Fragment() {
                 Log.e("Error:::", "Error " + t!!.message)
             }
         })
+    }
+
+   /* override fun onSaveInstanceState(outState: Bundle) {
+        outState.run{
+            putString("nombre", petState.nombreMascota!!)
+        }
+        super.onSaveInstanceState(outState)
+    } */
+
+    override fun onStart() {
+        super.onStart()
+        binding.tvLatitude.text = prefs.latitude.toString()
+        binding.tvLongitude.text = prefs.longitude.toString()
     }
 
 

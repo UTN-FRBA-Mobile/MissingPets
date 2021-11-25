@@ -16,6 +16,7 @@ import androidx.navigation.ui.onNavDestinationSelected
 import androidx.navigation.ui.setupWithNavController
 import com.example.missingpets.databinding.ActivityMainBinding
 import com.example.missingpets.network.ApiClient
+import com.example.missingpets.utils.storage.preferences.Prefs
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlin.math.log
 
@@ -25,8 +26,14 @@ class MainActivity : AppCompatActivity() {
     private lateinit var bottomNavigationView: BottomNavigationView
     private lateinit var sharedPreferences: SharedPreferences
 
+    // estas las uso para el marcador del mapa
+    companion object {
+        lateinit var prefs: Prefs
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        prefs = Prefs(applicationContext)
 
         val binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
