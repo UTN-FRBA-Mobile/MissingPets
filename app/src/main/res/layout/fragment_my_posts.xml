@@ -10,10 +10,15 @@
         android:id="@+id/btn_my_missing_post1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Buscados" />
+        android:text="Todas mis publicaciones" />
 
     <Button
         android:id="@+id/btn_my_missing_post2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Buscados" />
+    <Button
+        android:id="@+id/btn_my_missing_post3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="En adopcion" />

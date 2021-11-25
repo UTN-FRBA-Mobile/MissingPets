@@ -59,6 +59,11 @@ class MyPostsFragment : Fragment() {
             findNavController().navigate(R.id.action_myPostsFragment_to_myMissingPostFragment,bundle)
         }
 
+        binding.btnMyMissingPost3.setOnClickListener{
+            val bundle = bundleOf("action" to "2")
+            findNavController().navigate(R.id.action_myPostsFragment_to_myMissingPostFragment,bundle)
+        }
+
     }
 
 

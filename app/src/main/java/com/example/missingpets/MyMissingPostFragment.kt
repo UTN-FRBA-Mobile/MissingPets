@@ -88,22 +88,41 @@ class MyMissingPostFragment : Fragment() {
             override fun onResponse(call: Call<List<recyclerPet2>>?, response: Response<List<recyclerPet2>>?) {
 
                 if(response?.body() != null){
-                    if(response?.body()!!.size==0){
-                        var myPost= response.body()!!.filter{it.idcreator==idcreator};
+
+
+                        lateinit var myPost : List<recyclerPet2>
+
+                        when(idMethod){
+                            0 -> { //Todos
+                                myPost= response.body()!!.filter{it.idcreator==idcreator};
+
+                            }
+                            1->{ //Perdidos
+                                myPost= response.body()!!.filter{it.idcreator==idcreator&&it.estado=="perdido"};
+
+                            }
+                            2 -> { //Encontrados
+                                myPost= response.body()!!.filter{it.idcreator==idcreator&&it.estado=="encontrado"};
+
+                            } else -> {
+
+                                myPost= response.body()!!.filter{it.idcreator==idcreator};
+
+                            }
+
+
+                        }
+
+                    if(myPost.size==0){
+
                         recyclerView = binding.recyclerViewMissingPets
                         recyclerView.adapter = MyPostAdapter(myPost,MyPostAdapter.OnClickListener {
-
-                            if (repositorioDeUsuario.estasLogueado()){
                                 val bundle = Bundle()
                                 bundle.putInt("id", it.id)
                                 //findNavController().navigate(R.id.action_missingFragment_to_detailFragment,bundle)
-                            } else {
-                                //findNavController().navigate(R.id.action_missingFragment_to_loginFragment2)
-                            }
                         })
                         recyclerView.layoutManager= LinearLayoutManager(requireContext())
                         recyclerView.setHasFixedSize(true)
-
 
 
                     } else {
