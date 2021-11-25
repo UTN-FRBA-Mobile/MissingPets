@@ -1,11 +1,14 @@
 package com.example.missingpets
 
+import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.navigation.fragment.findNavController
 import com.example.missingpets.databinding.FragmentMyAdpotablePostBinding
 import com.example.missingpets.databinding.FragmentMyDetailBinding
@@ -41,9 +44,8 @@ class MyDetailFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            arguments?.let {
-                idmascota = it.getInt("id")
-            }
+            idmascota = it.getInt("id")
+
         }
     }
 
@@ -67,11 +69,25 @@ class MyDetailFragment : Fragment() {
         cargarPost();
         binding.btnBorrar.setOnClickListener{
 
-            borrarMascota(idmascota)
+            val alertDialog: AlertDialog? = activity?.let {
+                val builder = AlertDialog.Builder(it)
+                builder.apply {
 
+                    setTitle("Advertencia")
+                    setMessage("Si hace click en BORRAR el post quedara eliminado de manera permanente y ningun otro usuario pordra volver a verlo.")
+                    setPositiveButton("Borrar",
+                        DialogInterface.OnClickListener { dialog, id ->
+                            borrarMascota(idmascota)
+                        })
+                    setNegativeButton("Cancelar",
+                        DialogInterface.OnClickListener { dialog, id ->
+                            // User cancelled the dialog
+                        })
+                }
+                builder.create()
+            }
+            alertDialog?.show()
         }
-
-
     }
 
     fun cargarPost(){
@@ -87,7 +103,7 @@ class MyDetailFragment : Fragment() {
             }
 
             override fun onFailure(call: Call<List<Mascota>>, t: Throwable) {
-                Log.e("Error:::", "Error " + t!!.message)
+                Log.e("Error:::", "Error " + t.message)
             }
         })
 
@@ -95,20 +111,17 @@ class MyDetailFragment : Fragment() {
     }
 
     fun borrarMascota(idMascota: Int) {
-        val apiInterface0 = ApiServices2.create().deleteLost("DELETE", idMascota)
+        val apiInterface = ApiServices2.create().deleteLost("DELETE", idMascota)
 
-        apiInterface0!!.enqueue(object : Callback<ResponseBody?> {
+        apiInterface.enqueue(object : Callback<ResponseBody?> {
 
             override fun onResponse(call: Call<ResponseBody?>, response: Response<ResponseBody?>) {
-                if (response != null && response.isSuccessful && response.body() != null) {
-                    Log.d("SUCCESS DELETE  MASCOTA - ID " + idMascota, response.body()!!.toString())
-
-
-                }
+                    Log.d("Eliminacion ", response.body()!!.toString())
+                    Toast.makeText(context, "Eliminacion realizada de manera exitosa.", Toast.LENGTH_SHORT).show()
             }
 
             override fun onFailure(call: Call<ResponseBody?>, t: Throwable) {
-                Log.e("Error:::", "Error " + t!!.message)
+                Log.e("Error:::", "Error " + t.message)
             }
         })
     }
