@@ -6,6 +6,9 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Point
+import android.icu.text.RelativeDateTimeFormatter
+import android.location.Location
 import android.location.LocationManager
 import android.os.Build
 import android.os.Bundle
@@ -29,27 +32,25 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.UiSettings
+import java.util.*
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
+
+import android.util.DisplayMetrics
+import androidx.navigation.fragment.findNavController
+import com.example.missingpets.MainActivity.Companion.prefs
 
 
-class MapsFragment : Fragment() , OnMapReadyCallback { //, OnInfoWindowClickListener, OnMapReadyCallback {
+class MapsFragment : Fragment() , OnMapReadyCallback, GoogleMap.OnMyLocationButtonClickListener,
+        GoogleMap.OnMyLocationClickListener, GoogleMap.OnMapLongClickListener { //, OnInfoWindowClickListener, OnMapReadyCallback {
     private var latitude: String? = null
     private var longitude: String? = null
-
-    private lateinit var marcadorActual: Marker
-    private val GPS_REQUEST_CODE: Int = 1
-    private val MY_PERMISSION_REQUEST_GPS: Int = 99
-
     private lateinit var mMap: GoogleMap
-    private lateinit var binding: FragmentMaps2Binding
-
-    // VA A SERVIR PARA ACCEDER A LA INFORMACION DEL GPS
-    lateinit var fusedLocationClient: FusedLocationProviderClient
-
-    lateinit var locationCallback: LocationCallback
-    lateinit var lr: LocationRequest
-
-    var gpsIniciado: Boolean = false
     var nuevoPost: Boolean = false
+
+    companion object {
+        const val REQUEST_CODE_LOCATION = 0
+    }
 
       override fun onCreateView(
         inflater: LayoutInflater,
@@ -65,80 +66,20 @@ class MapsFragment : Fragment() , OnMapReadyCallback { //, OnInfoWindowClickList
         // obtiene parametros para ver si es localizar posicion  o nuevo post
         getTheArguments()
 
-
-
-        // define un intervalo de actualización
-        lr = createLocationRequest()
-
-        if(nuevoPost) {
-            // OBTENER LA UBICACION PERIODICAMENTE ASI CUANDO ENCIENDO EL GPS ME RASTREA LA UBICACION
-            // ACTUAL SI VOY A HACER UN NUEVO POST O HACER UN CAMBIO DE LOCALIZACION
-            locationCallback = object : LocationCallback() {
-                override fun onLocationResult(locationResult: LocationResult) {
-                    super.onLocationResult(locationResult)
-                    locationResult ?: return
-                    for (location in locationResult.locations) {
-                        if (latitude.isNullOrEmpty()) {
-                            actualizarMarcador(location.latitude, location.longitude)
-                            // si era nuevo post asigno la ubicacion aactual a latitude y longitude
-                            retenerLocacionNuevaSiEsPost(location.latitude, location.longitude)
-                        }
-                    }
-                }
-            }
-        }
-
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
         mapFragment?.getMapAsync(this)
-    }
-
-    private fun retenerLocacionNuevaSiEsPost(lat: Double, long: Double){
-        // si por parametros no viene ninguna locacion, tomo la actual como punto de partida
-        // para los nuevos post.
-        if(nuevoPost) {
-            latitude = lat.toString()
-            longitude = long.toString()
-        }
-    }
-
-    private fun createLocationRequest(): LocationRequest {
-        val locationRequest: LocationRequest? = LocationRequest.create()?.apply{
-            interval = 2000
-            fastestInterval = 1000
-            priority = LocationRequest.PRIORITY_HIGH_ACCURACY
-        }
-        return locationRequest!!
-    }
-
-    // por si minimizo la aplicacion pero reingreso
-    override fun onResume() {
-        super.onResume()
-        if(gpsIniciado){
-            startLocationUpdates()
-        }
-    }
-
-    override fun onPause() {
-        super.onPause()
-        if(gpsIniciado){
-            stopLocationUpdates()
-        }
     }
 
     private fun getTheArguments() {
         latitude = arguments?.get("latitude") as String?
         longitude = arguments?.get("longitude") as String?
 
-        // Simulo Medrano 951 para probar
-        latitude = "-34.5985579"
-        longitude = "-58.4210063"
-        ///
-
         // Simulo no hay location, entonces busca la ubicacion actual y seria un nuevo post
-        // latitude =null
-        // longitude=null
         if(latitude.isNullOrEmpty()){
             nuevoPost = true;
+            // Si es nullo inicializo con Medrano 951 para arrancar
+            latitude = "-34.5985579"
+            longitude = "-58.4210063"
         }
         @Suppress("UNCHECKED_CAST")
         Toast
@@ -148,206 +89,154 @@ class MapsFragment : Fragment() , OnMapReadyCallback { //, OnInfoWindowClickList
 
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
-        if(nuevoPost){
+        createMarker()
+        mMap.setOnMyLocationButtonClickListener(this)
+        mMap.setOnMyLocationClickListener(this)
+        mMap.setOnMapLongClickListener(this);
+        enableLocation()
+        val uiSettings: UiSettings = mMap.getUiSettings()
+        uiSettings.setAllGesturesEnabled(true)
+        uiSettings.isMapToolbarEnabled = true
+        uiSettings.isZoomControlsEnabled = true
+    }
 
-            // aquí se me cuelga cuando voy a encender el gps para luego mostrar la ubicacion
-            // activarGps()
-            //
-            mostrarUbicacionActual()
-        }
-        else {
+    fun onMapClick(latLng: LatLng?) {
+        val format: String = java.lang.String.format(
+            Locale.getDefault(),
+            "Lat/Lng = (%f,%f)", latLng!!.latitude, latLng.longitude
+        )
+        Toast.makeText(context, format, Toast.LENGTH_LONG).show()
+
+    }
+
+    private fun createMarker() {
+        if (!nuevoPost) {
             latitude?.let {
-                val positionLatLng =
-                    LatLng(latitude!!.toDouble(), longitude!!.toDouble())
-                val marker =
-                    mMap.addMarker(MarkerOptions().position(positionLatLng).title("Mapa"))
-                // marker.tag = 1
+                val positionLatLng = LatLng(latitude!!.toDouble(), longitude!!.toDouble())
+                mMap.addMarker(MarkerOptions().position(positionLatLng).title("Mapa"))
                 mMap.animateCamera(
-                    CameraUpdateFactory.newLatLngZoom(positionLatLng, 16.0f),
-                    object : GoogleMap.CancelableCallback {
-                        override fun onCancel() = Unit
-
-                        override fun onFinish() {
-                            marker!!.showInfoWindow()
-                        }
-                    }
+                    CameraUpdateFactory.newLatLngZoom(positionLatLng, 16.0f), 4000, null
                 )
-                if(marker!=null) {
-                    marcadorActual = marker
-                }
-                solicitarPermisosGps()
             }
         }
     }
 
-    private fun solicitarPermisosGps() {
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-            if(ActivityCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION) !=
-                PackageManager.PERMISSION_GRANTED) {
-                if (ActivityCompat.shouldShowRequestPermissionRationale(
-                        this.requireActivity(),
-                        Manifest.permission.ACCESS_FINE_LOCATION
-                    )
-                ) {
-                    mostrarMensaje("Necesario para el uso de la aplicación con el mapa")
-                }
-                ActivityCompat.requestPermissions(
-                    requireActivity(),
-                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                    MY_PERMISSION_REQUEST_GPS
-                )
-
-            }else {
-                // permiso concedido
-                if( !gpsEncendido()) {
-                    mostrarDialogoActivarGPS()
-                } else {
-                     activarGps()
-                    // mostrarUbicacionActual()
-                }
-            }
-        } else {
-            // permiso concedido
-            if( !gpsEncendido()) {
-                mostrarDialogoActivarGPS()
-            } else {
-                 activarGps()
-                // mostrarUbicacionActual()
-            }
-        }
-    }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        when(requestCode){
-            MY_PERMISSION_REQUEST_GPS -> {
-                if(grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                    // permiso concedido
-                    if( !gpsEncendido()) {
-                        mostrarDialogoActivarGPS()
-                    } else {
-                        activarGps()
-                        // mostrarUbicacionActual()
-                    }
-                    mostrarMensaje("Permiso concedido")
-                }
-                else {
-                    mostrarMensaje("PERMISO REQUERIDO")
-                    ActivityCompat.requestPermissions(requireActivity(),
-                        arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                        MY_PERMISSION_REQUEST_GPS)
-                }
-            }
-            else -> {
-                super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-            }
-        }
-    }
-
-    @SuppressLint("MissingPermission")
-    private fun activarGps(){
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
-        fusedLocationClient.lastLocation.addOnSuccessListener {
-            if(it != null) {
-                if(nuevoPost) {
-                    actualizarMarcador(it.latitude, it.longitude)
-                }
-            }
-        }
-        startLocationUpdates()
-        gpsIniciado = true
-    }
-
-    @SuppressLint("MissingPermission")
-    private fun mostrarUbicacionActual() {
-        mMap.isMyLocationEnabled = true;
-    }
 
     private fun mostrarMensaje(mensaje: String) {
         Toast.makeText(context, mensaje, Toast.LENGTH_SHORT).show()
     }
 
-    fun gpsEncendido(): Boolean {
-        val manager : LocationManager = activity?.getSystemService(Context.LOCATION_SERVICE) as LocationManager
-        return manager.isProviderEnabled(LocationManager.GPS_PROVIDER)
-    }
-
-    fun mostrarDialogoActivarGPS() {
-        var alertDialog: AlertDialog = this.let {
-            val builder = AlertDialog.Builder(this.requireContext())
-            builder.apply {
-                setTitle("Activar GPS")
-                setMessage("Es necesario que el gps este activado")
-                setPositiveButton("aceptar",
-                    DialogInterface.OnClickListener{ dialog, id->
-                        startActivityForResult(
-                            Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS),
-                            GPS_REQUEST_CODE
-                        )
-                    }
-                )
-                setNegativeButton("Cancelar",
-                    DialogInterface.OnClickListener { dialog, id ->
-                        dialog.cancel()
-                        mostrarDialogoActivarGPS()
-                    }
-                )
-            }
-            builder.create()
+    private fun isLocationPermissionGranted(): Boolean {
+        if (ActivityCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) !=
+            PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(
+                this.requireActivity(),
+                arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION), REQUEST_CODE_LOCATION
+            )
+            return true
         }
-        alertDialog.show()
-    }
-
-
-    private fun actualizarMarcador(latitude: Double, longitude: Double) {
-        var coordenadas = LatLng(latitude,longitude)
-        if(!marcadorActual.isVisible){
-            marcadorActual.isVisible = true
-        }
-        marcadorActual.position = coordenadas
-        marcadorActual.title = "Lat: $latitude, Lng: $longitude"
-
-        //  marcadorActual.position = LatLng(latitude,longitude)
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(marcadorActual.position))
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(16.0f))
-
-        mostrarMensaje("Save New Post Position: $latitude , $longitude")
-       // dbRef.child("latitude").setValue(latitude)
-       // dbRef.child("longitude").setValue(longitude)
-
-        // Use the Kotlin extension in the fragment-ktx artifact
-        setFragmentResult("requestLatitude", bundleOf("bundleLatitude" to latitude))
-        setFragmentResult("requestLongitude", bundleOf("bundleLongitude" to longitude))
+        return true // false
     }
 
     @SuppressLint("MissingPermission")
-    fun startLocationUpdates(){
-        if(nuevoPost) {
-            fusedLocationClient.requestLocationUpdates(lr, locationCallback, null)
-        }
-    }
-
-    fun stopLocationUpdates(){
-        if(nuevoPost) {
-            fusedLocationClient.removeLocationUpdates(locationCallback)
-            // dbRef.removeValue()
-        }
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if(requestCode == GPS_REQUEST_CODE && gpsEncendido()) {
-            activarGps()
-            // mostrarUbicacionActual()
+    private fun enableLocation(){
+        if(!::mMap.isInitialized) return
+        if(isLocationPermissionGranted()){
+            mMap.isMyLocationEnabled = true
         }
         else {
-            mostrarDialogoActivarGPS()
+            requestLocationPermission()
         }
     }
 
+    private fun requestLocationPermission(){
+        if(ActivityCompat.shouldShowRequestPermissionRationale(requireActivity(),Manifest.permission.ACCESS_FINE_LOCATION)){
+            Toast.makeText(requireContext(),"Ve a ajustes y acepta los permisos", Toast.LENGTH_SHORT).show()
+        }
+        else {
+            ActivityCompat.requestPermissions(this.requireActivity(), arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                REQUEST_CODE_LOCATION)
+        }
+    }
+    @SuppressLint("MissingPermission")
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ){
+        when(requestCode){
+            REQUEST_CODE_LOCATION -> if(grantResults.isNotEmpty() && grantResults[0]==PackageManager.PERMISSION_GRANTED){
+                mMap.isMyLocationEnabled = true
+            }
+            else{
+                Toast.makeText(requireContext(),"Activa la localización desde ajustes y acepta los permisos", Toast.LENGTH_SHORT).show()
+            }
+            else -> {}
+        }
+    }
 
+    @SuppressLint("MissingPermission")
+    override fun onResume() {
+        super.onResume()
+        if(!isLocationPermissionGranted()){
+            if(!::mMap.isInitialized) return
+            mMap.isMyLocationEnabled = false
+            Toast.makeText(requireContext(),"Activa la localización desde ajustes y acepta los permisos", Toast.LENGTH_SHORT).show()
+        }
+    }
 
+    override fun onMyLocationButtonClick(): Boolean {
+        // si es false seria para que me lleve a la localizacion, seria para post
+        Toast.makeText(requireContext(),"Boton pulsado", Toast.LENGTH_SHORT).show()
+      //  return !nuevoPost
+        return false
+        // si le pongo true no me llevaria -seria para detalle.
+        // return true
+    }
+
+    override fun onMyLocationClick(p0: Location) {
+        Toast.makeText(requireContext(),"Estás en ${p0.latitude}, ${p0.longitude}", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onMapLongClick(p0: LatLng) {
+        // Añadir marker en la posición
+        // Añadir marker en la posición
+        val marker = mMap.addMarker(MarkerOptions().position(p0))
+
+        // Obtener pixeles reales
+
+        // Obtener pixeles reales
+        val point: Point = mMap.projection.toScreenLocation(p0)
+
+        // Determinar el ancho total de la pantalla
+
+        // Determinar el ancho total de la pantalla
+        val display = DisplayMetrics()
+        requireActivity().getWindowManager().getDefaultDisplay().getMetrics(display)
+        val width = display.widthPixels
+
+        val hue: Float
+
+        // ¿La coordenada de pantalla es menor o igual que la mitad del ancho?
+
+        // ¿La coordenada de pantalla es menor o igual que la mitad del ancho?
+        hue = if (point.x <= width / 2) {
+            BitmapDescriptorFactory.HUE_YELLOW
+        } else {
+            BitmapDescriptorFactory.HUE_ORANGE
+        }
+
+        // Cambiar color del marker según el grupo
+
+        // Cambiar color del marker según el grupo
+        marker!!.setIcon(BitmapDescriptorFactory.defaultMarker(hue))
+        Toast.makeText(requireContext(),"Bien hecho!!! ahora presiona el botón atrás", Toast.LENGTH_LONG).show()
+       // findNavController().popBackStack(R.id.newPostFragment, true);
+        prefs.latitude = p0.latitude.toFloat()
+        prefs.longitude= p0.longitude.toFloat()
+    }
 }
