@@ -1,11 +1,15 @@
 package com.example.missingpets
 
+import android.Manifest
 import android.app.Activity
+import android.content.ContentValues
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable
+import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
@@ -13,11 +17,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.Spinner
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
+import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
@@ -27,11 +31,16 @@ import com.example.missingpets.models.RepositorioUsuario
 import com.example.missingpets.network.ApiServices2
 import com.example.missingpets.network.Mascota
 import com.example.missingpets.viewModels.UserProfileViewModel
+import com.google.android.gms.cast.framework.media.ImagePicker
 import com.google.android.material.snackbar.Snackbar
+import okhttp3.MediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import kotlin.contracts.contract
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -55,14 +64,35 @@ class NewPostFragment : Fragment() {
 
     private var marcadorLatitude: Float? = null
     private var marcadorLongitude: Float? = null
+    var photo: Uri? = null
 
 
+    private var permisosCamara = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()){ result ->
+        if (result.values.all { it }) {
+            Toast.makeText(requireContext(), "Acceso a cámara concedido", Toast.LENGTH_LONG).show()
+            abrirCamara()
+        } else {
+            Toast.makeText(requireContext(), "Acceso a cámara no concedido", Toast.LENGTH_LONG).show()
+        }
+
+    }
+
+    private var permisosGaleria = registerForActivityResult(ActivityResultContracts.RequestPermission()){ isGranted: Boolean ->
+        if (isGranted) {
+            Toast.makeText(requireContext(), "Acceso a galeria concedido", Toast.LENGTH_LONG).show()
+            abrirGaleria()
+        } else {
+            Toast.makeText(requireContext(), "Acceso a galeria no concedido", Toast.LENGTH_LONG).show()
+        }
+
+    }
     private var resultLauncherCamara = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
-            val data: Intent? = result.data
-            val extras = data?.extras
-            val imgBitmap = extras!!["data"] as Bitmap?
-            binding.ivMascotaEncontrada.setImageBitmap(imgBitmap)
+//            val data: Intent? = result.data
+//            val extras = data?.extras
+//            val imgBitmap = extras!!["data"] as Bitmap?
+//            //binding.ivMascotaEncontrada.setImageBitmap(imgBitmap)
+            binding.ivMascotaEncontrada.setImageURI(photo)
 
         }
     }
@@ -72,6 +102,8 @@ class NewPostFragment : Fragment() {
             binding.ivMascotaEncontrada.setImageURI(picture)
         }
     }
+
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -122,10 +154,10 @@ class NewPostFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.btnTomarFotoEncontrado.setOnClickListener {
-            abrirCamara(view)
+            abrirCamara_click(view)
         }
         binding.btnSubirFotoEncontrado.setOnClickListener {
-            abrirGaleria(view)
+            abrirGaleria_click(view)
         }
 
         binding.dateCuando.setOnClickListener {
@@ -140,6 +172,7 @@ class NewPostFragment : Fragment() {
                 //FIXME se cierra la app cuando llega aca
                 irAlLoguin()
             } else {
+
                 Log.d("POST", "Alta de Mascota")
                 var pet: Mascota = Mascota()
 
@@ -153,6 +186,7 @@ class NewPostFragment : Fragment() {
                 pet.description = binding.etMasDetallesEncontrado.text.toString()
 
                 //TODO hacer el post de la foto y obtener el path
+                val url = publicartFoto(binding.ivMascotaEncontrada)
                 pet.photopath = "gato.jpg"
 
                 pet.nombreMascota = binding.etNombreAnimal.text.toString()
@@ -160,7 +194,9 @@ class NewPostFragment : Fragment() {
                 pet.sexoAnimal = binding.spnSexoAnimales.selectedItem.toString()
 
                 //TODO validar formato de fecha
-                pet.fechaPerdido = "2021-01-10"
+                val fechaperdido = binding.dateCuando.toString()
+
+                pet.fechaPerdido = binding.dateCuando.text.toString()
 
                 if(binding.rbPerdido.isSelected()){
                     pet.estado = "perdido"
@@ -181,6 +217,7 @@ class NewPostFragment : Fragment() {
             findNavController().navigate(action, bundle)
         }
     }
+
 
     private fun validarCamposVacios(pet: Mascota): Boolean {
 
@@ -209,34 +246,59 @@ class NewPostFragment : Fragment() {
 
     private fun onDateSelected(day: Int, month: Int, year: Int) {
         val realMonth = month + 1
-        binding.dateCuando.setText("$day/$realMonth/$year")
+        binding.dateCuando.setText("$year-$realMonth-$day")
     }
-    private fun abrirGaleria(view: View) {
+
+
+
+    private fun abrirGaleria_click(view: View) {
         try {
-            val intent = Intent(Intent.ACTION_GET_CONTENT)
-            //startActivity(intent)
-            intent.type = "image/*"
-            resultLauncherGaleria.launch(intent)
+            if (context?.let { ContextCompat.checkSelfPermission(it, Manifest.permission.READ_EXTERNAL_STORAGE) } == PackageManager.PERMISSION_DENIED) {
+
+                permisosGaleria.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
+
+            }else{
+                abrirGaleria()
+            }
 
         } catch (e: Exception) {
             Snackbar.make(view, "No se pudo abrir la galeria", Snackbar.LENGTH_LONG).show()
         }
     }
 
-    // Abrir la cámara o subir desde la galeria
-    private fun abrirCamara(view: View) {
+    private fun abrirGaleria(){
+
+        //val intent = Intent(Intent.ACTION_GET_CONTENT)
+        val intent = Intent(Intent.ACTION_PICK)
+        //startActivity(intent)
+        intent.type = "image/*"
+        resultLauncherGaleria.launch(intent)
+    }
+
+    // Abrir la cámara
+    private fun abrirCamara_click(view: View) {
         try {
-            val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-            if (activity?.let { intent.resolveActivity(it.packageManager) } != null) {
-                //startActivity(intent)
-                resultLauncherCamara.launch(intent)
-            } else {
-                Toast.makeText(this.context, "No se encontró cámara", Toast.LENGTH_SHORT).show()
+            if (context?.let { ContextCompat.checkSelfPermission(it, Manifest.permission.CAMERA) } == PackageManager.PERMISSION_DENIED
+                || context?.let { ContextCompat.checkSelfPermission(it, Manifest.permission.WRITE_EXTERNAL_STORAGE) } == PackageManager.PERMISSION_DENIED) {
+
+                    permisosCamara.launch(arrayOf(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE))
+
+            }else{
+                abrirCamara()
             }
 
         } catch (e: Exception) {
             Snackbar.make(view, "No se pudo abrir cámara", Snackbar.LENGTH_LONG).show()
         }
+    }
+    private fun abrirCamara() {
+        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        val value = ContentValues()
+        value.put(MediaStore.Images.Media.TITLE, "New Image")
+        photo = context?.contentResolver?.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, value)
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, photo)
+        resultLauncherCamara.launch(intent)
+
     }
 
     private fun initializeSpinnerAdapter(items: Array<String>, spinner: Spinner): ArrayAdapter<String> {
@@ -276,6 +338,10 @@ class NewPostFragment : Fragment() {
         findNavController().navigate(action)
     }
 
+    private fun publicartFoto(ivMascotaEncontrada: ImageView) {
+
+
+    }
 
     fun publicarMascota(pet: Mascota) {
         val apiInterface0 = ApiServices2.create().addLost(
