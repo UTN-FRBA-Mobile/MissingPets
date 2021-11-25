@@ -56,15 +56,16 @@ class AdoptableFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
-        val apiInterface = ApiServices2.create().getFound()
+        val apiInterface = ApiServices2.create().getMissingPets()
 
         apiInterface.enqueue( object : Callback<List<recyclerPet>> {
             override fun onResponse(call: Call<List<recyclerPet>>?, response: Response<List<recyclerPet>>?) {
 
                 if(response?.body() != null){
+                    var adoptableAnimals = response.body()!!.filter { it.estado=="encontrado" }
 
                     recyclerView = binding.recyclerViewAdoptablePets
-                    recyclerView.adapter = AdoptableAdapter(response.body()!!,AdoptableAdapter.OnClickListener {
+                    recyclerView.adapter = AdoptableAdapter(adoptableAnimals,AdoptableAdapter.OnClickListener {
 
                         if (user.id>=0){//repositorioDeUsuario.estasLogueado()
                             findNavController().navigate(R.id.action_adoptableFragment_to_detailFragment)

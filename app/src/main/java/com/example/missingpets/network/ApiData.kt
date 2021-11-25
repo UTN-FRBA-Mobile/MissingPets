@@ -42,6 +42,7 @@ data class recyclerPet (
     @Json(name = "id") val id: Int,
     @Json(name = "description") val description: String,
     @Json(name = "photopath") val photopath: String,
+    @Json(name = "estado") val estado: String
 )
 
 data class recyclerPet2 (

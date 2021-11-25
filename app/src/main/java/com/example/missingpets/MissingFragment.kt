@@ -61,8 +61,9 @@ class MissingFragment : Fragment() {
             override fun onResponse(call: Call<List<recyclerPet>>?, response: Response<List<recyclerPet>>?) {
 
                 if(response?.body() != null){
+                    var missingAnimals = response.body()!!.filter { it.estado=="perdido" }
                     recyclerView = binding.recyclerViewMissingPets
-                    recyclerView.adapter = MissingAdapter(response.body()!!,MissingAdapter.OnClickListener {
+                    recyclerView.adapter = MissingAdapter(missingAnimals,MissingAdapter.OnClickListener {
 
                         if (user.id>=0){ // repositorioDeUsuario.estasLogueado()
                             val bundle = Bundle()
