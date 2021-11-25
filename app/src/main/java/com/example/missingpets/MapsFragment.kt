@@ -42,7 +42,7 @@ import com.example.missingpets.MainActivity.Companion.prefs
 
 
 class MapsFragment : Fragment() , OnMapReadyCallback, GoogleMap.OnMyLocationButtonClickListener,
-        GoogleMap.OnMyLocationClickListener, GoogleMap.OnMapLongClickListener { //, OnInfoWindowClickListener, OnMapReadyCallback {
+        GoogleMap.OnMyLocationClickListener, GoogleMap.OnMapLongClickListener {
     private var latitude: String? = null
     private var longitude: String? = null
     private lateinit var mMap: GoogleMap
@@ -74,17 +74,23 @@ class MapsFragment : Fragment() , OnMapReadyCallback, GoogleMap.OnMyLocationButt
         latitude = arguments?.get("latitude") as String?
         longitude = arguments?.get("longitude") as String?
 
-        // Simulo no hay location, entonces busca la ubicacion actual y seria un nuevo post
+        // Si no recibo como argumentos es porque es un un nuevo post
         if(latitude.isNullOrEmpty()){
             nuevoPost = true;
             // Si es nullo inicializo con Medrano 951 para arrancar
             latitude = "-34.5985579"
             longitude = "-58.4210063"
         }
-        @Suppress("UNCHECKED_CAST")
-        Toast
-            .makeText(context, "Nuevo-Post: $nuevoPost, latitud: $latitude, longitud $longitude", Toast.LENGTH_SHORT)
-            .show()
+        if(!nuevoPost) {
+            @Suppress("UNCHECKED_CAST")
+            Toast
+                .makeText(
+                    context,
+                    "Ubicación actual:  latitud: $latitude, longitud $longitude",
+                    Toast.LENGTH_SHORT
+                )
+                .show()
+        }
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
@@ -100,14 +106,14 @@ class MapsFragment : Fragment() , OnMapReadyCallback, GoogleMap.OnMyLocationButt
         uiSettings.isZoomControlsEnabled = true
     }
 
-    fun onMapClick(latLng: LatLng?) {
+    /*fun onMapClick(latLng: LatLng?) {
         val format: String = java.lang.String.format(
             Locale.getDefault(),
             "Lat/Lng = (%f,%f)", latLng!!.latitude, latLng.longitude
         )
         Toast.makeText(context, format, Toast.LENGTH_LONG).show()
 
-    }
+    }*/
 
     private fun createMarker() {
         if (!nuevoPost) {
@@ -122,10 +128,6 @@ class MapsFragment : Fragment() , OnMapReadyCallback, GoogleMap.OnMyLocationButt
     }
 
 
-    private fun mostrarMensaje(mensaje: String) {
-        Toast.makeText(context, mensaje, Toast.LENGTH_SHORT).show()
-    }
-
     private fun isLocationPermissionGranted(): Boolean {
         if (ActivityCompat.checkSelfPermission(
                 requireContext(),
@@ -139,7 +141,7 @@ class MapsFragment : Fragment() , OnMapReadyCallback, GoogleMap.OnMyLocationButt
             )
             return true
         }
-        return true // false
+        return nuevoPost
     }
 
     @SuppressLint("MissingPermission")
@@ -203,16 +205,14 @@ class MapsFragment : Fragment() , OnMapReadyCallback, GoogleMap.OnMyLocationButt
     }
 
     override fun onMapLongClick(p0: LatLng) {
-        // Añadir marker en la posición
+        if(!nuevoPost){
+            return
+        }
         // Añadir marker en la posición
         val marker = mMap.addMarker(MarkerOptions().position(p0))
 
         // Obtener pixeles reales
-
-        // Obtener pixeles reales
         val point: Point = mMap.projection.toScreenLocation(p0)
-
-        // Determinar el ancho total de la pantalla
 
         // Determinar el ancho total de la pantalla
         val display = DisplayMetrics()
@@ -222,15 +222,11 @@ class MapsFragment : Fragment() , OnMapReadyCallback, GoogleMap.OnMyLocationButt
         val hue: Float
 
         // ¿La coordenada de pantalla es menor o igual que la mitad del ancho?
-
-        // ¿La coordenada de pantalla es menor o igual que la mitad del ancho?
         hue = if (point.x <= width / 2) {
             BitmapDescriptorFactory.HUE_YELLOW
         } else {
             BitmapDescriptorFactory.HUE_ORANGE
         }
-
-        // Cambiar color del marker según el grupo
 
         // Cambiar color del marker según el grupo
         marker!!.setIcon(BitmapDescriptorFactory.defaultMarker(hue))
