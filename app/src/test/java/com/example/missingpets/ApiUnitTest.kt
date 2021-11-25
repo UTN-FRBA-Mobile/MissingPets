@@ -15,6 +15,12 @@ import kotlin.reflect.typeOf
  * See [testing documentation](http://d.android.com/tools/testing).
  */
 class ApiUnitTest {
+
+    @Test
+    fun deletePet() {
+        var id = ApiServices2.create().deleteLost("DELETE", 48)
+    }
+
     @Test
     fun retrievePet() {
         var id = ApiServices2.create().getLostById(id = 30)

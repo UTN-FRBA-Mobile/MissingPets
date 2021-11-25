@@ -64,9 +64,10 @@ interface ApiServices2 {
     @PUT("lost")
     suspend fun updateLost(@Body missingpet: MissingPet):  Call<ResponseBody?>?
 
-    @FormUrlEncoded
-    @DELETE("lost")
-    suspend fun deleteLost(@Query("id") id: Int):  Call<ResponseBody?>?
+    @GET("lost/")
+    fun deleteLost(
+        @Query("method") method: String,
+        @Query("id") id: Int):  Call<ResponseBody>
 
 
     //Usuarios

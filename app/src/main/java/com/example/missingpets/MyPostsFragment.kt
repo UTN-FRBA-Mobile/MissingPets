@@ -2,6 +2,7 @@ package com.example.missingpets
 
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -9,7 +10,12 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import com.example.missingpets.databinding.FragmentMyPostsBinding
-
+import com.example.missingpets.network.ApiServices2
+import com.example.missingpets.network.Mascota
+import okhttp3.ResponseBody
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 
 class MyPostsFragment : Fragment() {
@@ -55,4 +61,23 @@ class MyPostsFragment : Fragment() {
 
     }
 
+
+    fun borrarMascota(idMascota: Int) {
+        val apiInterface0 = ApiServices2.create().deleteLost("DELETE", idMascota)
+
+        apiInterface0!!.enqueue(object : Callback<ResponseBody?> {
+
+            override fun onResponse(call: Call<ResponseBody?>, response: Response<ResponseBody?>) {
+                if (response != null && response.isSuccessful && response.body() != null) {
+                    Log.d("SUCCESS DELETE  MASCOTA - ID " + idMascota, response.body()!!.toString())
+
+
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseBody?>, t: Throwable) {
+                Log.e("Error:::", "Error " + t!!.message)
+            }
+        })
+    }
 }
