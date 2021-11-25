@@ -29,6 +29,7 @@ import com.example.missingpets.R.id.*
 import com.example.missingpets.R.id.action_newPostFragment_to_loginFragment2
 
 import com.example.missingpets.databinding.FragmentNewPostBinding
+import com.example.missingpets.formats.DateFormat
 import com.example.missingpets.models.RepositorioUsuario
 import com.example.missingpets.network.ApiServices2
 import com.example.missingpets.network.Mascota
@@ -42,18 +43,9 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.File
+import java.util.*
 
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [NewPostFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class NewPostFragment : Fragment() {
 
     private var param1: String? = null
@@ -91,10 +83,6 @@ class NewPostFragment : Fragment() {
     }
     private var resultLauncherCamara = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
-//            val data: Intent? = result.data
-//            val extras = data?.extras
-//            val imgBitmap = extras!!["data"] as Bitmap?
-//            //binding.ivMascotaEncontrada.setImageBitmap(imgBitmap)
             binding.ivMascotaEncontrada.setImageURI(photo)
             uri = photo
 
@@ -115,7 +103,7 @@ class NewPostFragment : Fragment() {
         prefs.latitude = 0f
         prefs.longitude= 0f
 
-        // Use the Kotlin extension in the fragment-ktx artifact
+     /*   // Use the Kotlin extension in the fragment-ktx artifact
         setFragmentResultListener("requestLatitude") { requestLatitude, bundle ->
             // We use a String here, but any type that can be put in a Bundle is supported
             marcadorLatitude = bundle.getFloat("bundleLatitude")
@@ -126,7 +114,7 @@ class NewPostFragment : Fragment() {
             // We use a String here, but any type that can be put in a Bundle is supported
             marcadorLongitude = bundle.getFloat("bundleLongitude")
             // Do something with the result
-        }
+        }*/
     }
 
     override fun onCreateView(
@@ -151,21 +139,12 @@ class NewPostFragment : Fragment() {
 
 
         return binding.root
-        //inflater.inflate(R.layout.fragment_post_missing, container, false)
     }
 
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-       /* savedInstanceState?.let{
-            petState.nombreMascota = savedInstanceState?.getString("nombre")
-            Toast.makeText(requireContext(), "RECUPERO DE" + petState.nombreMascota,
-                Toast.LENGTH_LONG).show();
-
-            //restore the data here
-        }*/
 
         binding.btnTomarFotoEncontrado.setOnClickListener {
             abrirCamara_click(view)
@@ -179,7 +158,6 @@ class NewPostFragment : Fragment() {
 
         binding.btnPublicar.setOnClickListener {
             //stop here
-            val hola = 60
             if (user.id<0){
 
                 Toast.makeText(requireContext(), "Es obligatiorio estar logueado para continuar",
@@ -188,28 +166,26 @@ class NewPostFragment : Fragment() {
 
             } else {
 
-                Log.d("POST", "Alta de Mascota")
                 var pet: Mascota = Mascota()
 
-                //TODO asignar ID del usuario loggeado
+                //asignar ID del usuario loggeado
                 pet.idcreator = user.id
 
-                //TODO leer coordenadas del mapa
+                //leer coordenadas del mapa
                 pet.latitude = binding.tvLatitude.text.toString().toFloat()
                 pet.longitude = binding.tvLongitude.text.toString().toFloat()
 
                 pet.description = binding.etMasDetallesEncontrado.text.toString()
 
-                //TODO hacer el post de la foto y obtener el path
-                val url = publicarFoto(binding.ivMascotaEncontrada)
+                //TODO hacer el post de la foto y obtener el path (LO ANULE POR AHORA DA ERROR)
+               // val url = publicarFoto(binding.ivMascotaEncontrada)
                 pet.photopath = "gato.jpg"
 
                 pet.nombreMascota = binding.etNombreAnimal.text.toString()
                 pet.tipoAnimal = binding.spnTipoAnimales.selectedItem.toString()
                 pet.sexoAnimal = binding.spnSexoAnimales.selectedItem.toString()
 
-
-                pet.fechaPerdido = binding.dateCuando.text.toString()
+                pet.fechaPerdido = DateFormat.yyyymmddToddmmyyy(binding.dateCuando.text.toString())
 
                 if(binding.rbPerdido.isSelected()){
                     pet.estado = "perdido"
@@ -224,10 +200,7 @@ class NewPostFragment : Fragment() {
 
         binding.imageviewMapa.setOnClickListener {
             val action = R.id.action_newPostFragment_to_mapsFragment
-            val bundle = Bundle()
-            //bundle.putString("latitude", binding.tvLatitude.text.toString().trim())
-            //bundle.putString("longitude", binding.tvLongitude.text.toString().trim())
-                findNavController().navigate(action, bundle)
+            findNavController().navigate(action)
         }
     }
 
@@ -244,7 +217,7 @@ class NewPostFragment : Fragment() {
             pet.sexoAnimal.isNullOrEmpty() || pet.fechaPerdido.isNullOrEmpty() ||
             pet.estado.isNullOrEmpty()
         ) {
-            Toast.makeText(requireContext(), "Hay campos obligatorios que debe completar",
+            Toast.makeText(requireContext(), "Hay campos obligatorios que debes completar",
                 Toast.LENGTH_LONG).show();
             return false
         }
@@ -259,9 +232,8 @@ class NewPostFragment : Fragment() {
 
     private fun onDateSelected(day: Int, month: Int, year: Int) {
         val realMonth = month + 1
-        binding.dateCuando.setText("$year-$realMonth-$day")
+        binding.dateCuando.setText("$day-$realMonth-$year")
     }
-
 
 
     private fun abrirGaleria_click(view: View) {
@@ -281,9 +253,7 @@ class NewPostFragment : Fragment() {
 
     private fun abrirGaleria(){
 
-        //val intent = Intent(Intent.ACTION_GET_CONTENT)
         val intent = Intent(Intent.ACTION_PICK)
-        //startActivity(intent)
         intent.type = "image/*"
         resultLauncherGaleria.launch(intent)
     }
@@ -365,7 +335,6 @@ class NewPostFragment : Fragment() {
 
             override fun onResponse(call: Call<ResponseBody?>, response: Response<ResponseBody?>) {
                 if (response != null && response.isSuccessful && response.body() != null) {
-                    Log.d("SUCCESS ALTA MASCOTA", response.body()!!.toString())
                     Log.d("SUCCESS ALTA MASCOTA", response.message().toString())
 
                 }
@@ -375,10 +344,7 @@ class NewPostFragment : Fragment() {
                 Log.e("Error:::", "Error " + t!!.message)
             }
         })
-
     }
-
-
 
     fun publicarMascota(pet: Mascota) {
         val apiInterface0 = ApiServices2.create().addLost(
@@ -399,7 +365,6 @@ class NewPostFragment : Fragment() {
             override fun onResponse(call: Call<ResponseBody?>, response: Response<ResponseBody?>) {
                 if (response != null && response.isSuccessful && response.body() != null) {
 
-                    Log.d("SUCCESS ALTA MASCOTA", response.body()!!.toString())
                     Log.d("SUCCESS ALTA MASCOTA", response.message().toString())
 
                     Toast.makeText(requireContext(), "Has publicado con exito!!!",Toast.LENGTH_LONG).show()
@@ -421,13 +386,6 @@ class NewPostFragment : Fragment() {
             }
         })
     }
-
-   /* override fun onSaveInstanceState(outState: Bundle) {
-        outState.run{
-            putString("nombre", petState.nombreMascota!!)
-        }
-        super.onSaveInstanceState(outState)
-    } */
 
     override fun onStart() {
         super.onStart()
