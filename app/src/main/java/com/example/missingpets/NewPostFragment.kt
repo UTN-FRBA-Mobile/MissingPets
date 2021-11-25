@@ -5,7 +5,6 @@ import android.app.Activity
 import android.content.ContentValues
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable
@@ -18,9 +17,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResultListener
@@ -31,7 +28,6 @@ import com.example.missingpets.models.RepositorioUsuario
 import com.example.missingpets.network.ApiServices2
 import com.example.missingpets.network.Mascota
 import com.example.missingpets.viewModels.UserProfileViewModel
-import com.google.android.gms.cast.framework.media.ImagePicker
 import com.google.android.material.snackbar.Snackbar
 import okhttp3.MediaType
 import okhttp3.MultipartBody
@@ -40,7 +36,8 @@ import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import kotlin.contracts.contract
+import java.io.File
+
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -65,6 +62,7 @@ class NewPostFragment : Fragment() {
     private var marcadorLatitude: Float? = null
     private var marcadorLongitude: Float? = null
     var photo: Uri? = null
+    var uri: Uri? =  null
 
 
     private var permisosCamara = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()){ result ->
@@ -93,6 +91,7 @@ class NewPostFragment : Fragment() {
 //            val imgBitmap = extras!!["data"] as Bitmap?
 //            //binding.ivMascotaEncontrada.setImageBitmap(imgBitmap)
             binding.ivMascotaEncontrada.setImageURI(photo)
+            uri = photo
 
         }
     }
@@ -100,11 +99,9 @@ class NewPostFragment : Fragment() {
         if (result.resultCode == Activity.RESULT_OK) {
             val picture = result.data?.data
             binding.ivMascotaEncontrada.setImageURI(picture)
+            uri = picture
         }
     }
-
-
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -167,10 +164,9 @@ class NewPostFragment : Fragment() {
             //stop here
             val hola = 60
 
-            if (user.id<0){//repositorioDeUsuario.estasLogueado()
-
-                //FIXME se cierra la app cuando llega aca
+            if (user.id<0){
                 irAlLoguin()
+
             } else {
 
                 Log.d("POST", "Alta de Mascota")
@@ -186,15 +182,12 @@ class NewPostFragment : Fragment() {
                 pet.description = binding.etMasDetallesEncontrado.text.toString()
 
                 //TODO hacer el post de la foto y obtener el path
-                val url = publicartFoto(binding.ivMascotaEncontrada)
+                val url = publicarFoto(binding.ivMascotaEncontrada)
                 pet.photopath = "gato.jpg"
 
                 pet.nombreMascota = binding.etNombreAnimal.text.toString()
                 pet.tipoAnimal = binding.spnTipoAnimales.selectedItem.toString()
                 pet.sexoAnimal = binding.spnSexoAnimales.selectedItem.toString()
-
-                //TODO validar formato de fecha
-                val fechaperdido = binding.dateCuando.toString()
 
                 pet.fechaPerdido = binding.dateCuando.text.toString()
 
@@ -338,8 +331,30 @@ class NewPostFragment : Fragment() {
         findNavController().navigate(action)
     }
 
-    private fun publicartFoto(ivMascotaEncontrada: ImageView) {
+    private fun publicarFoto(ivMascotaEncontrada: ImageView) {
 
+        val file = File(uri?.path)
+        val filename= "publicar_"+(0..100000).random().toString()
+
+        val requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), file)
+        val body = MultipartBody.Part.createFormData(filename, file.name, requestBody)
+
+        val apiInterface0 = ApiServices2.create().addPhoto(requestBody,body)
+
+        apiInterface0!!.enqueue(object : Callback<ResponseBody?> {
+
+            override fun onResponse(call: Call<ResponseBody?>, response: Response<ResponseBody?>) {
+                if (response != null && response.isSuccessful && response.body() != null) {
+                    Log.d("SUCCESS ALTA MASCOTA", response.body()!!.toString())
+                    Log.d("SUCCESS ALTA MASCOTA", response.message().toString())
+
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseBody?>, t: Throwable) {
+                Log.e("Error:::", "Error " + t!!.message)
+            }
+        })
 
     }
 
@@ -372,6 +387,5 @@ class NewPostFragment : Fragment() {
             }
         })
     }
-
 
 }
