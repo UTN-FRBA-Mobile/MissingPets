@@ -259,5 +259,14 @@
         android:id="@+id/myMissingPostFragment"
         android:name="com.example.missingpets.MyMissingPostFragment"
         android:label="fragment_my_missing_post"
-        tools:layout="@layout/fragment_my_missing_post" />
+        tools:layout="@layout/fragment_my_missing_post" >
+        <action
+            android:id="@+id/action_myMissingPostFragment_to_myDetailFragment"
+            app:destination="@id/myDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/myDetailFragment"
+        android:name="com.example.missingpets.MyDetailFragment"
+        android:label="fragment_my_detail"
+        tools:layout="@layout/fragment_my_detail" />
 </navigation>

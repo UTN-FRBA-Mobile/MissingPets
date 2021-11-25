@@ -66,23 +66,4 @@ class MyPostsFragment : Fragment() {
 
     }
 
-
-    fun borrarMascota(idMascota: Int) {
-        val apiInterface0 = ApiServices2.create().deleteLost("DELETE", idMascota)
-
-        apiInterface0!!.enqueue(object : Callback<ResponseBody?> {
-
-            override fun onResponse(call: Call<ResponseBody?>, response: Response<ResponseBody?>) {
-                if (response != null && response.isSuccessful && response.body() != null) {
-                    Log.d("SUCCESS DELETE  MASCOTA - ID " + idMascota, response.body()!!.toString())
-
-
-                }
-            }
-
-            override fun onFailure(call: Call<ResponseBody?>, t: Throwable) {
-                Log.e("Error:::", "Error " + t!!.message)
-            }
-        })
-    }
 }

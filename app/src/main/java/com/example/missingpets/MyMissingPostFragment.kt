@@ -2,6 +2,7 @@ package com.example.missingpets
 
 import MissingAdapter
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -74,23 +75,26 @@ class MyMissingPostFragment : Fragment() {
 
     private fun traerMyPost(idcreator:Int,idMethod:Int) {
 
-        lateinit var apiInterface: Call<List<recyclerPet2>>
-        if(idMethod==0){ //Missing
-            apiInterface = ApiServices2.create().getMissingPets2()
-
-        }else{//Adoptable
-            apiInterface = ApiServices2.create().getFound2()
-        }
-
-
+        val apiInterface = ApiServices2.create().getMissingPets2()
 
         apiInterface.enqueue( object : Callback<List<recyclerPet2>> {
             override fun onResponse(call: Call<List<recyclerPet2>>?, response: Response<List<recyclerPet2>>?) {
 
                 if(response?.body() != null){
 
+                        Toast.makeText(context, "Id_Creator: "+idcreator.toString()+" Operacion: "
+                            +idMethod.toString(), Toast.LENGTH_SHORT).show()
+                    Log.d("MyPostList","Id de usuario: "+idcreator.toString()+" Id de accion: "+ idMethod)
+                    Log.d("MyPostList","Respuesta del servidor "+response?.body().toString())
+
 
                         lateinit var myPost : List<recyclerPet2>
+
+                        myPost= response.body()!!.filter{it.idcreator==idcreator};
+
+                    Log.d("MyPostList", "Respuesta del servidor filtrado: $myPost")
+
+
 
                         when(idMethod){
                             0 -> { //Todos
@@ -113,13 +117,15 @@ class MyMissingPostFragment : Fragment() {
 
                         }
 
-                    if(myPost.size==0){
+                    if(myPost.size!=0){
+
+                        Log.d("MyPostList", "Datos para el RV: $myPost")
 
                         recyclerView = binding.recyclerViewMissingPets
                         recyclerView.adapter = MyPostAdapter(myPost,MyPostAdapter.OnClickListener {
                                 val bundle = Bundle()
                                 bundle.putInt("id", it.id)
-                                //findNavController().navigate(R.id.action_missingFragment_to_detailFragment,bundle)
+                                findNavController().navigate(R.id.action_myMissingPostFragment_to_myDetailFragment,bundle)
                         })
                         recyclerView.layoutManager= LinearLayoutManager(requireContext())
                         recyclerView.setHasFixedSize(true)
