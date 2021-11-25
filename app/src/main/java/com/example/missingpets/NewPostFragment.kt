@@ -1,11 +1,14 @@
 package com.example.missingpets
 
+import android.Manifest
 import android.app.Activity
+import android.content.ContentValues
 import android.content.Intent
-import android.graphics.Bitmap
+import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable
+import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
@@ -13,24 +16,33 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.Spinner
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
+
 import com.example.missingpets.MainActivity.Companion.prefs
 import com.example.missingpets.R.id.*
+
+import com.example.missingpets.R.id.action_newPostFragment_to_loginFragment2
+
 import com.example.missingpets.databinding.FragmentNewPostBinding
 import com.example.missingpets.models.RepositorioUsuario
 import com.example.missingpets.network.ApiServices2
 import com.example.missingpets.network.Mascota
+import com.example.missingpets.viewModels.UserProfileViewModel
 import com.google.android.material.snackbar.Snackbar
+import okhttp3.MediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.File
+
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -50,17 +62,41 @@ class NewPostFragment : Fragment() {
     private var _binding: FragmentNewPostBinding? = null
     private val binding get() = _binding!!
     private val repositorioUsuario = RepositorioUsuario
+    private val user: UserProfileViewModel by activityViewModels()
 
     private var marcadorLatitude: Float? = null
     private var marcadorLongitude: Float? = null
+    var photo: Uri? = null
+    var uri: Uri? =  null
 
 
+    private var permisosCamara = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()){ result ->
+        if (result.values.all { it }) {
+            Toast.makeText(requireContext(), "Acceso a cámara concedido", Toast.LENGTH_LONG).show()
+            abrirCamara()
+        } else {
+            Toast.makeText(requireContext(), "Acceso a cámara no concedido", Toast.LENGTH_LONG).show()
+        }
+
+    }
+
+    private var permisosGaleria = registerForActivityResult(ActivityResultContracts.RequestPermission()){ isGranted: Boolean ->
+        if (isGranted) {
+            Toast.makeText(requireContext(), "Acceso a galeria concedido", Toast.LENGTH_LONG).show()
+            abrirGaleria()
+        } else {
+            Toast.makeText(requireContext(), "Acceso a galeria no concedido", Toast.LENGTH_LONG).show()
+        }
+
+    }
     private var resultLauncherCamara = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
-            val data: Intent? = result.data
-            val extras = data?.extras
-            val imgBitmap = extras!!["data"] as Bitmap?
-            binding.ivMascotaEncontrada.setImageBitmap(imgBitmap)
+//            val data: Intent? = result.data
+//            val extras = data?.extras
+//            val imgBitmap = extras!!["data"] as Bitmap?
+//            //binding.ivMascotaEncontrada.setImageBitmap(imgBitmap)
+            binding.ivMascotaEncontrada.setImageURI(photo)
+            uri = photo
 
         }
     }
@@ -68,9 +104,9 @@ class NewPostFragment : Fragment() {
         if (result.resultCode == Activity.RESULT_OK) {
             val picture = result.data?.data
             binding.ivMascotaEncontrada.setImageURI(picture)
+            uri = picture
         }
     }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -132,28 +168,31 @@ class NewPostFragment : Fragment() {
         }*/
 
         binding.btnTomarFotoEncontrado.setOnClickListener {
-            abrirCamara(view)
+            abrirCamara_click(view)
         }
         binding.btnSubirFotoEncontrado.setOnClickListener {
-            abrirGaleria(view)
+            abrirGaleria_click(view)
         }
 
         binding.dateCuando.setOnClickListener {
             showDatePickerDialog() }
 
         binding.btnPublicar.setOnClickListener {
-            if (repositorioUsuario.noEstasLogueado()) {
+            //stop here
+            val hola = 60
+            if (user.id<0){
 
-                //FIXME se cierra la app cuando llega aca
                 Toast.makeText(requireContext(), "Es obligatiorio estar logueado para continuar",
-                    Toast.LENGTH_LONG).show()
+                Toast.LENGTH_LONG).show()
                 irAlLoguin()
+
             } else {
+
                 Log.d("POST", "Alta de Mascota")
                 var pet: Mascota = Mascota()
 
                 //TODO asignar ID del usuario loggeado
-                pet.idcreator = 0
+                pet.idcreator = user.id
 
                 //TODO leer coordenadas del mapa
                 pet.latitude = binding.tvLatitude.text.toString().toFloat()
@@ -162,14 +201,15 @@ class NewPostFragment : Fragment() {
                 pet.description = binding.etMasDetallesEncontrado.text.toString()
 
                 //TODO hacer el post de la foto y obtener el path
+                val url = publicarFoto(binding.ivMascotaEncontrada)
                 pet.photopath = "gato.jpg"
 
                 pet.nombreMascota = binding.etNombreAnimal.text.toString()
                 pet.tipoAnimal = binding.spnTipoAnimales.selectedItem.toString()
                 pet.sexoAnimal = binding.spnSexoAnimales.selectedItem.toString()
 
-                //TODO validar formato de fecha
-                pet.fechaPerdido = binding.dateCuando.text.toString() // "2021-01-10"
+
+                pet.fechaPerdido = binding.dateCuando.text.toString()
 
                 if(binding.rbPerdido.isSelected()){
                     pet.estado = "perdido"
@@ -190,6 +230,7 @@ class NewPostFragment : Fragment() {
                 findNavController().navigate(action, bundle)
         }
     }
+
 
     private fun validarCamposVacios(pet: Mascota): Boolean {
 
@@ -218,34 +259,59 @@ class NewPostFragment : Fragment() {
 
     private fun onDateSelected(day: Int, month: Int, year: Int) {
         val realMonth = month + 1
-        binding.dateCuando.setText("$day/$realMonth/$year")
+        binding.dateCuando.setText("$year-$realMonth-$day")
     }
-    private fun abrirGaleria(view: View) {
+
+
+
+    private fun abrirGaleria_click(view: View) {
         try {
-            val intent = Intent(Intent.ACTION_GET_CONTENT)
-            //startActivity(intent)
-            intent.type = "image/*"
-            resultLauncherGaleria.launch(intent)
+            if (context?.let { ContextCompat.checkSelfPermission(it, Manifest.permission.READ_EXTERNAL_STORAGE) } == PackageManager.PERMISSION_DENIED) {
+
+                permisosGaleria.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
+
+            }else{
+                abrirGaleria()
+            }
 
         } catch (e: Exception) {
             Snackbar.make(view, "No se pudo abrir la galeria", Snackbar.LENGTH_LONG).show()
         }
     }
 
-    // Abrir la cámara o subir desde la galeria
-    private fun abrirCamara(view: View) {
+    private fun abrirGaleria(){
+
+        //val intent = Intent(Intent.ACTION_GET_CONTENT)
+        val intent = Intent(Intent.ACTION_PICK)
+        //startActivity(intent)
+        intent.type = "image/*"
+        resultLauncherGaleria.launch(intent)
+    }
+
+    // Abrir la cámara
+    private fun abrirCamara_click(view: View) {
         try {
-            val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-            if (activity?.let { intent.resolveActivity(it.packageManager) } != null) {
-                //startActivity(intent)
-                resultLauncherCamara.launch(intent)
-            } else {
-                Toast.makeText(this.context, "No se encontró cámara", Toast.LENGTH_SHORT).show()
+            if (context?.let { ContextCompat.checkSelfPermission(it, Manifest.permission.CAMERA) } == PackageManager.PERMISSION_DENIED
+                || context?.let { ContextCompat.checkSelfPermission(it, Manifest.permission.WRITE_EXTERNAL_STORAGE) } == PackageManager.PERMISSION_DENIED) {
+
+                    permisosCamara.launch(arrayOf(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE))
+
+            }else{
+                abrirCamara()
             }
 
         } catch (e: Exception) {
             Snackbar.make(view, "No se pudo abrir cámara", Snackbar.LENGTH_LONG).show()
         }
+    }
+    private fun abrirCamara() {
+        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        val value = ContentValues()
+        value.put(MediaStore.Images.Media.TITLE, "New Image")
+        photo = context?.contentResolver?.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, value)
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, photo)
+        resultLauncherCamara.launch(intent)
+
     }
 
     private fun initializeSpinnerAdapter(items: Array<String>, spinner: Spinner): ArrayAdapter<String> {
@@ -281,10 +347,36 @@ class NewPostFragment : Fragment() {
     }
 
     private fun irAlLoguin() {
-        val action = action_detailFragment_to_loginFragment2
+        val action = action_newPostFragment_to_loginFragment2
         findNavController().navigate(action)
     }
 
+    private fun publicarFoto(ivMascotaEncontrada: ImageView) {
+
+        val file = File(uri?.path)
+        val filename= "publicar_"+(0..100000).random().toString()
+
+        val requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), file)
+        val body = MultipartBody.Part.createFormData(filename, file.name, requestBody)
+
+        val apiInterface0 = ApiServices2.create().addPhoto(requestBody,body)
+
+        apiInterface0!!.enqueue(object : Callback<ResponseBody?> {
+
+            override fun onResponse(call: Call<ResponseBody?>, response: Response<ResponseBody?>) {
+                if (response != null && response.isSuccessful && response.body() != null) {
+                    Log.d("SUCCESS ALTA MASCOTA", response.body()!!.toString())
+                    Log.d("SUCCESS ALTA MASCOTA", response.message().toString())
+
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseBody?>, t: Throwable) {
+                Log.e("Error:::", "Error " + t!!.message)
+            }
+        })
+
+    }
 
 
 
@@ -342,6 +434,5 @@ class NewPostFragment : Fragment() {
         binding.tvLatitude.text = prefs.latitude.toString()
         binding.tvLongitude.text = prefs.longitude.toString()
     }
-
 
 }
