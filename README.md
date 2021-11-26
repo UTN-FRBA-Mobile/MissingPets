@@ -53,3 +53,7 @@ El usuario que haya encontrado tu animal de compañía o quiera adoptar se pondr
 * [Blacutt Matias](http://github.com/blacuttmatias)
 * [Jose Fuentes](http://github.com/josecplusplus)
 
+<p align="center">
+  <img src="https://github.com/UTN-FRBA-Mobile/MissingPets/blob/main/img/picture02.png"  title="Logo-UTN.BA">
+</p>
+
