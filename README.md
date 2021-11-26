@@ -1,7 +1,6 @@
 # Missing Pets
-
 <p align="center">
-  <img src="https://github.com/UTN-FRBA-Mobile/MissingPets/blob/main/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png" width="350" title="hover text">
+  <img src="https://github.com/UTN-FRBA-Mobile/MissingPets/blob/main/img/picture03.png"  title="TP-MissingPets">
 </p>
 
 **¿Tu mascota se ha perdido? ¿Quieres adoptar o dar en adopción?**
