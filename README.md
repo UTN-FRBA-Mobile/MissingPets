@@ -6,7 +6,7 @@
 **¿Tu mascota se ha perdido? ¿Quieres adoptar o dar en adopción?**
 
 Entonces… ¡Bienvenido a la app para las mascotas, MissingPets!
-Missingpets te ayuda a que ningún animal se quede sin hogar 🐱🐶🦜🏠.
+MissingPets te ayuda a que ningún animal se quede sin hogar 🐱🐶🦜🏠.
 
 MissingPets es la app colaborativa gratis para emitir alertas y avisos de mascotas perdidas o encontradas en cualquier lugar.
 
