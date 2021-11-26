@@ -1,5 +1,9 @@
 # Missing Pets
 
+<p align="center">
+  <img src="https://github.com/UTN-FRBA-Mobile/MissingPets/blob/main/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png" width="350" title="hover text">
+</p>
+
 **¿Tu mascota se ha perdido? ¿Quieres adoptar o dar en adopcion?**
 
 Entonces… ¡Bienvenido a la app para las mascotas, MissingPets!
