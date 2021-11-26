@@ -175,7 +175,7 @@ class MapsFragment : Fragment() , OnMapReadyCallback, GoogleMap.OnMyLocationButt
                 mMap.isMyLocationEnabled = true
             }
             else{
-                Toast.makeText(requireContext(),"Activa la localización desde ajustes y acepta los permisos", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(),"Activa la localización desde ajustes y acepta los permisos (1)", Toast.LENGTH_SHORT).show()
             }
             else -> {}
         }
@@ -187,7 +187,7 @@ class MapsFragment : Fragment() , OnMapReadyCallback, GoogleMap.OnMyLocationButt
         if(!isLocationPermissionGranted()){
             if(!::mMap.isInitialized) return
             mMap.isMyLocationEnabled = false
-            Toast.makeText(requireContext(),"Activa la localización desde ajustes y acepta los permisos", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(),"Activa la localización desde ajustes y acepta los permisos (2)", Toast.LENGTH_SHORT).show()
         }
     }
 

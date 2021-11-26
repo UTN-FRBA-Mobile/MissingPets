@@ -20,11 +20,9 @@ import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 
 import com.example.missingpets.MainActivity.Companion.prefs
-import com.example.missingpets.R.id.*
 
 import com.example.missingpets.R.id.action_newPostFragment_to_loginFragment2
 
@@ -43,7 +41,6 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.File
-import java.util.*
 
 
 class NewPostFragment : Fragment() {
@@ -178,14 +175,15 @@ class NewPostFragment : Fragment() {
                 pet.description = binding.etMasDetallesEncontrado.text.toString()
 
                 //TODO hacer el post de la foto y obtener el path (LO ANULE POR AHORA DA ERROR)
-               // val url = publicarFoto(binding.ivMascotaEncontrada)
-                pet.photopath = "gato.jpg"
+                val url = publicarFoto(binding.ivMascotaEncontrada)
+                Log.d("UPLOAD PHOTO", url.toString())
+                pet.photopath = url.toString()
 
                 pet.nombreMascota = binding.etNombreAnimal.text.toString()
                 pet.tipoAnimal = binding.spnTipoAnimales.selectedItem.toString()
                 pet.sexoAnimal = binding.spnSexoAnimales.selectedItem.toString()
 
-                pet.fechaPerdido = DateFormat.yyyymmddToddmmyyy(binding.dateCuando.text.toString())
+                pet.fechaPerdido = DateFormat.ddmmyyyyToyyyymmdd(binding.dateCuando.text.toString())
 
                 if(binding.rbPerdido.isSelected()){
                     pet.estado = "perdido"
@@ -324,7 +322,8 @@ class NewPostFragment : Fragment() {
     private fun publicarFoto(ivMascotaEncontrada: ImageView) {
 
         val file = File(uri?.path)
-        val filename= "publicar_"+(0..100000).random().toString()
+        Log.d("UPLOAD PHOTO - uri:", uri.toString())
+        val filename= "fotomascota"
 
         val requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), file)
         val body = MultipartBody.Part.createFormData(filename, file.name, requestBody)
@@ -335,7 +334,7 @@ class NewPostFragment : Fragment() {
 
             override fun onResponse(call: Call<ResponseBody?>, response: Response<ResponseBody?>) {
                 if (response != null && response.isSuccessful && response.body() != null) {
-                    Log.d("SUCCESS ALTA MASCOTA", response.message().toString())
+                    Log.d("UPLOAD PHOTO - ", response.message().toString())
 
                 }
             }

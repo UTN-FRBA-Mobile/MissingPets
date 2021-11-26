@@ -32,7 +32,7 @@ interface ApiServices2 {
 
     //Fotos
     @Multipart
-    @POST("upload")
+    @POST("upload/upload.php")
     open fun addPhoto(
         @Part("description") description: RequestBody?,
         @Part file: MultipartBody.Part?

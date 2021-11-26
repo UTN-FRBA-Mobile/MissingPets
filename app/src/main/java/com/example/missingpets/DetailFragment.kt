@@ -5,31 +5,17 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
-import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import com.example.missingpets.databinding.FragmentDetailBinding
-import com.example.missingpets.databinding.FragmentRegisterBinding
 import com.example.missingpets.models.RepositorioUsuario
 import com.example.missingpets.viewModels.DetailViewModel
-import com.example.missingpets.viewModels.RegisterViewModel
-import java.util.*
 import android.content.Intent
 import android.net.Uri
 import android.util.Log
-import android.widget.Toast
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.missingpets.dataRV.MissingDatasource
-import com.example.missingpets.dataRV.UserDatasource
 import com.example.missingpets.network.ApiServices2
 import com.example.missingpets.network.Mascota
-import com.example.missingpets.network.MissingPet
-import com.example.missingpets.network.recyclerPet
 import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -76,7 +62,7 @@ class DetailFragment : Fragment() {
                     val tipoAnimal = response.body()?.elementAt(0)?.tipoAnimal ?: ""
                     val sexoAnimal = response.body()?.elementAt(0)?.sexoAnimal ?: ""
                     var fechaPerdido = response.body()?.elementAt(0)?.fechaPerdido ?: ""
-                    fechaPerdido = DateFormat.yyyymmddToddmmyyy(fechaPerdido)
+                    fechaPerdido = DateFormat.yyyymmddToddmmyyyy(fechaPerdido)
                     val longitude = response.body()!!.elementAt(0)?.longitude.toString() ?: "0.0"
                     val latitude = response.body()!!.elementAt(0)?.latitude.toString() ?: "0.0"
                     val photopath = resources.getString(com.example.missingpets.R.string.images_root_path) + response.body()!!.elementAt(0)?.photopath.toString() ?: "0.0"
