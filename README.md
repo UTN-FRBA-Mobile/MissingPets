@@ -39,6 +39,10 @@ El usuario que haya encontrado tu animal de compañía o quiera adoptar se pondr
 
 ***Con MissingPets no habra ninguna mascota sin hogar. ¡Colabora y comparte!***
 
+<p align="center">
+  <img src="https://github.com/UTN-FRBA-Mobile/MissingPets/blob/main/img/picture01.png"  title="Puntaje de la app">
+</p>
+
 
 
 ## Autores
