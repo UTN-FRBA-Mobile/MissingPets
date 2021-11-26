@@ -4,7 +4,7 @@
   <img src="https://github.com/UTN-FRBA-Mobile/MissingPets/blob/main/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png" width="350" title="hover text">
 </p>
 
-**¿Tu mascota se ha perdido? ¿Quieres adoptar o dar en adopcion?**
+**¿Tu mascota se ha perdido? ¿Quieres adoptar o dar en adopción?**
 
 Entonces… ¡Bienvenido a la app para las mascotas, MissingPets!
 Missingpets te ayuda a que ningún animal se quede sin hogar 🐱🐶🦜🏠.
