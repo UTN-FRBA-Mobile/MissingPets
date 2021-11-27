@@ -185,7 +185,7 @@ class NewPostFragment : Fragment() {
                 pet.tipoAnimal = binding.spnTipoAnimales.selectedItem.toString()
                 pet.sexoAnimal = binding.spnSexoAnimales.selectedItem.toString()
 
-                pet.fechaPerdido = DateFormat.yyyymmddToddmmyyy(binding.dateCuando.text.toString())
+                pet.fechaPerdido = DateFormat.yyyymmddToddmmyyyy(binding.dateCuando.text.toString())
 
                 if(binding.rbPerdido.isSelected()){
                     pet.estado = "perdido"
