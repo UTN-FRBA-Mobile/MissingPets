@@ -24,9 +24,9 @@ import kotlin.math.log
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityMainBinding
-    private lateinit var bottomNavigationView: BottomNavigationView
-    private lateinit var sharedPreferences: SharedPreferences
+   // private lateinit var binding: ActivityMainBinding
+   // private lateinit var bottomNavigationView: BottomNavigationView
+   // private lateinit var sharedPreferences: SharedPreferences
     val user: UserProfileViewModel by viewModels()
 
     // estas las uso para el marcador del mapa

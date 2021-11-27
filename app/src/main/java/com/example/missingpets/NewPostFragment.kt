@@ -48,16 +48,11 @@ import java.util.*
 
 class NewPostFragment : Fragment() {
 
-    private var param1: String? = null
-    private var param2: String? = null
 
     private var _binding: FragmentNewPostBinding? = null
     private val binding get() = _binding!!
-    private val repositorioUsuario = RepositorioUsuario
     private val user: UserProfileViewModel by activityViewModels()
 
-    private var marcadorLatitude: Float? = null
-    private var marcadorLongitude: Float? = null
     var photo: Uri? = null
     var uri: Uri? =  null
 
@@ -102,19 +97,6 @@ class NewPostFragment : Fragment() {
         // en el mapa las marca - al volver en onStart las asigna
         prefs.latitude = 0f
         prefs.longitude= 0f
-
-     /*   // Use the Kotlin extension in the fragment-ktx artifact
-        setFragmentResultListener("requestLatitude") { requestLatitude, bundle ->
-            // We use a String here, but any type that can be put in a Bundle is supported
-            marcadorLatitude = bundle.getFloat("bundleLatitude")
-            // Do something with the result
-            // Use the Kotlin extension in the fragment-ktx artifact
-        }
-        setFragmentResultListener("requestLongitude") { requestLongitude, bundle ->
-            // We use a String here, but any type that can be put in a Bundle is supported
-            marcadorLongitude = bundle.getFloat("bundleLongitude")
-            // Do something with the result
-        }*/
     }
 
     override fun onCreateView(
@@ -187,7 +169,7 @@ class NewPostFragment : Fragment() {
 
                 pet.fechaPerdido = DateFormat.yyyymmddToddmmyyy(binding.dateCuando.text.toString())
 
-                if(binding.rbPerdido.isSelected()){
+                if(binding.rbPerdido.isChecked()){
                     pet.estado = "perdido"
                 } else {
                     pet.estado = "encontrado"

@@ -19,6 +19,10 @@ interface ApiServices2 {
     fun getMissingPets(): Call<List<recyclerPet>>
 
     @GET("lost")
+    fun getMissingPetsFilter(): Call<List<Mascota>>
+
+
+    @GET("lost")
     fun getMissingPets2(): Call<List<recyclerPet2>>
 
     @GET("user")
