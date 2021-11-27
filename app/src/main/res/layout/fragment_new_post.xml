@@ -19,6 +19,7 @@
             android:orientation="vertical" >
 
             <RadioGroup
+                android:id="@+id/rg_estado"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
@@ -26,13 +27,13 @@
                 android:layout_gravity="center">
 
                 <RadioButton
-                    android:id="@+id/rb_perdido"
+                    android:id="@+id/rb_encontrado"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/post_encontrado" />
 
                 <RadioButton
-                    android:id="@+id/rd_encontrado"
+                    android:id="@+id/rb_perdido"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"

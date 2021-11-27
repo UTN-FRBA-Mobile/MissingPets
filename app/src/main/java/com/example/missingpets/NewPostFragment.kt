@@ -3,13 +3,16 @@ package com.example.missingpets
 import android.Manifest
 import android.app.Activity
 import android.content.ContentValues
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.database.Cursor
 import android.graphics.Color
 import android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
+import android.os.FileUtils
 import android.provider.MediaStore
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -43,7 +46,14 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.File
-import java.util.*
+
+import android.webkit.MimeTypeMap
+
+
+import android.content.ContentResolver
+
+
+
 
 
 class NewPostFragment : Fragment() {
@@ -158,6 +168,7 @@ class NewPostFragment : Fragment() {
 
         binding.btnPublicar.setOnClickListener {
             //stop here
+            user.id=8
             if (user.id<0){
 
                 Toast.makeText(requireContext(), "Es obligatiorio estar logueado para continuar",
@@ -178,19 +189,26 @@ class NewPostFragment : Fragment() {
                 pet.description = binding.etMasDetallesEncontrado.text.toString()
 
                 //TODO hacer el post de la foto y obtener el path (LO ANULE POR AHORA DA ERROR)
-               // val url = publicarFoto(binding.ivMascotaEncontrada)
-                pet.photopath = "gato.jpg"
+                val url = publicarFoto(binding.ivMascotaEncontrada)
+                pet.photopath = "image2.jpg"
 
                 pet.nombreMascota = binding.etNombreAnimal.text.toString()
                 pet.tipoAnimal = binding.spnTipoAnimales.selectedItem.toString()
                 pet.sexoAnimal = binding.spnSexoAnimales.selectedItem.toString()
 
-                pet.fechaPerdido = DateFormat.yyyymmddToddmmyyy(binding.dateCuando.text.toString())
+                //TODO DateFormat.ddmmyyyyToyyyymmdd(binding.dateCuando.text.toString())
+                pet.fechaPerdido = DateFormat.ddmmyyyyToyyyymmdd(binding.dateCuando.text.toString())
 
-                if(binding.rbPerdido.isSelected()){
+                // get selected radio button from radioGroup
+                val checkedRadioButtonId = binding.rgEstado.getCheckedRadioButtonId()
+                val radioButton = view.findViewById<RadioButton>(checkedRadioButtonId)
+
+                if(radioButton.text.contains("Perd")){
                     pet.estado = "perdido"
-                } else {
+                } else if (radioButton.text.contains("Encontr")){
                     pet.estado = "encontrado"
+                }else{
+                    pet.estado=  null
                 }
                 if(validarCamposVacios(pet)) {
                     publicarMascota(pet)
@@ -208,7 +226,7 @@ class NewPostFragment : Fragment() {
     private fun validarCamposVacios(pet: Mascota): Boolean {
 
         if (pet.latitude ==0f || pet.longitude==0f) {
-            Toast.makeText(requireContext(), "Es obligatiorio completar latitud y longitud",
+            Toast.makeText(requireContext(), "Es obligatiorio completar ubicación",
                 Toast.LENGTH_LONG).show();
             return  false
         }
@@ -231,8 +249,11 @@ class NewPostFragment : Fragment() {
     }
 
     private fun onDateSelected(day: Int, month: Int, year: Int) {
-        val realMonth = month + 1
-        binding.dateCuando.setText("$day-$realMonth-$year")
+        val month = ("00"+ (month + 1).toString())
+        val realMonth = month.takeLast(2)
+        val day = ("00$day")
+        val realDay = day.takeLast(2)
+        binding.dateCuando.setText("$realDay-$realMonth-$year")
     }
 
 
@@ -323,19 +344,32 @@ class NewPostFragment : Fragment() {
 
     private fun publicarFoto(ivMascotaEncontrada: ImageView) {
 
-        val file = File(uri?.path)
-        val filename= "publicar_"+(0..100000).random().toString()
+        //val file = File(uri?.path)
 
-        val requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), file)
-        val body = MultipartBody.Part.createFormData(filename, file.name, requestBody)
+        val realPath1 = context?.let { getRealPathFromURI(it, uri) }
 
-        val apiInterface0 = ApiServices2.create().addPhoto(requestBody,body)
+        val file2 = File(realPath1)
+        val requestBody2 = RequestBody.create(MediaType.parse("multipart/form-data"), file2)
+        val body2 = MultipartBody.Part.createFormData("picture", file2.getName(), requestBody2 )
+        Log.d("UPLOAD PHOTO - uri:", file2.path) //uri.toString())
 
+        val requestBody3 = RequestBody.create(MediaType.parse("image/*"), file2)
+        val body3 = MultipartBody.Part.createFormData("name", file2.getName(), requestBody3)
+        val descriptionString = "hello, this is description speaking"
+        val description = RequestBody.create(
+            MultipartBody.FORM, descriptionString
+        )
+
+
+        val apiInterface0 = ApiServices2.create().addPhoto(description,body3)
         apiInterface0!!.enqueue(object : Callback<ResponseBody?> {
 
             override fun onResponse(call: Call<ResponseBody?>, response: Response<ResponseBody?>) {
                 if (response != null && response.isSuccessful && response.body() != null) {
-                    Log.d("SUCCESS ALTA MASCOTA", response.message().toString())
+                    Log.d("UPLOAD PHOTO 1 - ", response.message().toString())
+                    val resultbody =  response.body()!!
+                    Log.d("UPLOAD PHOTO 2 - ", resultbody.string())
+
 
                 }
             }
@@ -391,6 +425,37 @@ class NewPostFragment : Fragment() {
         super.onStart()
         binding.tvLatitude.text = prefs.latitude.toString()
         binding.tvLongitude.text = prefs.longitude.toString()
+    }
+
+    fun getRealPathFromURI(context: Context, contentUri: Uri?): String? {
+        var cursor: Cursor? = null
+        return try {
+            val proj = arrayOf(MediaStore.Images.Media.DATA)
+            cursor = contentUri?.let { context.contentResolver.query(it, proj, null, null, null) }
+            val columnIndex: Int? = cursor?.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
+            cursor?.moveToFirst()
+            columnIndex?.let { cursor?.getString(it) }
+        } finally {
+            cursor?.close()
+        }
+
+    }
+
+    fun getMimeType(uri: Uri): String? {
+        var mimeType: String? = null
+        mimeType = if (ContentResolver.SCHEME_CONTENT == uri.scheme) {
+            val cr: ContentResolver = requireContext().contentResolver
+            cr.getType(uri)
+        } else {
+            val fileExtension = MimeTypeMap.getFileExtensionFromUrl(
+                uri
+                    .toString()
+            )
+            MimeTypeMap.getSingleton().getMimeTypeFromExtension(
+                fileExtension.toLowerCase()
+            )
+        }
+        return mimeType
     }
 
 }

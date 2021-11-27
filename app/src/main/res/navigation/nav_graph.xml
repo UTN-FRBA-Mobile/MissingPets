@@ -49,6 +49,9 @@
             android:id="@+id/action_newPostFragment_to_foundFragment"
             app:destination="@id/foundFragment" />
         <action
+            android:id="@+id/action_newPostFragment_to_adoptableFragment"
+            app:destination="@id/adoptableFragment" />
+        <action
             android:id="@+id/action_newPostFragment_to_mapsFragment"
             app:destination="@+id/mapsFragment"/>
         <action
