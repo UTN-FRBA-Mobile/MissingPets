@@ -22,7 +22,7 @@ public class MascotaListFilter {
      * @param longitude2 grados
      * @return kilometros
      */
-    private static double calcularDistancia(double latitude1, double longitude1, double latitude2, double longitude2) {
+    public static double calcularDistancia(double latitude1, double longitude1, double latitude2, double longitude2) {
         if ((latitude1 == latitude2) && (longitude1 == longitude2)) {
             return 0;
         }
