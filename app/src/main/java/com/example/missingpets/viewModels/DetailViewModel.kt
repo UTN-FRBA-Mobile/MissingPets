@@ -9,13 +9,27 @@ class DetailViewModel(nombreMascota: String, tipoAnimal: String, sexoAnimal: Str
     private var tipoAnimal: String = tipoAnimal
     private var sexoAnimal: String = sexoAnimal
     private var fechaPerdido: String = fechaPerdido
+    private var numeroTelefono: String = ""
+    private var usernameCreadorPost: String = ""
 
     fun contactar(){
         //TODO
     }
 
+    fun setUsernameCreadorPost(usernameCreadorPost: String){
+        this.usernameCreadorPost = usernameCreadorPost
+    }
+
+    fun getUsernameCreadorPost(): String{
+        return this.usernameCreadorPost
+    }
+
+    fun setNumeroTelefono(numeroTelefono: String){
+        this.numeroTelefono = numeroTelefono
+    }
+
     fun getNumeroTelefono(): String{
-        return "5491169013434"
+        return this.numeroTelefono
     }
 
 }
