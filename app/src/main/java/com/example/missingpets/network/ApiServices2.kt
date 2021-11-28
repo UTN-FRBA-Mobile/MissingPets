@@ -77,7 +77,7 @@ interface ApiServices2 {
     suspend fun getAllUsers(): Call<List<User>>
 
     @GET("user/")
-    suspend fun getUserById(@Query("id") id: Int): Call<List<User>>
+    fun getUserById(@Query("id") id: Int): Call<List<User>>
 
     @GET("user/")
     suspend fun getUserInfo(@Query("username") username: String, @Query("password") password: String, ): Call<List<User>>
