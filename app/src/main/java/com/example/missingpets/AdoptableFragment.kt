@@ -1,9 +1,7 @@
 package com.example.missingpets
 
-import AdoptableAdapter
 import MissingAdapter
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -12,17 +10,11 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.missingpets.dataRV.AdoptableDatasource
-import com.example.missingpets.dataRV.MissingDatasource
 
 import com.example.missingpets.databinding.FragmentAdoptableBinding
-import com.example.missingpets.databinding.FragmentMissingBinding
 import com.example.missingpets.filter.MascotaListFilter
-import com.example.missingpets.models.RepositorioUsuario
 import com.example.missingpets.network.ApiServices2
 import com.example.missingpets.network.Mascota
-import com.example.missingpets.network.MissingPet
-import com.example.missingpets.network.recyclerPet
 import com.example.missingpets.viewModels.UserProfileViewModel
 import retrofit2.Call
 import retrofit2.Callback
@@ -83,7 +75,8 @@ class AdoptableFragment : Fragment() {
                             distanciaMaximaKm,
                             latitude,
                             longitude,
-                            10
+                            "01/01/1900",
+                            "01/01/2022"
                         )
                         MainActivity.prefs.inicializar()
                     } else {

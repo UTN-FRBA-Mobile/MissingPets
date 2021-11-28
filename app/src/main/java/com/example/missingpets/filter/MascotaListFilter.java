@@ -55,6 +55,39 @@ public class MascotaListFilter {
         }
     }
 
+    public static boolean isBetweenDates(String strFechaPerdido, String strFechaDesde, String strfechaHasta) {
+
+        Date eventDate;
+        Date startDate;
+        Date endDate;
+        boolean result;
+
+        try {
+            eventDate = new SimpleDateFormat("dd-MM-yyyy").parse(strFechaPerdido);
+            startDate = new SimpleDateFormat("dd-MM-yyyy").parse(strFechaDesde);
+            endDate = new SimpleDateFormat("dd-MM-yyyy").parse(strfechaHasta);
+        } catch (Exception e) {
+            try {
+                eventDate = new SimpleDateFormat("yyyy-MM-dd").parse(strFechaPerdido);
+                startDate = new SimpleDateFormat("yyyy-MM-dd").parse(strFechaDesde);
+                endDate = new SimpleDateFormat("yyyy-MM-dd").parse(strfechaHasta);
+
+            } catch (Exception ex) {
+                return false;
+            }
+        }
+
+        if(eventDate.compareTo(startDate) >= 0 && eventDate.compareTo(endDate) <= 0){
+            result = true;
+        } else {
+            result = false;
+        }
+
+
+        return result;
+    }
+
+
     /**
      *
      * @param mascotaList lista a filtrar
@@ -63,10 +96,11 @@ public class MascotaListFilter {
      * @param distanciaMaximaKm si es negativo se omite
      * @param latitude se usa solo si distanciaMaximaKm es > -1
      * @param longitude se usa solo si distanciaMaximaKm es > -1
-     * @param antiguedadMaxima cantidad de dias
+     * @param strFechaDesde
+     * @param strFechaHasta
      * @return
      */
-    static public List<Mascota> filter(List<Mascota> mascotaList, String tipoMascota, String sexo, int distanciaMaximaKm, float latitude, float longitude, int antiguedadMaxima) {
+    static public List<Mascota> filter(List<Mascota> mascotaList, String tipoMascota, String sexo, int distanciaMaximaKm, float latitude, float longitude, String strFechaDesde, String strFechaHasta) {
 
         List<Mascota> result;
 
@@ -91,14 +125,27 @@ public class MascotaListFilter {
         }
 
         //Filtro por fecha
-        if(antiguedadMaxima > -1) {
+        /*if(antiguedadMaxima > -1) {
             result = result
                     .stream()
                     .filter(c -> calcularAntiguedad(c.getFechaPerdido()) < antiguedadMaxima)
                     .collect(Collectors.toList());
         } else {
             //result = mascotaList;
+        }*/
+
+        if(strFechaDesde != null && strFechaDesde.length() > 0 &&
+                strFechaHasta != null && strFechaHasta.length() > 0) {
+
+            result = result
+                    .stream()
+                    .filter(c ->
+                            isBetweenDates(c.getFechaPerdido(), strFechaDesde, strFechaHasta)
+                    )
+                    .collect(Collectors.toList());
         }
+
+
 
         //Filtro por radio de distancia
 

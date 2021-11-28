@@ -81,7 +81,8 @@ class MissingFragment : Fragment() {
                             distanciaMaximaKm,
                             latitude,
                             longitude,
-                            10
+                            "01-01-1900",
+                            "01-01-2021"
                         )
                         prefs.inicializar()
                          //   .filterIsInstance<Mascota>()
