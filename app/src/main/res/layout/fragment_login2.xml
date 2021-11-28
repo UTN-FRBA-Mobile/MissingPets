@@ -92,8 +92,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="4sp"
                     android:layout_weight="1"
+                    android:clickable="true"
                     android:text="@string/register_new_user"
-                    android:textColor="#0277BD" />
+                    android:textColor="#F1F5F8" />
             </LinearLayout>
 
             <ProgressBar

@@ -80,6 +80,11 @@ class LoginFragment2 : Fragment() {
             })
 
         }
+        // Lo volvi a agregar .... alguien lo habia dejado en onViewCreated2 (Daniel)
+        binding.tvRegistrate.setOnClickListener {
+            val action = R.id.action_loginFragment2_to_registerFragment
+            findNavController().navigate(action)
+        }
 
 
 
