@@ -17,4 +17,9 @@ class Prefs (context: Context) {
     var longitude: Float
         get() = prefs.getFloat(SHARED_LONGITUDE, 0f)
         set(value) = prefs.edit().putFloat(SHARED_LONGITUDE, value).apply()
+
+    fun inicializar(){
+        prefs.edit().putFloat(SHARED_LATITUDE, 0f).apply()
+        prefs.edit().putFloat(SHARED_LONGITUDE, 0f).apply()
+    }
 }
