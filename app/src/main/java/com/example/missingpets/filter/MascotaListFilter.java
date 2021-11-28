@@ -1,7 +1,11 @@
 package com.example.missingpets.filter;
 
 import com.example.missingpets.network.Mascota;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 public class MascotaListFilter {
@@ -9,9 +13,23 @@ public class MascotaListFilter {
     public MascotaListFilter() {
     }
 
-    static int calcularAntiguedad(String fecha) {
-        //TODO implementar
-        return 0;
+    static long calcularAntiguedad(String fecha) {
+        Date eventDate ;
+        Date currentDate = new Date();;
+        try {
+            eventDate = new SimpleDateFormat("dd-MM-yyyy").parse(fecha);
+        } catch (Exception e) {
+            try {
+                eventDate = new SimpleDateFormat("yyyy-MM-dd").parse(fecha);
+            } catch (Exception ex) {
+                return 30000;
+            }
+        }
+
+        long diffInMillies = Math.abs(currentDate.getTime() - eventDate.getTime());
+        long diff = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
+        return diff;
+
     }
 
     /**

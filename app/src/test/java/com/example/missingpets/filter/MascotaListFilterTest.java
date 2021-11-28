@@ -9,7 +9,11 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class MascotaListFilterTest {
@@ -36,16 +40,21 @@ public class MascotaListFilterTest {
 
     @Test
     public void calcularAntiguedad() {
+        String pattern = "dd-MM-yyyy";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+        LocalDate localDate = LocalDate.now().minusDays(23);
+        Date currentDate = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        String strDate = simpleDateFormat.format(currentDate);
+        assertEquals(23, MascotaListFilter.calcularAntiguedad(strDate));
+    }
+
+    @Test
+    public void calcularDistancia() {
         double distance = MascotaListFilter.calcularDistancia(MEDRANO_LATITUDE, MEDRANO_LONGITUDE, SUBTE_MEDRANO_LATITUDE, SUBTE_MEDRANO_LONGITUDE);
         assertEquals( 0.52, distance, 0.005f);
 
         double distance2 = MascotaListFilter.calcularDistancia(MEDRANO_LATITUDE, MEDRANO_LONGITUDE, CAMPUS_LATITUDE, CAMPUS_LONGITUDE);
         assertEquals( 8.02064629711324, distance2, 0.005f);
-    }
-
-    @Test
-    public void calcularDistancia() {
-
     }
 
     @Test
@@ -99,5 +108,6 @@ public class MascotaListFilterTest {
 
         List<Mascota> result9 = MascotaListFilter.filter(mascotaList, "", "", 9, CAMPUS_LATITUDE, CAMPUS_LONGITUDE, -1);
         assertEquals( 2, result9.size());
+
     }
 }
