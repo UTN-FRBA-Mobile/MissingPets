@@ -187,7 +187,7 @@ class NewPostFragment : Fragment() {
 
                 pet.fechaPerdido = DateFormat.yyyymmddToddmmyyyy(binding.dateCuando.text.toString())
 
-                if(binding.rbPerdido.isSelected()){
+                if(binding.rbPerdido.isChecked){
                     pet.estado = "perdido"
                 } else {
                     pet.estado = "encontrado"

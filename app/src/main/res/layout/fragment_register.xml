@@ -106,6 +106,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:clickable="true"
                     android:text="@string/user_have_account" />
 
                 <TextView
@@ -115,7 +116,8 @@
                     android:layout_marginLeft="5sp"
                     android:layout_weight="1"
                     android:text="@string/log_in"
-                    android:textColor="#0277BD" />
+                    android:clickable="true"
+                    android:textColor="#EAEDEF" />
             </LinearLayout>
 
             <ProgressBar

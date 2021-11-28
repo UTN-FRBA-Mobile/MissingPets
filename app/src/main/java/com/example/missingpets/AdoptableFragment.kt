@@ -65,13 +65,13 @@ class AdoptableFragment : Fragment() {
         val latitude = arguments?.getFloat("latitude")?:0f
         val longitude = arguments?.getFloat("longitude")?:0f
 
-        val apiInterface = ApiServices2.create().getFound3()
+        val apiInterface = ApiServices2.create().getMissingPetsFilter()
 
         apiInterface.enqueue( object : Callback<List<Mascota>> {
             override fun onResponse(call: Call<List<Mascota>>?, response: Response<List<Mascota>>?) {
 
                 if (response?.body() != null) {
-                    var missing = response.body()!! // .filter { it.estado == "perdido" }
+                    var missing = response.body()!!.filter { it.estado == "encontrado" }
 
                     var missingAnimals: List<Mascota> = ArrayList()
                     if (filtrar && missing.count() > 0) {
