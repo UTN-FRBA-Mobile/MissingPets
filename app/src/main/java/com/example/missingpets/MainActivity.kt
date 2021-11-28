@@ -1,11 +1,14 @@
 package com.example.missingpets
 
+import android.app.PendingIntent.getActivity
 import android.content.SharedPreferences
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.fragment.app.Fragment
@@ -62,8 +65,19 @@ class MainActivity : AppCompatActivity() {
               user.id = -1;
               navController.navigate(R.id.mainFragment)
           }
+           R.id.action_exit ->{
+               exitAppCLICK()
+           }
         }
         return  item.onNavDestinationSelected(navController)|| super.onOptionsItemSelected(item)
+    }
+
+    fun exitAppCLICK() {
+        if(Build.VERSION.SDK_INT>=16 && Build.VERSION.SDK_INT<21){
+            finishAffinity();
+        } else if(Build.VERSION.SDK_INT>=21){
+            finishAndRemoveTask();
+        }
     }
 
 

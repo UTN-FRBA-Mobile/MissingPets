@@ -35,6 +35,7 @@ import com.example.missingpets.network.ApiServices2
 import com.example.missingpets.network.Mascota
 import com.example.missingpets.viewModels.UserProfileViewModel
 import com.google.android.material.snackbar.Snackbar
+import com.squareup.picasso.Picasso
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -121,7 +122,18 @@ class NewPostFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        // Inflate the layout for this fragment
+
+        if (user.id<0){
+
+            Toast.makeText(requireContext(), "Es obligatorio estar logueado para continuar",
+                Toast.LENGTH_LONG).show()
+            irAlLoguin()
+
+        }
+
+
+
+            // Inflate the layout for this fragment
         _binding = FragmentNewPostBinding.inflate(inflater, container, false)
 
         //Spinner del tipo del animal
@@ -160,7 +172,7 @@ class NewPostFragment : Fragment() {
             //stop here
             if (user.id<0){
 
-                Toast.makeText(requireContext(), "Es obligatiorio estar logueado para continuar",
+                Toast.makeText(requireContext(), "Es obligatorio estar logueado para continuar",
                 Toast.LENGTH_LONG).show()
                 irAlLoguin()
 
@@ -391,6 +403,7 @@ class NewPostFragment : Fragment() {
         super.onStart()
         binding.tvLatitude.text = prefs.latitude.toString()
         binding.tvLongitude.text = prefs.longitude.toString()
+        binding.ivMascotaEncontrada.setImageURI(uri)
     }
 
 }
