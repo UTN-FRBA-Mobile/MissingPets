@@ -6,11 +6,12 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.missingpets.R
+import com.example.missingpets.network.Mascota
 import com.example.missingpets.network.MissingPet
 import com.example.missingpets.network.recyclerPet
 import com.squareup.picasso.Picasso
 
-class MissingAdapter(private val dataset: List<recyclerPet>, private val onClickListener: OnClickListener)
+class MissingAdapter(private val dataset: List<Mascota>, private val onClickListener: OnClickListener)
     : RecyclerView.Adapter<MissingAdapter.MissingViewHolder>() {
 
     class MissingViewHolder (val view: View) : RecyclerView.ViewHolder(view) {
@@ -50,8 +51,8 @@ class MissingAdapter(private val dataset: List<recyclerPet>, private val onClick
         return dataset.size
     }
 
-    class OnClickListener(val clickListener: (pet: recyclerPet) -> Unit) {
-        fun onClick(pet: recyclerPet) = clickListener(pet)
+    class OnClickListener(val clickListener: (pet: Mascota) -> Unit) {
+        fun onClick(pet: Mascota) = clickListener(pet)
     }
 
 }

@@ -83,7 +83,9 @@ public class MascotaListFilter {
         }
 
         //Filtro por radio de distancia
-        if(distanciaMaximaKm > -1) {
+
+      //  if(distanciaMaximaKm > -1) {
+        if(distanciaMaximaKm > 100000000) {  // le puse este valor para que no entre ... algo no funciona bien.
             result = result
                     .stream()
                     .filter(c ->
