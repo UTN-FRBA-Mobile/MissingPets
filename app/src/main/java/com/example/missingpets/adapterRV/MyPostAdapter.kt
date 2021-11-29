@@ -18,6 +18,7 @@ class MyPostAdapter (private val dataset: List<recyclerPet2>, private val onClic
 
         val textView: TextView = view.findViewById(R.id.item_title)
         val imageView: ImageView = view.findViewById(R.id.item_image)
+        val textViewDate: TextView = view.findViewById(R.id.item_date)
 
     }
 
@@ -32,6 +33,7 @@ class MyPostAdapter (private val dataset: List<recyclerPet2>, private val onClic
         val item = dataset[position]
 
         holder.textView.text = item.description
+        holder.textViewDate.text ="Publicado el: "+ item.fechaPerdido
         val BASE_URL = "https://sea.net.ar/missingpets/"
         val pathfile = BASE_URL + "img/" +item.photopath
         Picasso.get().load(pathfile).into(holder.imageView)
