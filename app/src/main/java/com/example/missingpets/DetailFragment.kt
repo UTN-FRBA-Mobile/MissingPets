@@ -183,7 +183,9 @@ class DetailFragment : Fragment() {
 
     fun loadImage(photopath: String) {
         var photoview: ImageView = requireView()!!.findViewById(R.id.iv_mascota)
-        Picasso.get().load(photopath).into(photoview)
+        if(photoview != null) {
+            Picasso.get().load(photopath).into(photoview)
+        }
     }
 
 /*
