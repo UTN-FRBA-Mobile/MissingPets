@@ -37,7 +37,7 @@ class MissingAdapter(private val dataset: List<Mascota>, private val onClickList
         val item = dataset[position]
 
         holder.textView.text = item.description
-        holder.textViewDate.text = item.fechaPerdido
+        holder.textViewDate.text ="Publicado el: "+ item.fechaPerdido
 
         val BASE_URL = "https://sea.net.ar/missingpets/"
         val pathfile = BASE_URL + "img/" +item.photopath
