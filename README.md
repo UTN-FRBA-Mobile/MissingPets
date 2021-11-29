@@ -49,7 +49,7 @@ Publica un anuncio en "Publicar" y ubica en el mapa y lista una fotografía de t
 
 **Contactar:** 📨
 
-El usuario que haya encontrado tu animal de compañía o quiera adoptar se pondrá en contacto contigo a través del chat interno de MissingPets, o si lo prefieres te llamará al número de teléfono que hayas introducido (opcional).
+El usuario que haya encontrado tu animal de compañía o quiera adoptar se pondrá en contacto contigo a través del chat interno de MissingPets, o si lo prefieres te llamará al número de teléfono que hayas introducido.
 
 
 **MissingPets es la forma más directa y sencilla de adoptar y encontrar a tus perros, gatos, conejos, cobayas, loros, hamsters...(🐶🐱🐭🐹🐰) el tipo de animal de compañía que tengas.**
