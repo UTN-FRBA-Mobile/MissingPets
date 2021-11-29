@@ -76,7 +76,8 @@ class DetailFragment : Fragment() {
                     fechaPerdido = DateFormat.yyyymmddToddmmyyyy(fechaPerdido)
                     val longitude = response.body()!!.elementAt(0)?.longitude.toString() ?: "0.0"
                     val latitude = response.body()!!.elementAt(0)?.latitude.toString() ?: "0.0"
-                    val photopath = resources.getString(com.example.missingpets.R.string.images_root_path) + response.body()!!.elementAt(0)?.photopath.toString() ?: "0.0"
+                    val photopath = (getActivity()?.getString(com.example.missingpets.R.string.images_root_path)
+                        ?:"" ) + response.body()!!.elementAt(0)?.photopath.toString() ?: "0.0"
                     var idUsuario = response.body()?.elementAt(0)?.idcreator ?: 0
 
                     detailViewModel =
