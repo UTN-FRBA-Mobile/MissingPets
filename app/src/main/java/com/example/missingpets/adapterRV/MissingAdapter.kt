@@ -41,7 +41,8 @@ class MissingAdapter(private val dataset: List<Mascota>, private val onClickList
 
         val BASE_URL = "https://sea.net.ar/missingpets/"
         val pathfile = BASE_URL + "img/" +item.photopath
-        Picasso.get().load(pathfile).into(holder.imageView)
+        // Picasso.get().load(pathfile).resize(140, 140).centerCrop().onlyScaleDown().into(holder.imageView)
+        Picasso.get().load(pathfile).resize(0, 120).centerCrop().onlyScaleDown().into(holder.imageView)
         Log.d("RV", "onBindViewHolder")
 
 

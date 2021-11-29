@@ -6,7 +6,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="320dp"
         android:orientation="vertical">
 
 
@@ -19,14 +19,15 @@
 
         <ImageView
             android:id="@+id/item_image"
-            android:layout_width="match_parent"
-            android:layout_height="194dp"
+            android:layout_width="fill_parent"
+            android:layout_height="200dp"
             android:importantForAccessibility="no"
-            android:scaleType="centerCrop" />
+            android:layout_centerInParent="true"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+             />
 
-
-
-            <TextView
+        <TextView
                 android:id="@+id/item_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
