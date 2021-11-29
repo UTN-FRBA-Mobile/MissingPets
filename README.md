@@ -19,7 +19,7 @@
 </p>
 </details>
 
-## Descrición
+## Descripción
 
 **¿Tu mascota se ha perdido? ¿Quieres adoptar o dar en adopción?**
 
