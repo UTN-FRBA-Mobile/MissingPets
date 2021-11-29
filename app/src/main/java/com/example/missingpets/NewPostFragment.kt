@@ -151,15 +151,18 @@ class NewPostFragment : Fragment() {
         }
 
         binding.dateCuando.setOnClickListener {
-            showDatePickerDialog() }
+            showDatePickerDialog()
+        }
 
         binding.btnPublicar.setOnClickListener {
             //stop here
             //user.id=8
-            if (user.id<0){
+            if (user.id < 0) {
 
-                Toast.makeText(requireContext(), "Es obligatorio estar logueado para continuar",
-                Toast.LENGTH_LONG).show()
+                Toast.makeText(
+                    requireContext(), "Es obligatorio estar logueado para continuar",
+                    Toast.LENGTH_LONG
+                ).show()
                 irAlLoguin()
 
             } else {
@@ -171,7 +174,23 @@ class NewPostFragment : Fragment() {
             val action = R.id.action_newPostFragment_to_mapsFragment
             findNavController().navigate(action)
         }
+
+
+        binding.rgEstado.setOnCheckedChangeListener { buttonView, isChecked ->
+
+            val checkedRadioButtonId = binding.rgEstado.getCheckedRadioButtonId()
+            val radioButton = view?.findViewById<RadioButton>(checkedRadioButtonId)
+            if (radioButton?.text?.contains("Perd") == true) {
+                binding.dateCuando.hint = "Fecha perdido"
+                binding.tvEncontradaEn.text = "Lugar perdido"
+            } else if (radioButton?.text?.contains("Encontr") == true) {
+                binding.dateCuando.hint = "Fecha encontrado"
+                binding.tvEncontradaEn.text = "Lugar encontrado"
+            }
+
+        }
     }
+
 
     private fun validarCamposVacios(pet: Mascota): Boolean {
 
