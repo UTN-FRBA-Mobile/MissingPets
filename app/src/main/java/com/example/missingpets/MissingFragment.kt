@@ -62,7 +62,8 @@ class MissingFragment : Fragment() {
         val distanciaMaximaKm = arguments?.getInt("distanciaMaximaKm")?:0
         val latitude = arguments?.getFloat("latitude")?:0f
         val longitude = arguments?.getFloat("longitude")?:0f
-
+        val fechadesde = arguments?.getString("fechadesde")
+        val fechahasta = arguments?.getString("fechahasta")
         val apiInterface = ApiServices2.create().getMissingPetsFilter()
 
         apiInterface.enqueue( object : Callback<List<Mascota>> {
@@ -81,11 +82,10 @@ class MissingFragment : Fragment() {
                             distanciaMaximaKm,
                             latitude,
                             longitude,
-                            "01-01-1900",
-                            "01-01-2021"
+                            fechadesde,
+                            fechahasta
                         )
                         prefs.inicializar()
-                         //   .filterIsInstance<Mascota>()
                     } else {
                         missingAnimals = missing
                     }
@@ -116,6 +116,8 @@ class MissingFragment : Fragment() {
             }
 
         })
+
+
     }
 
 }
