@@ -45,7 +45,7 @@ Muestra una galería de los animales perdidos, encontrados y en adopción según
 
 **Alertas:** ⚠️
 
-Publica un anuncio en "Publicar" y ubica en el mapa y lista una fotografía de tu mascota en aquel lugar donde se perdió, todos los usuarios serán alertados al abrir la App y cargar las listas con los anuncios activos de tu zona.
+Publica un anuncio en "Publicar Mascota" y ubica en el mapa y lista una fotografía de tu mascota en aquel lugar donde se perdió, todos los usuarios serán alertados al abrir la App y cargar las listas con los anuncios activos de tu zona.
 
 **Contactar:** 📨
 
