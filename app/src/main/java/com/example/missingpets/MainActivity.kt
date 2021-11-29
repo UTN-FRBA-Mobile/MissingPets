@@ -61,7 +61,7 @@ class MainActivity : AppCompatActivity() {
         when (item.itemId) {
 
           R.id.action_logout ->{
-              Toast.makeText(this,"Hacer logout",Toast.LENGTH_SHORT).show()
+              Toast.makeText(this,"Te deslogueaste",Toast.LENGTH_SHORT).show()
               user.id = -1;
               navController.navigate(R.id.mainFragment)
           }

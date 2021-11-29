@@ -3,17 +3,17 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <!-- MainFragment -->
-    <string name="main_fragment_welcome">Gracias por elegir MissingPets, en que podemos ayudarte.</string>
-    <string name="main_fragment_missing_pets">Ver mascotas perdidas.</string>
-    <string name="main_fragment_pets_for_adoption">Ver mascotas encontradas.</string>
-    <string name="main_fragment_upload_pet_for_adoption">Publicar mascota encontrada.</string>
+    <string name="main_fragment_welcome">Gracias por elegir MissingPets, en que podemos ayudarte</string>
+    <string name="main_fragment_missing_pets">Ver mascotas perdidas</string>
+    <string name="main_fragment_pets_for_adoption">Ver mascotas encontradas</string>
+    <string name="main_fragment_upload_pet_for_adoption">Publicar mascota encontrada</string>
     <string name="main_fragment_upload_pets">Publicar mascota</string>
-    <string name="main_fragment_login">Logearme.</string>
-    <string name="main_fragment_settings">Configuraciones.</string>
+    <string name="main_fragment_login">Logearme</string>
+    <string name="main_fragment_settings">Configuraciones</string>
     <!-- MissingFragment -->
-    <string name="missing_fragment_title">Mascotas perdidas.</string>
+    <string name="missing_fragment_title">Mascotas perdidas</string>
     <!-- AdoptableFragment -->
-    <string name="adoptable_fragment_title">Mascotas en adopcion.</string>
+    <string name="adoptable_fragment_title">Mascotas encontradas</string>
 
     <string name="preferences_ui_title">Interfaz</string>
     <string name="preferences_ui_img_size">Tamaño de la imagen</string>
@@ -69,13 +69,13 @@
     <string name="search_in">Buscar en:</string>
     <string name="name_detail">Nombre:</string>
     <string name="animal_detail">Animal:</string>
-    <string name="date_lost_detail">Fecha perdido:</string>
+    <string name="date_lost_detail">Fecha:</string>
     <string name="sex_detail">Sexo:</string>
     <string name="lost_in_detail">Perdido en:</string>
     <string name="contact_detail">Contactar</string>
     <string name="publicar_detail">Publicar</string>
     <string name="mas_detalles">Más detalles</string>
-    <string name="about_us">Somos un grupo de personas con voluntad de ayudar brindando una solución de software gratuita a aquellos que extraviaron sus mascotas, buscamos que puedan reunirse con sus mascotas extraviadas en el menor tiempo posible con la colaboración de la comunidad de usuarios de esta aplicación.</string>
+    <string name="about_us">Somos un grupo de personas con voluntad de ayudar brindando una solución de software gratuita a aquellos que extraviaron sus mascotas, buscamos que puedan reunirse con sus mascotas extraviadas en el menor tiempo posible con la colaboración de la comunidad de usuarios de esta aplicación</string>
 
     <string name="post_encontrado">Encontré una mascota</string>
     <string name="post_perdido">Perdí una mascota</string>

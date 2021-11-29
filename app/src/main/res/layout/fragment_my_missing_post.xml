@@ -13,7 +13,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/missing_fragment_title" />
+            android:text="Mis publicaciones" />
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view_missing_pets"
             android:layout_width="match_parent"

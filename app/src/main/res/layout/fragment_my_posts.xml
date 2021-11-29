@@ -21,7 +21,7 @@
         android:id="@+id/btn_my_missing_post3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="En adopcion" />
+        android:text="Encontrados" />
 
 
 

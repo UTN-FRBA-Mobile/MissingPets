@@ -59,7 +59,7 @@ class MainFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.btnMissingPets.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_mainFragment_to_missingFragment, null))
         binding.btnLogin.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_mainFragment_to_loginFragment2, null))
-        binding.btnSettings.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_mainFragment_to_configurationFragment, null))
+        //binding.btnSettings.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_mainFragment_to_configurationFragment, null))
         binding.btnAboutAs.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_mainFragment_to_aboutUsFragment, null))
         binding.btnPetsForAdoption.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_mainFragment_to_adoptableFragment, null))
         binding.btnUploadPets.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_mainFragment_to_newPostFragment, null))

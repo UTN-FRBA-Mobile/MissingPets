@@ -124,7 +124,7 @@
                     android:id="@+id/tv_encontrada_en"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/lost_in_detail" />
+                    android:text="¿Donde?" />
 
                 <ImageView
                     android:id="@+id/imageviewMapa"
