@@ -12,9 +12,11 @@ import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.core.os.bundleOf
+import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import com.example.missingpets.MainActivity.Companion.prefs
 import com.example.missingpets.databinding.FragmentFilterBinding
+import com.example.missingpets.formats.DateFormat
 
 
 class FilterFragment : Fragment() {
@@ -55,6 +57,17 @@ class FilterFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+       /* binding.rdEncontrado.setOnClickListener{
+            binding.dateDesde.isVisible= false
+            binding.dateHasta.isVisible=false
+        }
+
+        binding.rbPerdido.setOnClickListener{
+            binding.dateDesde.isVisible=true
+            binding.dateHasta.isVisible=true
+        }*/
+
         binding.dateDesde.setOnClickListener {
             showdesdeDatePickerDialog() }
 
@@ -71,16 +84,20 @@ class FilterFragment : Fragment() {
             if(binding.rdEncontrado.isChecked){
                 action = R.id.action_filterFragment_to_adoptableFragment
             }
-
             val sexo =  if(binding.spnSexoAnimales.selectedItem.toString()=="Sexo") "" else binding.spnSexoAnimales.selectedItem.toString()
             val tipodeanimal = if(binding.spnTipoAnimales.selectedItem.toString()=="Tipo de Animal") "" else binding.spnTipoAnimales.selectedItem.toString()
+            val fechadesde = if(binding.dateDesde.text.toString() == "") "" else DateFormat.yyyymmddToddmmyyyy(binding.dateDesde.text.toString())
+            val fechahasta = if(binding.dateHasta.text.toString() == "") "" else DateFormat.yyyymmddToddmmyyyy(binding.dateHasta.text.toString())
+
             val bundle = bundleOf(
                 Pair("filtrar", true),
                 Pair("tipoMascota", tipodeanimal),
                 Pair("sexo", sexo),
                 Pair("distanciaMaximaKm", binding.tvCantidadKm.text.toString().toInt()),
                 Pair("latitude", binding.tvLatitude.text.toString().toFloat()),
-                Pair("longitude", binding.tvLongitude.text.toString().toFloat()))
+                Pair("longitude", binding.tvLongitude.text.toString().toFloat()),
+                Pair("fechadesde", fechadesde),
+                Pair("fechahasta", fechahasta))
             findNavController().navigate(action,bundle)
         }
 

@@ -56,6 +56,8 @@ class AdoptableFragment : Fragment() {
         val distanciaMaximaKm = arguments?.getInt("distanciaMaximaKm")?:0
         val latitude = arguments?.getFloat("latitude")?:0f
         val longitude = arguments?.getFloat("longitude")?:0f
+        val fechadesde = arguments?.getString("fechadesde")
+        val fechahasta = arguments?.getString("fechahasta")
 
         val apiInterface = ApiServices2.create().getMissingPetsFilter()
 
@@ -75,9 +77,8 @@ class AdoptableFragment : Fragment() {
                             distanciaMaximaKm,
                             latitude,
                             longitude,
-                            "01/01/1900",
-                            "01/01/2022"
-                        )
+                            fechadesde,
+                            fechahasta                        )
                         MainActivity.prefs.inicializar()
                     } else {
                         missingAnimals = missing

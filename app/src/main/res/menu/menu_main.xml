@@ -5,10 +5,6 @@
         android:id="@+id/filterFragment"
         android:title="Filtros"
         app:showAsAction="never"/>
-    <item
-        android:id="@+id/configurationFragment"
-        android:title="Configuraciones"
-        app:showAsAction="never"/>
     <item android:id="@+id/aboutUsFragment"
         android:title="Quienes somos"
         app:showAsAction="never"/>

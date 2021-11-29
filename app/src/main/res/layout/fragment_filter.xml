@@ -39,14 +39,16 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:checked="true"
-                    android:text="@string/post_perdido" />
+                    android:layout_weight="0.5"
+                    android:text="Perdidos" />
 
                 <RadioButton
                     android:id="@+id/rd_encontrado"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
                     android:layout_marginLeft="5dp"
-                    android:text="@string/post_encontrado" />
+                    android:text="Encontrados" />
 
             </RadioGroup>
 

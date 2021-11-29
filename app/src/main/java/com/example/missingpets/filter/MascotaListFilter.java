@@ -124,16 +124,7 @@ public class MascotaListFilter {
             //result = result;
         }
 
-        //Filtro por fecha
-        /*if(antiguedadMaxima > -1) {
-            result = result
-                    .stream()
-                    .filter(c -> calcularAntiguedad(c.getFechaPerdido()) < antiguedadMaxima)
-                    .collect(Collectors.toList());
-        } else {
-            //result = mascotaList;
-        }*/
-
+        // IMPORTANTE: la fechas deben venir en español dd/mm/yyyy sino falla en isBeteenDates
         if(strFechaDesde != null && strFechaDesde.length() > 0 &&
                 strFechaHasta != null && strFechaHasta.length() > 0) {
 
