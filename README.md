@@ -3,9 +3,9 @@
   <img src="https://github.com/UTN-FRBA-Mobile/MissingPets/blob/main/img/picture03.png"  title="TP-MissingPets">
 </p>
 
-## Mira la App
+## Conoce nuestra App.
 
-<details><summary>Clickea aca para ver las fotos de la App</summary>
+<details><summary>Clickea aca para ver las fotos de la App </summary>
 <p align="center">
   <img src="https://github.com/UTN-FRBA-Mobile/MissingPets/blob/main/img/img1.jpg" alt="alt example  " width="130"  border="0" title="TP-MissingPets">
   <img src="https://github.com/UTN-FRBA-Mobile/MissingPets/blob/main/img/img2.jpg" alt="alt example  " width="130"  border="0" title="TP-MissingPets">
@@ -19,7 +19,7 @@
 </p>
 </details>
 
-## Descricion
+## Descrición
 
 **¿Tu mascota se ha perdido? ¿Quieres adoptar o dar en adopción?**
 
