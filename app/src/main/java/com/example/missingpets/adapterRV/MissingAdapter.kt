@@ -18,6 +18,7 @@ class MissingAdapter(private val dataset: List<Mascota>, private val onClickList
 
         val textView: TextView = view.findViewById(R.id.item_title)
         val imageView: ImageView = view.findViewById(R.id.item_image)
+        val textViewDate: TextView = view.findViewById(R.id.item_date)
 
     }
 
@@ -36,10 +37,13 @@ class MissingAdapter(private val dataset: List<Mascota>, private val onClickList
         val item = dataset[position]
 
         holder.textView.text = item.description
+        holder.textViewDate.text ="Publicado el: "+ item.fechaPerdido
+
         val BASE_URL = "https://sea.net.ar/missingpets/"
         val pathfile = BASE_URL + "img/" +item.photopath
         Picasso.get().load(pathfile).into(holder.imageView)
         Log.d("RV", "onBindViewHolder")
+
 
         holder.itemView.setOnClickListener {
             onClickListener.onClick(item)

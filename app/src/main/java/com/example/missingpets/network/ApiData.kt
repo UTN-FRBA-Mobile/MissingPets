@@ -50,7 +50,8 @@ data class recyclerPet2 (
     @Json(name = "description") val description: String,
     @Json(name = "photopath") val photopath: String,
     @Json(name = "idcreator") val idcreator: Int,
-    @Json(name = "estado") val estado: String
+    @Json(name = "estado") val estado: String,
+    @Json(name = "fechaperdido") var fechaPerdido: String? = null
     )
 
 data class User (
