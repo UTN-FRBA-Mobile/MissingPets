@@ -16,7 +16,7 @@
         android:id="@+id/txt_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Bajando descripcion del servidor"/>
+        android:text=" Obteniendo información..."/>
 
     <Button
         android:id="@+id/btn_borrar"
