@@ -65,7 +65,7 @@ El usuario que haya encontrado tu animal de compañía o quiera adoptar se pondr
 ## Información adicional
 
 **Importante:**
-La app requerida los siguientes permisos.
+La app requerirá los siguientes permisos.
 - [x] Acceso a internet.
 - [x] Cámara de fotos.
 - [X] Almacenamiento externo.
@@ -74,14 +74,14 @@ La app requerida los siguientes permisos.
 **Más info:**
 |Tamaño de la App:|Versión de Android:|Cantidad de descargas: | Calificación del contenido:|
 |-----------------|-------------------|----------------------|-------------------------|
-|30.4Mb| A partir de android 5|1,000,000,000+| Aplicación apta para todo publico|
+|30.4Mb| A partir de android 5|1,000,000,000+| Aplicación apta para todo público|
 
 ## Autores
 
 * [Mariana Marino](http://github.com/marumarino)
-* [Daniel](http://github.com/asp2021)
+* [Daniel Perelman](http://github.com/asp2021)
 * [Juan Manuel Jarazo](http://github.com/ingscyther)
-* [Blacutt Matias](http://github.com/blacuttmatias)
+* [Matias Blacutt](http://github.com/blacuttmatias)
 * [Jose Fuentes](http://github.com/josecplusplus)
 
 <p align="center">
