@@ -8,15 +8,16 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.Spinner
-import android.widget.TextView
+import android.widget.*
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import com.example.missingpets.MainActivity.Companion.prefs
 import com.example.missingpets.databinding.FragmentFilterBinding
 import com.example.missingpets.formats.DateFormat
+import com.squareup.picasso.Picasso
+import android.widget.SeekBar
+import android.widget.SeekBar.OnSeekBarChangeListener
 
 
 class FilterFragment : Fragment() {
@@ -108,6 +109,33 @@ class FilterFragment : Fragment() {
             }
             findNavController().navigate(action)
         }
+
+        var seekBar: SeekBar = requireView()!!.findViewById(R.id.sb_kilometros)
+        if(seekBar != null) {
+            //seekBar.max(50);
+            //seekBar.min(1);
+            seekBar.setProgress(5);
+
+            seekBar.setOnSeekBarChangeListener(
+                object : OnSeekBarChangeListener {
+                    override fun onProgressChanged(
+                        seekBar: SeekBar,
+                        progress: Int, fromUser: Boolean
+                    ) {
+
+                        var textviewCantidadKilometros: TextView = requireView()!!.findViewById(R.id.tv_cantidad_km)
+                        textviewCantidadKilometros.setText("$progress")
+                    }
+
+                    //hace un llamado  cuando se toca la perilla
+                    override fun onStartTrackingTouch(seekBar: SeekBar) {}
+
+                    //hace un llamado  cuando se detiene la perilla
+                    override fun onStopTrackingTouch(seekBar: SeekBar) {}
+                })
+
+        }
+
     }
 
     override fun onStart() {
