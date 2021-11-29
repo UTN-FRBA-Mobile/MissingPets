@@ -62,6 +62,21 @@ El usuario que haya encontrado tu animal de compañía o quiera adoptar se pondr
   <img src="https://github.com/UTN-FRBA-Mobile/MissingPets/blob/main/img/picture01.png"  title="Puntaje de la app">
 </p>
 
+## Información adicional
+
+Permisos:
+  Cámara de fotos.
+  Almacenamiento externo.
+  Ubicación.
+
+Tamaño de la App: 
+  30.4Mb
+
+Versión de Android: 
+  A partir de android 5
+
+Cantidad de descargas: 
+  1,000,000,000+
 
 
 ## Autores
