@@ -3,6 +3,24 @@
   <img src="https://github.com/UTN-FRBA-Mobile/MissingPets/blob/main/img/picture03.png"  title="TP-MissingPets">
 </p>
 
+## Mira la App
+
+<details><summary>Clickea aca para ver las fotos de la App</summary>
+<p align="center">
+  <img src="https://github.com/UTN-FRBA-Mobile/MissingPets/blob/main/img/img1.jpg" alt="alt example  " width="130"  border="0" title="TP-MissingPets">
+  <img src="https://github.com/UTN-FRBA-Mobile/MissingPets/blob/main/img/img2.jpg" alt="alt example  " width="130"  border="0" title="TP-MissingPets">
+  <img src="https://github.com/UTN-FRBA-Mobile/MissingPets/blob/main/img/img3.jpg" alt="alt example  " width="130"  border="0" title="TP-MissingPets">
+  <img src="https://github.com/UTN-FRBA-Mobile/MissingPets/blob/main/img/img4.jpg" alt="alt example  " width="130"  border="0" title="TP-MissingPets">
+  <img src="https://github.com/UTN-FRBA-Mobile/MissingPets/blob/main/img/img5.jpg" alt="alt example  " width="130"  border="0" title="TP-MissingPets">
+  <img src="https://github.com/UTN-FRBA-Mobile/MissingPets/blob/main/img/img6.jpg" alt="alt example  " width="130"  border="0" title="TP-MissingPets">
+  <img src="https://github.com/UTN-FRBA-Mobile/MissingPets/blob/main/img/img7.jpg" alt="alt example  " width="130"  border="0" title="TP-MissingPets">
+  <img src="https://github.com/UTN-FRBA-Mobile/MissingPets/blob/main/img/img8.jpg" alt="alt example  " width="130"  border="0" title="TP-MissingPets">
+  <img src="https://github.com/UTN-FRBA-Mobile/MissingPets/blob/main/img/img9.jpg" alt="alt example  " width="130"  border="0" title="TP-MissingPets">
+</p>
+</details>
+
+## Descricion
+
 **¿Tu mascota se ha perdido? ¿Quieres adoptar o dar en adopción?**
 
 Entonces… ¡Bienvenido a la app para las mascotas, MissingPets!
@@ -37,6 +55,8 @@ El usuario que haya encontrado tu animal de compañía o quiera adoptar se pondr
 **MissingPets es la forma más directa y sencilla de adoptar y encontrar a tus perros, gatos, conejos, cobayas, loros, hamsters...(🐶🐱🐭🐹🐰) el tipo de animal de compañía que tengas.**
 
 ***Con MissingPets no habra ninguna mascota sin hogar. ¡Colabora y comparte!***
+
+## Opiniones
 
 <p align="center">
   <img src="https://github.com/UTN-FRBA-Mobile/MissingPets/blob/main/img/picture01.png"  title="Puntaje de la app">
