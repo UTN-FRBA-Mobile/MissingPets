@@ -38,6 +38,7 @@ import com.example.missingpets.network.ApiServices2
 import com.example.missingpets.network.Mascota
 import com.example.missingpets.viewModels.UserProfileViewModel
 import com.google.android.material.snackbar.Snackbar
+import com.squareup.picasso.Picasso
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -70,6 +71,7 @@ class NewPostFragment : Fragment() {
     private var marcadorLongitude: Float? = null
     var photo: Uri? = null
     var uri: Uri? =  null
+    var urlFotoEnServer: String? = null
 
 
     private var permisosCamara = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()){ result ->
@@ -131,6 +133,13 @@ class NewPostFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+
+        if (user.id<0){
+            Toast.makeText(requireContext(), "Es obligatorio estar logueado para continuar",
+                Toast.LENGTH_LONG).show()
+            irAlLoguin()
+
+        }
         // Inflate the layout for this fragment
         _binding = FragmentNewPostBinding.inflate(inflater, container, false)
 
@@ -168,51 +177,15 @@ class NewPostFragment : Fragment() {
 
         binding.btnPublicar.setOnClickListener {
             //stop here
-            user.id=8
+            //user.id=8
             if (user.id<0){
 
-                Toast.makeText(requireContext(), "Es obligatiorio estar logueado para continuar",
+                Toast.makeText(requireContext(), "Es obligatorio estar logueado para continuar",
                 Toast.LENGTH_LONG).show()
                 irAlLoguin()
 
             } else {
-
-                var pet: Mascota = Mascota()
-
-                //asignar ID del usuario loggeado
-                pet.idcreator = user.id
-
-                //leer coordenadas del mapa
-                pet.latitude = binding.tvLatitude.text.toString().toFloat()
-                pet.longitude = binding.tvLongitude.text.toString().toFloat()
-
-                pet.description = binding.etMasDetallesEncontrado.text.toString()
-
-                //TODO hacer el post de la foto y obtener el path (LO ANULE POR AHORA DA ERROR)
-                val url = publicarFoto(binding.ivMascotaEncontrada)
-                pet.photopath = "image2.jpg"
-
-                pet.nombreMascota = binding.etNombreAnimal.text.toString()
-                pet.tipoAnimal = binding.spnTipoAnimales.selectedItem.toString()
-                pet.sexoAnimal = binding.spnSexoAnimales.selectedItem.toString()
-
-                //TODO DateFormat.ddmmyyyyToyyyymmdd(binding.dateCuando.text.toString())
-                pet.fechaPerdido = DateFormat.ddmmyyyyToyyyymmdd(binding.dateCuando.text.toString())
-
-                // get selected radio button from radioGroup
-                val checkedRadioButtonId = binding.rgEstado.getCheckedRadioButtonId()
-                val radioButton = view.findViewById<RadioButton>(checkedRadioButtonId)
-
-                if(radioButton.text.contains("Perd")){
-                    pet.estado = "perdido"
-                } else if (radioButton.text.contains("Encontr")){
-                    pet.estado = "encontrado"
-                }else{
-                    pet.estado=  null
-                }
-                if(validarCamposVacios(pet)) {
-                    publicarMascota(pet)
-                }
+                publicarFoto(binding.ivMascotaEncontrada)
             }
         }
 
@@ -222,14 +195,15 @@ class NewPostFragment : Fragment() {
         }
     }
 
-
     private fun validarCamposVacios(pet: Mascota): Boolean {
+
 
         if (pet.latitude ==0f || pet.longitude==0f) {
             Toast.makeText(requireContext(), "Es obligatiorio completar ubicación",
                 Toast.LENGTH_LONG).show();
             return  false
         }
+        pet.photopath = urlFotoEnServer
         if (pet.description.isNullOrEmpty() || pet.photopath.isNullOrEmpty() ||
             pet.nombreMascota.isNullOrEmpty() || pet.tipoAnimal.isNullOrEmpty() ||
             pet.sexoAnimal.isNullOrEmpty() || pet.fechaPerdido.isNullOrEmpty() ||
@@ -240,6 +214,37 @@ class NewPostFragment : Fragment() {
             return false
         }
         return true
+    }
+
+    private fun armarMascota(): Mascota{
+        //asignar ID del usuario loggeado
+        var pet: Mascota = Mascota()
+        pet.idcreator = user.id
+
+        //leer coordenadas del mapa
+        pet.latitude = binding.tvLatitude.text.toString().toFloat()
+        pet.longitude = binding.tvLongitude.text.toString().toFloat()
+
+        pet.description = binding.etMasDetallesEncontrado.text.toString()
+        pet.photopath = urlFotoEnServer
+        pet.nombreMascota = binding.etNombreAnimal.text.toString()
+        pet.tipoAnimal = binding.spnTipoAnimales.selectedItem.toString()
+        pet.sexoAnimal = binding.spnSexoAnimales.selectedItem.toString()
+
+        //TODO DateFormat.ddmmyyyyToyyyymmdd(binding.dateCuando.text.toString())
+        pet.fechaPerdido = DateFormat.ddmmyyyyToyyyymmdd(binding.dateCuando.text.toString())
+        // get selected radio button from radioGroup
+        val checkedRadioButtonId = binding.rgEstado.getCheckedRadioButtonId()
+        val radioButton = view?.findViewById<RadioButton>(checkedRadioButtonId)
+
+        if(radioButton?.text?.contains("Perd") == true){
+            pet.estado = "perdido"
+        } else if (radioButton?.text?.contains("Encontr") == true){
+            pet.estado = "encontrado"
+        }else{
+            pet.estado=  null
+        }
+        return pet
     }
 
 
@@ -349,33 +354,34 @@ class NewPostFragment : Fragment() {
         val realPath1 = context?.let { getRealPathFromURI(it, uri) }
 
         val file2 = File(realPath1)
-        val requestBody2 = RequestBody.create(MediaType.parse("multipart/form-data"), file2)
-        val body2 = MultipartBody.Part.createFormData("picture", file2.getName(), requestBody2 )
         Log.d("UPLOAD PHOTO - uri:", file2.path) //uri.toString())
 
-        val requestBody3 = RequestBody.create(MediaType.parse("image/*"), file2)
-        val body3 = MultipartBody.Part.createFormData("name", file2.getName(), requestBody3)
+        val requestBody3 = RequestBody.create(MediaType.parse("multipart/form-data"), file2)
+        val body3 = MultipartBody.Part.createFormData("fichero_usuario", file2.getName(), requestBody3)
         val descriptionString = "hello, this is description speaking"
         val description = RequestBody.create(
             MultipartBody.FORM, descriptionString
         )
 
-
         val apiInterface0 = ApiServices2.create().addPhoto(description,body3)
+
         apiInterface0!!.enqueue(object : Callback<ResponseBody?> {
 
             override fun onResponse(call: Call<ResponseBody?>, response: Response<ResponseBody?>) {
                 if (response != null && response.isSuccessful && response.body() != null) {
                     Log.d("UPLOAD PHOTO 1 - ", response.message().toString())
-                    val resultbody =  response.body()!!
-                    Log.d("UPLOAD PHOTO 2 - ", resultbody.string())
-
+                    val responsebody =  response.body()!!
+                    urlFotoEnServer = responsebody.string().substringAfterLast('/')
+                    val pet = armarMascota()
+                    if(validarCamposVacios(pet)) {
+                        publicarMascota(pet)
+                    }
 
                 }
             }
-
             override fun onFailure(call: Call<ResponseBody?>, t: Throwable) {
                 Log.e("Error:::", "Error " + t!!.message)
+                Toast.makeText(requireContext(), "Falló publicación de foto",Toast.LENGTH_LONG).show()
             }
         })
     }
@@ -404,11 +410,11 @@ class NewPostFragment : Fragment() {
                     Toast.makeText(requireContext(), "Has publicado con exito!!!",Toast.LENGTH_LONG).show()
 
                     if(pet.estado=="perdido"){
-                       val action = R.id.action_newPostFragment_to_missingFragment
-                      findNavController().navigate(action)
+                        val action = R.id.action_newPostFragment_to_missingFragment
+                        findNavController().navigate(action)
                     }
                     else{
-                        val action = R.id.action_newPostFragment_to_foundFragment
+                        val action = R.id.action_newPostFragment_to_adoptableFragment
                         findNavController().navigate(action)
                     }
 
@@ -425,6 +431,7 @@ class NewPostFragment : Fragment() {
         super.onStart()
         binding.tvLatitude.text = prefs.latitude.toString()
         binding.tvLongitude.text = prefs.longitude.toString()
+        binding.ivMascotaEncontrada.setImageURI(uri)
     }
 
     fun getRealPathFromURI(context: Context, contentUri: Uri?): String? {
@@ -441,21 +448,5 @@ class NewPostFragment : Fragment() {
 
     }
 
-    fun getMimeType(uri: Uri): String? {
-        var mimeType: String? = null
-        mimeType = if (ContentResolver.SCHEME_CONTENT == uri.scheme) {
-            val cr: ContentResolver = requireContext().contentResolver
-            cr.getType(uri)
-        } else {
-            val fileExtension = MimeTypeMap.getFileExtensionFromUrl(
-                uri
-                    .toString()
-            )
-            MimeTypeMap.getSingleton().getMimeTypeFromExtension(
-                fileExtension.toLowerCase()
-            )
-        }
-        return mimeType
-    }
 
 }

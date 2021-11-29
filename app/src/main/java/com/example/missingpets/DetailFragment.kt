@@ -21,10 +21,6 @@ import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.missingpets.dataRV.MissingDatasource
 import com.example.missingpets.dataRV.UserDatasource
-import com.example.missingpets.network.ApiServices2
-import com.example.missingpets.network.Mascota
-import com.example.missingpets.network.MissingPet
-import com.example.missingpets.network.recyclerPet
 import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.CoroutineScope
@@ -35,6 +31,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import android.widget.ImageView
 import com.example.missingpets.formats.DateFormat
+import com.example.missingpets.network.*
 
 
 class DetailFragment : Fragment() {
@@ -80,6 +77,7 @@ class DetailFragment : Fragment() {
                     val longitude = response.body()!!.elementAt(0)?.longitude.toString() ?: "0.0"
                     val latitude = response.body()!!.elementAt(0)?.latitude.toString() ?: "0.0"
                     val photopath = resources.getString(com.example.missingpets.R.string.images_root_path) + response.body()!!.elementAt(0)?.photopath.toString() ?: "0.0"
+                    var idUsuario = response.body()?.elementAt(0)?.idcreator ?: 0
 
                     detailViewModel =
                         DetailViewModel(nombreMascota, tipoAnimal, sexoAnimal, fechaPerdido)
@@ -88,13 +86,30 @@ class DetailFragment : Fragment() {
 
                     loadImage(photopath)
 
-                    binding.btnContactar.setOnClickListener {
-                        if (repositorioUsuario.noEstasLogueado()) {
-                              irAlLoguin()
-                        } else {
-                            val numeroTelefono = detailViewModel.getNumeroTelefono()
-                              abrirWhatsapp(view, numeroTelefono)
+                    val apiInterface1 = ApiServices2.create().getUserById(idUsuario)
+
+                    apiInterface1.enqueue(object : Callback<List<User>> {
+                        override fun onResponse(call: Call<List<User>>?, response: Response<List<User>>?) {
+                            if (response != null && response.isSuccessful && response.body() != null) {
+                                idUsuario = response.body()?.elementAt(0)?.id ?: 0
+                                val username = response.body()?.elementAt(0)?.username ?: ""
+                                val numeroTelefono = response.body()?.elementAt(0)?.phonenumber ?: ""
+                                Log.d("ERROR", "Datos uusario: " + idUsuario + " " + username + " " + numeroTelefono)
+                                detailViewModel.setNumeroTelefono(numeroTelefono)
+                                detailViewModel.setUsernameCreadorPost(username)
+                            }
                         }
+                        override fun onFailure(call: Call<List<User>>, t: Throwable) {
+                            Log.e("Error:::", "Error " + t!!.message)
+                        }
+                    })
+
+
+                    binding.btnContactar.setOnClickListener {
+
+                        val numeroTelefono = detailViewModel.getNumeroTelefono()
+                        abrirWhatsapp(view, numeroTelefono)
+
                     }
                     binding.imageviewMapa.setOnClickListener {
                         val action = R.id.action_detailFragment_to_mapsFragment

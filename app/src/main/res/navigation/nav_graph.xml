@@ -72,6 +72,15 @@
         <action
             android:id="@+id/action_filterFragment_to_foundFragment"
             app:destination="@id/foundFragment" />
+        <action
+            android:id="@+id/action_filterFragment_to_mapsFragment"
+            app:destination="@id/mapsFragment" />
+        <action
+            android:id="@+id/action_filterFragment_to_missingFragment2"
+            app:destination="@id/missingFragment" />
+        <action
+            android:id="@+id/action_filterFragment_to_adoptableFragment"
+            app:destination="@id/adoptableFragment" />
     </fragment>
     <fragment
         android:id="@+id/detailFragment"

@@ -17,10 +17,44 @@
             android:layout_marginRight="10dp"
             android:orientation="vertical">
 
+            <TextView
+                android:id="@+id/tv_titulo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="FILTROS"
+                android:textSize="25dp"
+                android:gravity="center"
+                android:textColor="#EFF3EB"
+                />
+
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:layout_marginTop="20dp"
+                android:layout_gravity="center">
+
+                <RadioButton
+                    android:id="@+id/rb_perdido"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:text="@string/post_perdido" />
+
+                <RadioButton
+                    android:id="@+id/rd_encontrado"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:text="@string/post_encontrado" />
+
+            </RadioGroup>
+
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="20dp"
                 android:orientation="horizontal">
 
                 <TextView
@@ -57,86 +91,138 @@
                         android:layout_weight="1"
                         android:text="@string/km" />
                 </LinearLayout>
-
-
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/ll_animal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/tv_animal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/animal" />
-
-                <Spinner
-                    android:id="@+id/spn_animales"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="70dp"
-                    android:layout_weight="1"
-                    android:dropDownWidth="match_parent"
-                    android:entries="@array/animals" />
-
-            </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/ll_fecha_desde"
+                android:id="@+id/spinner_filtros"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="30dp"
-                android:orientation="horizontal">
+                android:layout_marginTop="20dp"
+                android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/tv_fecha_desde"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/date_from" />
 
-                <EditText
-                    android:id="@+id/et_fecha_desde"
-                    android:layout_width="wrap_content"
+                <Spinner
+                    android:id="@+id/spn_tipo_animales"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:editable="false"
-                    android:ems="10"
-                    android:enabled="false"
-                    android:inputType="date"
-                    android:selectAllOnFocus="false" />
+                    android:entries="@array/animals"
+                    android:minHeight="48dp" />
+
+                <Spinner
+                    android:id="@+id/spn_sexo_animales"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:entries="@array/animals_sex"
+                    android:minHeight="48dp" />
+
 
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/tv_buscar_en"
+
+            <LinearLayout
+                android:id="@+id/ll_fecha_rango"
                 android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical">
+
+
+                <EditText
+                    android:id="@+id/date_desde"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="false"
+                    android:focusable="false"
+                    android:hint="Desde fecha"
+                    android:minHeight="48dp" />
+
+                <EditText
+                    android:id="@+id/date_hasta"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="false"
+                    android:focusable="false"
+                    android:hint="Hasta fecha"
+                    android:minHeight="48dp" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="200dp"
+                android:layout_height="match_parent"
+                android:layout_marginTop="5dp"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Buscar en:"
+                    />
+
+                <ImageView
+                    android:id="@+id/imageviewMapa"
+                    android:layout_width="130dp"
+                    android:layout_height="70dp"
+                    android:layout_marginTop="5dp"
+                    android:src="@drawable/mapa"
+                    tools:ignore="ContentDescription" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/position_mapa"
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/tv_etiqueta_latitude"
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    android:text="Latitude" />
+                <TextView
+                    android:id="@+id/tv_latitude"
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    android:text="TextView" />
+
+                <TextView
+                    android:id="@+id/tv_etiqueta_longitude"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="40dp"
+                    android:text="Longitude" />
+                <TextView
+                    android:id="@+id/tv_longitude"
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    android:text="TextView" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:layout_marginBottom="20dp"
-                android:text="@string/search_in" />
+                android:orientation="horizontal"
+                android:layout_marginTop="16dp"
+                android:layout_gravity="center_horizontal">
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                <Button
+                    android:id="@+id/btn_aplicar_filtro"
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:text="Aplicar"/>
 
-                <com.google.android.gms.maps.MapView
-                    android:id="@+id/mv_mapa_busqueda"
-                    android:layout_width="292dp"
-                    android:layout_height="238dp"
-                    android:layout_alignParentStart="false"
-                    android:layout_alignParentLeft="false"
-                    android:layout_alignParentTop="false"
-                    android:layout_alignParentEnd="false"
-                    android:layout_alignParentRight="false"
-                    android:layout_centerHorizontal="true" />
-            </RelativeLayout>
-
+                <Button
+                    android:id="@+id/btn_regresar"
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:text="Regresar"
+                    android:layout_marginLeft="5dp"/>
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 </FrameLayout>

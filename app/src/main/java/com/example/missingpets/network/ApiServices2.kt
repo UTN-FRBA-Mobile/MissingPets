@@ -16,6 +16,10 @@ import java.util.*
 interface ApiServices2 {
 
     @GET("lost")
+    fun getMissingPetsFilter(): Call<List<Mascota>>
+
+
+    @GET("lost")
     fun getMissingPets(): Call<List<recyclerPet>>
 
     @GET("lost")
@@ -24,9 +28,7 @@ interface ApiServices2 {
     @GET("user")
     fun getUser(): Call<List<UserLogin>>
 
-    @GET("found")
-    fun getFound(): Call<List<recyclerPet>>
-
+    // para mypostadobtablesfragment
     @GET("found")
     fun getFound2(): Call<List<recyclerPet2>>
 
@@ -75,7 +77,7 @@ interface ApiServices2 {
     suspend fun getAllUsers(): Call<List<User>>
 
     @GET("user/")
-    suspend fun getUserById(@Query("id") id: Int): Call<List<User>>
+    fun getUserById(@Query("id") id: Int): Call<List<User>>
 
     @GET("user/")
     suspend fun getUserInfo(@Query("username") username: String, @Query("password") password: String, ): Call<List<User>>

@@ -30,14 +30,14 @@
                     android:id="@+id/rb_encontrado"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/post_encontrado" />
+                    android:text="Perdí una mascota" />
 
                 <RadioButton
                     android:id="@+id/rb_perdido"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
-                    android:text="@string/post_perdido" />
+                    android:text="Encontré una mascota" />
 
             </RadioGroup>
 
