@@ -64,20 +64,17 @@ El usuario que haya encontrado tu animal de compañía o quiera adoptar se pondr
 
 ## Información adicional
 
-Permisos:
-  Cámara de fotos.
-  Almacenamiento externo.
-  Ubicación.
+**Importante:**
+La app requerida los siguientes permisos.
+- [x] Acceso a internet.
+- [x] Cámara de fotos.
+- [X] Almacenamiento externo.
+- [X] Ubicación.
 
-Tamaño de la App: 
-  30.4Mb
-
-Versión de Android: 
-  A partir de android 5
-
-Cantidad de descargas: 
-  1,000,000,000+
-
+**Mas info:**
+|Tamaño de la App:|Versión de Android:|Cantidad de descargas: | Calificación del contenido:|
+|-----------------|-------------------|----------------------|-------------------------|
+|30.4Mb| A partir de android 5|1,000,000,000+| Aplicación apta para todo publico|
 
 ## Autores
 
